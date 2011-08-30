@@ -1,0 +1,14 @@
+##########################
+# BE Module configuration
+##########################
+
+module.tx_vidi {
+	persistence {
+		storagePid = {$module.tx_vidi.persistence.storagePid}
+	}
+	view {
+		templateRootPath = {$module.tx_vidi.view.templateRootPath}
+		partialRootPath = {$module.tx_vidi.view.partialRootPath}
+		layoutRootPath = {$module.tx_vidi.view.layoutRootPath}
+	}
+}
