@@ -32,23 +32,23 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Vidi_Controller_AssetController extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_Vidi_Controller_ContentController extends Tx_Extbase_MVC_Controller_ActionController {
 
 	/**
-	 * assetRepository
+	 * contentRepository
 	 *
-	 * @var Tx_Vidi_Domain_Repository_AssetRepository
+	 * @var Tx_Vidi_Domain_Repository_ContentRepository
 	 */
-	protected $assetRepository;
+	protected $contentRepository;
 
 	/**
-	 * injectAssetRepository
+	 * injectContentRepository
 	 *
-	 * @param Tx_Vidi_Domain_Repository_AssetRepository $assetRepository
+	 * @param Tx_Vidi_Domain_Repository_ContentRepository $contentRepository
 	 * @return void
 	 */
-	public function injectAssetRepository(Tx_Vidi_Domain_Repository_AssetRepository $assetRepository) {
-		$this->assetRepository = $assetRepository;
+	public function injectContentRepository(Tx_Vidi_Domain_Repository_ContentRepository $contentRepository) {
+		$this->contentRepository = $contentRepository;
 	}
 
 	/**
@@ -61,9 +61,9 @@ class Tx_Vidi_Controller_AssetController extends Tx_Extbase_MVC_Controller_Actio
 		if(empty($configuration['persistence']['storagePid'])){
 			$this->flashMessageContainer->add('No storagePid! You have to include the static template of this extension and set the constant plugin.tx_' . t3lib_div::lcfirst($this->extensionName) . '.persistence.storagePid in the constant editor');
 		}
-		# @todo: not necessary to fetch asset here as it is done by ExtDirect later on. Find an more appropriate action for that
-		#$assets = $this->assetRepository->findAll();
-		#$this->view->assign('assets', $assets);
+		# @todo: not necessary to fetch content here as it is done by ExtDirect later on. Find a more appropriate action for that
+		#$contents = $this->contentRepository->findAll();
+		#$this->view->assign('contents', $contents);
 	}
 	
 	/**

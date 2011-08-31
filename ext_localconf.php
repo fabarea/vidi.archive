@@ -36,8 +36,8 @@ if ($GLOBALS['_GET']['M'] == 'user_TaxonomyTxTaxonomyM1') {
 
 // Register ExtDirect Endpoint 
 t3lib_extMgm::registerExtDirectComponent(
-    'TYPO3.Vidi.Service.ExtDirect.Controller.RecordController',
-    'EXT:vidi/Classes/Service/ExtDirect/Controller/RecordController.php:Tx_Vidi_Service_ExtDirect_Controller_RecordController'
+    'TYPO3.Vidi.Service.ExtDirect.Controller.ContentController',
+    'EXT:vidi/Classes/Service/ExtDirect/Controller/ContentController.php:Tx_Vidi_Service_ExtDirect_Controller_ContentController'
 );
 
 // @todo: registration should be Object Oriented via t3lib_extMgm, for instance

@@ -220,7 +220,7 @@ define(['Vidi/Core/Application'], function(Application) {
 			
 			this.store = Ext.create('Ext.data.DirectStore', {
 				storeId: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',
-				directFn: TYPO3.Vidi.Service.ExtDirect.Controller.RecordController.getRecords,
+				directFn: TYPO3.Vidi.Service.ExtDirect.Controller.ContentController.getRecords,
 				idProperty: 'uid',
 				root: 'data',
 				totalProperty: 'total',

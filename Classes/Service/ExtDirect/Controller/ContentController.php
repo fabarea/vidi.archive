@@ -31,7 +31,7 @@
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Vidi_Service_ExtDirect_Controller_RecordController extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_Vidi_Service_ExtDirect_Controller_ContentController extends Tx_Extbase_MVC_Controller_ActionController {
 	
 	/**
 	 * Fetches the next tree level
