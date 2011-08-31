@@ -52,6 +52,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['Vidi'] = Array(
 		'Vidi/Core/Application', 
 		'Vidi/Module/UserInterfaceModule',
 		'Vidi/Module/ContentBrowserModule',
+		'Vidi/Module/ConceptModule',
 		'Vidi/Utils',
 	),
 

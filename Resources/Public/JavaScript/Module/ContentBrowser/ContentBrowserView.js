@@ -39,7 +39,7 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 		 *
 		 * @cfg {String}
 		 */
-		extend: 'Ext.panel.Panel',
+		extend: 'Ext.tab.Panel',
 		
 		/**
 		 * The store 
@@ -54,88 +54,63 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 		initComponent: function() {
 
 			var config = {
-				layout: 'border',
-				defaults: {
-					collapsible: true,
-					split: true,
-					bodyStyle: 'padding:15px',
-					bodyPadding: 0,
-					margins: 0,
-					padding: 0
-				},
+				xtype: 'tabpanel',
+				bodyStyle: 'padding:15px',
+				bodyPadding: 0,
+				margins: 0,
+				padding: 0,
+				plain: true,
+				collapsible: false,
+				region: 'center',
+				activeTab: 0,
 				items: [{
-					/*
-					 * LEFT PANEL
-					 */
-					xtype: 'panel',
-					region:'west',
-					width: 200,
-					items: [{
-						xtype: 'container',
-						html: 'dummy text'
-					}]
-
-				}, {
-				
-//					/*
-//					 * RIGHT PANEL
-//					 */
-//					xtype: 'panel',
-//					region:'east',
-//					collapsed: true,
-//					width: 200,
-//					items: [{
-//						xtype: 'container',
-//						html: 'dummy text'
-//					}]
-//				}, {
-                     xtype: 'tabpanel',
-                     plain: true,
-					 collapsible: false,
-                     region: 'center',
-                     margins: '0 5 5 5',
-                     activeTab: 0,
-                     items: [{
-						title: 'Tab 1',
-						cls: 'inner-tab-custom', // custom styles in layout-browser.css
-						layout: 'border',
+					title: 'Tab 1',
+					cls: 'inner-tab-custom', // custom styles in layout-browser.css
+					layout: 'border',
 						
-						// Make sure IE can still calculate dimensions after a resize when the tab is not active.
-						// With display mode, if the tab is rendered but hidden, IE will mess up the layout on show:
-						hideMode: Ext.isIE ? 'offsets' : 'display',
-						items: [{
-							/*
+					// Make sure IE can still calculate dimensions after a resize when the tab is not active.
+					// With display mode, if the tab is rendered but hidden, IE will mess up the layout on show:
+					hideMode: Ext.isIE ? 'offsets' : 'display',
+					items: [{
+						/*
 							 * RIGHT PANEL
 							 */
-							xtype: 'panel',
-							collapsible: true,
-							collapsed: true,
-							region:'east',
-							split: true,
+						xtype: 'panel',
+						collapsible: true,
+						collapsed: true,
+						region:'east',
+						split: true,
 //							collapseMode: 'omitted',
 //							animCollapse: true,
 //							width: '10%',
-							items: [{
-								xtype: 'container',
-								html: 'dummy text 1'
-							}]
-						}, {
-							/*
+						items: [{
+							xtype: 'container',
+							html: 'dummy text 1'
+						}]
+					}, {
+						/*
 							 * CENTER PANEL
 							 */
-							xtype: 'panel',
-							region:'center',
+						xtype: 'panel',
+						region:'center',
+						items: [{
+							xtype: 'container',
 							items: [{
-								xtype: 'container',
-								items: [{
-									xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch'
-								}, {
-									xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'
-								}]
+								xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch'
+							}, {
+								xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'
 							}]
 						}]
-                     }]
-                 }]
+					}, {
+						xtype: 'panel',
+						region: 'west',
+						collapsible: true,
+						width: 200,
+						items: {
+							xtype: 'TYPO3.Vidi.Module.Concept.Tree'
+						}
+					}]
+				}]
 			}
 		
 			Ext.apply(this, config);
