@@ -320,7 +320,7 @@ define(['Vidi/Core/Application'], function(Application) {
 						activeTab:0,
 						deferredRender:false,
 						border:false
-					}),
+					})
 
 	//                buttons: [{
 	//                    text:'Submit',
