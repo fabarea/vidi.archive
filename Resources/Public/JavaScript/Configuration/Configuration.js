@@ -94,4 +94,4 @@ TYPO3.TYPO3.Configuration.Application = {
 	 * @type {String}
 	 */
 	version: null
-}
+};
