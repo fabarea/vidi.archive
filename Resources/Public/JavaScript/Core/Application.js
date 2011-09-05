@@ -112,7 +112,7 @@ define(['Vidi/Core/Registry'], function(Registry) {
 					});
 				},
 				this
-			)
+			);
 		},
 		/**
 		 * Hides the loading message of the application
@@ -143,7 +143,7 @@ define(['Vidi/Core/Registry'], function(Registry) {
 					});
 				},
 				this
-			)
+			);
 		},
 
 		/**
