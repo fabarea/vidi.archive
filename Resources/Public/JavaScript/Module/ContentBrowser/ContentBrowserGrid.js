@@ -53,7 +53,7 @@ define(['Vidi/Core/Application'], function(Application) {
 		 * @type {Object}
 		 */
 		store: null,
-
+win:null,
 		/**
 		 * Initializer
 		 */
@@ -66,7 +66,7 @@ define(['Vidi/Core/Application'], function(Application) {
 			var config = {
 				store: this.store,
 				columns: [
-					{header: 'Title',  dataIndex: 'title', flex: 1},
+					{header: 'Title',  dataIndex: 'title', flex: 1}
 				],
 				height: 200,
 				width: '100%'
@@ -161,7 +161,7 @@ define(['Vidi/Core/Application'], function(Application) {
 							return '';
 						}
 					}
-				},
+				}
 	//			{
 	//				iconCls:'t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-pagemodule-open',
 	//				tooltip: TYPO3.lang["tooltip.openPage"],
@@ -247,7 +247,7 @@ define(['Vidi/Core/Application'], function(Application) {
 				sortInfo:{
 					field:'title',
 					direction:"ASC"
-				},
+				}
 	//			listeners: {
 	//				beforeload: function(store, records){
 	//					var control = Ext.getCmp('rsearchField');
@@ -304,7 +304,8 @@ define(['Vidi/Core/Application'], function(Application) {
 		},
 
 		test: function() {
-		if(!win){
+			var win = this.win || {};
+			if(!win){
 				win = new Ext.Window({
 					applyTo:'hello-win',
 					layout:'fit',

@@ -1,7 +1,5 @@
-"use strict";
 
-Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
-	
+
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -21,48 +19,53 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Application', 'Vidi/Components/FilterBar'], function(Application) {
+define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/SelectBox'], function(Application) {
 
-	/**
-	 * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch
-	 * 
-	 * The search element in the content browser view
-	 * 
-	 * @namespace TYPO3.Vidi.Module.ContentBrowser
-	 * @extends Ext.Panel
-	 */
-	return Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch', {
-		
-		/**
-		 * The Component being extended
-		 *
-		 * @cfg {String}
-		 */
-		extend: 'Ext.container.Container',
-		
-		/**
-		 * The store 
-		 *
-		 * @type {Object}
-		 */
-		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch',
+	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Category');
+	
+	TYPO3.Vidi.Components.FilterBar.Item.Category.Operators = Ext.create('Ext.data.Store', {
+		fields: ['display', 'id'],
+		data : [
+			{ display: "is", id: 'is' }
+		]
+	});
 
-		/**
-		 * Initializer
-		 */
-		initComponent: function() {
+	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Category', {
+		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
+		alias: 'widget.filterBar-Item-Category',
+		componentCls: 'vidi-filterBar-Item-green',
+		displayItems: [
+			{
+				col: 'left',
+				xtype: 'component',
+				data: {field: {}, operator: {}},
+				tpl: '<strong>Category {operator.display}</strong>'
+			},
+			{
+			col: 'right',
+			xtype: 'component',
+			data: { string: ''},
+			tpl: '<strong>{string}</strong>'
+		}],
+		editItems: [
+			{
+				xtype: 'select',
+				fieldLabel: 'Category',
+				store: TYPO3.Vidi.Components.FilterBar.Item.Category.Operators
+			},
+			{
+				xtype: 'textfield',
+				name: 'searchstring',
+				allowBlank: false
+		}],
+		applyData: function() {
+			var input = this.items.getAt(1).items.getAt(1);
+			var comboOp = this.items.getAt(1).items.getAt(0);
 
-			// Default configuration
-			var config = {
-				layout: 'auto',
-				items: [{
-					xtype: 'filterBar'
-				}
-				]
-			};
-		
-			Ext.apply(this, config);
-			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch.superclass.initComponent.call(this);
+			this.data = {
+				string : input.getValue(),
+				operator: comboOp.store.findRecord('id', comboOp.getValue()).data
+			}
 		}
 	});
 });

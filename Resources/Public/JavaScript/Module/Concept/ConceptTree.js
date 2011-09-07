@@ -57,16 +57,17 @@ define(['Vidi/Core/Application', 'Taxonomy/Module/Concept/ConceptTree'], functio
 			var config = {
 				
 			};
-			
 			this.on(
 				'itemclick',
 				this.onItemClick,
 				this,
 				{delay: 400}
 			);
-				
+
+
 			Ext.apply(this, config);
 			TYPO3.Vidi.Module.Concept.Tree.superclass.initComponent.call(this);
+
 		},
 		
 		 /**
@@ -82,13 +83,6 @@ define(['Vidi/Core/Application', 'Taxonomy/Module/Concept/ConceptTree'], functio
 		 * @param {Ext.EventObject} e The raw event object
 		 */
 		onItemClick: function(view, model, htmlElement, number, event) {
-
-			// @todo find a way to detect a double click => leaf get edited
-//			if (this.clicksRegistered === 2) {
-//				event.stopEvent();
-//				return false;
-//			}
-			
 			console.log('Hello Steffen! This should add a Filter Criteria in the Filter Bar');
 		}
 	});

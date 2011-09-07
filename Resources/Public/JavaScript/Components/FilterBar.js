@@ -1,7 +1,5 @@
 "use strict";
 
-Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
-	
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -21,48 +19,41 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Application', 'Vidi/Components/FilterBar'], function(Application) {
+
+define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Fulltext',
+		'Vidi/Components/FilterBar/Item/Operator' ,'Vidi/Components/FilterBar/Item/Category' ,
+		'Vidi/Components/FilterBar/Item/Collection', 'Vidi/Components/FilterBar/Item/Field'
+		], function(Application) {
+
+	Ext.ns("TYPO3.Vidi.Components.FilterBar");
 
 	/**
-	 * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch
+	 * @class TYPO3.Vidi.Components.FilterBar
 	 * 
-	 * The search element in the content browser view
+	 * A versatile filter Bar
 	 * 
-	 * @namespace TYPO3.Vidi.Module.ContentBrowser
-	 * @extends Ext.Panel
+	 * @namespace TYPO3.Vidi.Components
+	 * @extends Ext.container.Container
 	 */
-	return Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch', {
-		
+	Ext.define('TYPO3.Vidi.Components.FilterBar', {
 		/**
-		 * The Component being extended
-		 *
-		 * @cfg {String}
+		 * 
 		 */
 		extend: 'Ext.container.Container',
-		
-		/**
-		 * The store 
-		 *
-		 * @type {Object}
-		 */
-		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch',
-
-		/**
-		 * Initializer
-		 */
-		initComponent: function() {
-
-			// Default configuration
-			var config = {
-				layout: 'auto',
-				items: [{
-					xtype: 'filterBar'
+		alias: 'widget.filterBar',
+		baseCls: 'vidi-filterBar',
+		layout: 'auto',
+		items: [{
+			xtype: 'filterBar-Item-Fulltext'
 				}
-				]
-			};
-		
-			Ext.apply(this, config);
-			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch.superclass.initComponent.call(this);
+		],
+		listeners: {
+			afterRender: function() {
+				this.el.addListener('click', function() {
+					this.add(Ext.widget('filterBar-Item-Fulltext'));
+				}, this, {stopEvent: true});
+			}
 		}
 	});
 });
+

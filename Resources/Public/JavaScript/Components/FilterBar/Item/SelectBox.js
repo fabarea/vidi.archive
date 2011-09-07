@@ -1,7 +1,4 @@
-"use strict";
 
-Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
-	
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -21,48 +18,27 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Application', 'Vidi/Components/FilterBar'], function(Application) {
 
-	/**
-	 * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch
-	 * 
-	 * The search element in the content browser view
-	 * 
-	 * @namespace TYPO3.Vidi.Module.ContentBrowser
-	 * @extends Ext.Panel
-	 */
-	return Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch', {
-		
-		/**
-		 * The Component being extended
-		 *
-		 * @cfg {String}
-		 */
-		extend: 'Ext.container.Container',
-		
-		/**
-		 * The store 
-		 *
-		 * @type {Object}
-		 */
-		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch',
+define([], function(Application) {
 
-		/**
-		 * Initializer
-		 */
-		initComponent: function() {
+	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.SelectBox');
 
-			// Default configuration
-			var config = {
-				layout: 'auto',
-				items: [{
-					xtype: 'filterBar'
-				}
-				]
-			};
-		
-			Ext.apply(this, config);
-			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch.superclass.initComponent.call(this);
+	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.SelectBox', {
+		extend: 'Ext.form.field.ComboBox',
+		alias: 'widget.select',
+
+		queryMode: 'local',
+		displayField: 'display',
+		editable: false,
+
+		forceSelection: true,
+		valueField: 'id',
+		validateValue: function(value) {
+			if (value == "") {
+				this.markInvalid("Please Select");
+				return false;
+			}
+			return true;
 		}
 	});
 });

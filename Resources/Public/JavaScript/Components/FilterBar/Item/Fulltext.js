@@ -1,7 +1,5 @@
-"use strict";
 
-Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
-	
+
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -21,48 +19,34 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Application', 'Vidi/Components/FilterBar'], function(Application) {
+define(['Vidi/Components/FilterBar/Item'], function(Application) {
+	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Fulltext');
 
-	/**
-	 * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch
-	 * 
-	 * The search element in the content browser view
-	 * 
-	 * @namespace TYPO3.Vidi.Module.ContentBrowser
-	 * @extends Ext.Panel
-	 */
-	return Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch', {
-		
-		/**
-		 * The Component being extended
-		 *
-		 * @cfg {String}
-		 */
-		extend: 'Ext.container.Container',
-		
-		/**
-		 * The store 
-		 *
-		 * @type {Object}
-		 */
-		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch',
+	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Fulltext', {
+		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
+		alias: 'widget.filterBar-Item-Fulltext',
+		componentCls: 'vidi-filterBar-Item-blue',
 
-		/**
-		 * Initializer
-		 */
-		initComponent: function() {
-
-			// Default configuration
-			var config = {
-				layout: 'auto',
-				items: [{
-					xtype: 'filterBar'
-				}
-				]
-			};
-		
-			Ext.apply(this, config);
-			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch.superclass.initComponent.call(this);
+		twoCols: {
+			edit: false,
+			display: false
+		},
+		displayItems: [{
+						   xtype: 'component',
+						   data: { string: ''},
+						   tpl: '<strong>{string}</strong>'
+					   }],
+		editItems: [{
+						xtype: 'textfield',
+						name: 'searchstring',
+						allowBlank: false,
+						fieldLabel: 'Fulltext'
+					}],
+		applyData: function() {
+			var input = this.items.getAt(1).items.getAt(0);
+			this.data = {
+				string : input.getValue()
+			}
 		}
 	});
 });

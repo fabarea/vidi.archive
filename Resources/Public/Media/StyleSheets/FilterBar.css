@@ -1,0 +1,155 @@
+
+div.vidi-filterBar {
+	margin: 10px;
+	padding: 10px;
+	padding-bottom:0px;
+	border: 1px solid black;
+	cursor:text;
+	min-height:40px;
+	overflow: hidden;
+}
+
+
+div.vidi-filterBar > div.vidi-filterBar-Item {
+	display:inline-block;
+	vertical-align: top;
+	padding: 0px;
+	padding-right:10px;
+	margin: 0px;
+	margin-bottom:10px;
+	position:relative;
+	cursor: pointer;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item > div > div {
+	color:white;
+	display: inline-block;
+	line-height:20px;
+	padding: 5px;
+	cursor: pointer;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item > div > div > * {
+	display:inline;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item > ul {
+	display:none;
+	visibility: hidden;
+	margin: 0px;
+	margin-left:10px;
+	padding: 0px;
+
+}
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li {
+	display:inline-block;
+	width:10px;
+	height:15px;
+	margin: 0px;
+	padding: 0px;
+	margin-right:3px;
+	text-indent:-999em;
+	overflow: hidden;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item-editing > ul {
+	visibility: visible;
+	display: block;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item > div >  div.leftSide {
+	border-top-left-radius:8px;
+	border-bottom-left-radius: 8px;
+
+	padding-left:12px;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item > div >  div.rightSide {
+	border-top-right-radius:8px;
+	border-bottom-right-radius: 8px;
+	padding: 5px;
+	padding-right:2px;
+	font-weight:bold;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item > div > div.completeSide {
+	border-radius:8px;
+	padding: 5px;
+	padding-left:12px;
+	padding-right:2px;
+
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item > div > div span.removeButton {
+	cursor:default;
+	display:inline-block;
+	width:15px;
+	height:15px;
+	margin-left:5px;
+	text-indent:-999em;
+	vertical-align: middle;
+	background-repeat:no-repeat;
+	background-image: url(../../Libraries/ExtJS/resources/themes/images/default/tools/tools-sprites-trans.gif);
+	background-position:-100px 0px;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item:hover span.removeButton {
+	background-position:0px 0px;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item:hover span:hover {
+	background-position: -15px 0px;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item-gray > div >  div.leftSide {
+	background-color:#808080;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Operator,
+div.vidi-filterBar > div.vidi-filterBar-Item-gray > div >  div {
+	background-color: #808080;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item-brown > div >  div.leftSide {
+	background-color:#a52a2a;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Collection,
+div.vidi-filterBar > div.vidi-filterBar-Item-brown > div >  div {
+	background-color: #cccc00;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item-blue > div >  div.leftSide {
+	background-color:#000066;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item-blue > div >  div,
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Fulltext {
+	background-color: #add8e6;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item-green >div> div.leftSide {
+	background-color:green;
+}
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Category,
+div.vidi-filterBar > div.vidi-filterBar-Item-green > div >  div {
+	background-color: #90ee90;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item-orange div.leftSide {
+	background-color:orange;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Field,
+div.vidi-filterBar > div.vidi-filterBar-Item-orange > div >  div {
+	background-color: #ffb6c1;
+}
+div.vidi-filterBar > div.addAfter {
+	position: absolute;
+	right:0px;
+	top:0px;
+	width:10px;
+	height:100%;
+	cursor:text;
+}
+
+div.vidi-filterBar > div.vidi-filterBar-Item > div >  div.leftSide > * ,
+div.vidi-filterBar > div.vidi-filterBar-Item > div >  div.completeSide > *,
+div.vidi-filterBar > div.vidi-filterBar-Item > div >  div.rightSide > * {
+	display: inline-block;
+	vertical-align: middle;
+}

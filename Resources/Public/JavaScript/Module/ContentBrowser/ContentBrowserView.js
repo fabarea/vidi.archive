@@ -95,6 +95,7 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 						region:'center',
 						items: [{
 							xtype: 'container',
+							layout: 'auto',
 							items: [{
 								xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch'
 							}, {
