@@ -22,6 +22,14 @@
 define(['Vidi/Components/FilterBar/Item'], function(Application) {
 	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Fulltext');
 
+	/**
+	 * @class TYPO3.Vidi.Components.FilterBar.Item.Fulltext
+	 *
+	 * A concrete implementation of a FilterBar Item, for Filtering via a fulltext search within all textfields
+	 *
+	 * @namespace TYPO3.Vidi.Components.FilterBar.Fulltext
+	 * @extends TYPO3.Vidi.Components.FilterBar.Item
+	 */
 	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Fulltext', {
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 		alias: 'widget.filterBar-Item-Fulltext',

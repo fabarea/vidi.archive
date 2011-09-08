@@ -22,14 +22,24 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 
 	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Operator');
 
+		// Defining a store with all Operator Types
 	TYPO3.Vidi.Components.FilterBar.Item.Operator.Possiblities = Ext.create('Ext.data.Store', {
 		fields: ['display', 'id'],
 		data : [
-			{ display: "AND", id: 'a' },
-			{ display: "OR" , id: 'o' }
+			{ display: "AND", id: '&&' },
+			{ display: "OR" , id: '||' }
 		]
 	});
 
+	/**
+	 * @class TYPO3.Vidi.Components.FilterBar.Item.Operator
+	 *
+	 * A concrete implementation of a FilterBar Item, implementing an logical operator
+	 * No Operator is equal to an AND operator, an OR operator takes higher associative preference as an AND
+	 *
+	 * @namespace TYPO3.Vidi.Components.FilterBar.Operator
+	 * @extends TYPO3.Vidi.Components.FilterBar.Item
+	 */
 	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Operator', {
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 		alias: 'widget.filterBar-Item-Operator',

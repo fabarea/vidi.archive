@@ -37,21 +37,45 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Compone
 	 */
 	Ext.define('TYPO3.Vidi.Components.FilterBar', {
 		/**
-		 * 
-		 */
+		 * The Component being extended
+		 *
+		 * @cfg {String}
+		*/
 		extend: 'Ext.container.Container',
+
+		/**
+		 * The Alias of the Component - "xtype"
+		 *
+		 * @cfg {String}
+		 */
 		alias: 'widget.filterBar',
+
+		/**
+		 * The components css baseClass
+		 *
+		 * @cfg {String}
+		 */
 		baseCls: 'vidi-filterBar',
-		layout: 'auto',
-		items: [{
-			xtype: 'filterBar-Item-Fulltext'
-				}
+
+		/**
+		 * A single item, or an array of child Components to be added to this container
+		 * All Items should be ChildClasses of FilterBar.Item
+		 *
+		 * @cfg {Object/Object[]} items
+		 */
+		items: [{xtype: 'filterBar-Item-Fulltext'}
 		],
+		/**
+		 * A config object containing one or more event handlers to be added to this object during initialization.
+		 *
+		 * @see http://docs.sencha.com/ext-js/4-0/#!/api/Ext.util.Observable-cfg-listeners
+		 */
 		listeners: {
 			afterRender: function() {
+					// when the FilterBar had been render attach a click handler to it
 				this.el.addListener('click', function() {
-					this.add(Ext.widget('filterBar-Item-Fulltext'));
-				}, this, {stopEvent: true});
+					this.add(Ext.widget('filterBar-Item-Fulltext')); // add a Fulltext Label
+				}, this, {stopEvent: true}); // action Scope is the FilterBar, event won't be bubbled to parent container
 			}
 		}
 	});

@@ -22,6 +22,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 
 	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Collection');
 
+		// Define a store which has all available Operators
 	TYPO3.Vidi.Components.FilterBar.Item.Collection.Operators = Ext.create('Ext.data.Store', {
 		fields: ['display', 'id'],
 		data : [
@@ -31,6 +32,14 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 
 
 
+	/**
+	 * @class TYPO3.Vidi.Components.FilterBar.Item.Collection
+	 *
+	 * A concrete implementation of a FilterBar Item, for Filtering via Collection
+	 *
+	 * @namespace TYPO3.Vidi.Components.FilterBar.Collection
+	 * @extends TYPO3.Vidi.Components.FilterBar.Item
+	 */
 	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Collection', {
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 		alias: 'widget.filterBar-Item-Collection',
@@ -62,7 +71,6 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 		applyData: function() {
 			var input   = this.items.getAt(1).items.getAt(1);
 			var comboOp = this.items.getAt(1).items.getAt(0);
-
 
 			this.data = {
 				string : input.getValue(),

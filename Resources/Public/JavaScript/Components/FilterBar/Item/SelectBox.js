@@ -23,6 +23,14 @@ define([], function(Application) {
 
 	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.SelectBox');
 
+	/**
+	 * @class TYPO3.Vidi.Components.FilterBar.Item.SelectBox
+	 *
+	 * preconfiguress a ExtJS Combobox to behave like an selectBox,
+	 *
+	 * @namespace TYPO3.Vidi.Components.FilterBar.SelectBox
+	 * @extends Ext.form.field.ComboBox
+	 */
 	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.SelectBox', {
 		extend: 'Ext.form.field.ComboBox',
 		alias: 'widget.select',
@@ -33,6 +41,14 @@ define([], function(Application) {
 
 		forceSelection: true,
 		valueField: 'id',
+		/**
+		 * override the original validateValue, which returns true as soon as the value is not undefined
+		 * a SelectBox only is valid, when the input value is not empty.
+		 *
+		 * @override
+		 * @param value
+		 * @return boolean
+		 */
 		validateValue: function(value) {
 			if (value == "") {
 				this.markInvalid("Please Select");

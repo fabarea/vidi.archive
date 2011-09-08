@@ -21,6 +21,16 @@ Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Layout.ExtendedCardLayout');
  *                                                                        */
 define([], function(Application) {
 	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Layout.ExtendedCardLayout');
+
+	/**
+	 * @class TYPO3.Vidi.Components.FilterBar.Item.Layout.ExtendedCardLayout
+	 *
+	 * extends a card-layout to create a cleaner html output.
+	 * Additionally adds a typeswitcher and a click-sensitive area to the Element.
+	 *
+	 * @namespace TYPO3.Vidi.Components.FilterBar.Field.Layout.ExtendedCardLayout
+	 * @extends Ext.layout.container.Card
+	 */
 	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Layout.ExtendedCardLayout', {
 		extend: 'Ext.layout.container.Card',
 		alias: 'layout.filterBar-Item-ExtendedCardLayout',
@@ -39,7 +49,7 @@ define([], function(Application) {
 						{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Collection", cls: 'Collection', html: 'Collection', title: 'Collection'}
 					]
 				});
-				this.typeMenu.select('li').addListener('click', this.owner.newType, this.owner, {stopEvent: true});
+				this.typeMenu.select('li').addListener('click', this.owner._newType, this.owner, {stopEvent: true});
 			}
 			if(!this.adderArea) {
 				this.adderArea = this.getRenderTarget().createChild({
@@ -50,6 +60,15 @@ define([], function(Application) {
 				this.adderArea.addListener('click', this.owner.insertAfter, this.owner, {stopEvent: true});
 			}
 		},
+
+		/**
+		 * adds the registration of the click-to-edit handler after creating the display card
+		 *
+		 * @override
+		 * @param item
+		 * @param target
+		 * @param position
+		 */
 		renderItem : function(item, target, position) {
 			if (!item.rendered) {
 				this.callParent(arguments);
@@ -58,6 +77,13 @@ define([], function(Application) {
 				}
 			}
 		},
+		/**
+		 * make sure, that the items are not getting any pixel height and width set,
+		 * even if the parent containers LayoutManager requests to
+		 *
+		 * @override
+		 *
+		 */
 		setItemSize: Ext.emptyFn		// this is really needed and not only a dummy.
 	});
 });

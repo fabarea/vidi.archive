@@ -22,7 +22,8 @@
 define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/SelectBox'], function(Application) {
 
 	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Field');
-	
+
+		// Define a store which has all available Operators
 	TYPO3.Vidi.Components.FilterBar.Item.Field.Operators = Ext.create('Ext.data.Store', {
 		fields: ['display', 'id'],
 		data : [
@@ -33,6 +34,8 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 		]
 	});
 
+		// Define a store which has all available fields
+		// @todo dummy, will be exchanged with an direct store, getting the fields of the current selecetd table
 	TYPO3.Vidi.Components.FilterBar.Item.Field.Fields = Ext.create('Ext.data.Store', {
 		fields: ['display', 'id'],
 		data : [
@@ -42,6 +45,14 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 		]
 	});
 
+	/**
+	 * @class TYPO3.Vidi.Components.FilterBar.Item.Field
+	 *
+	 * A concrete implementation of a FilterBar Item, for Filtering via a Matcher of Field Content
+	 *
+	 * @namespace TYPO3.Vidi.Components.FilterBar.Field
+	 * @extends TYPO3.Vidi.Components.FilterBar.Item
+	 */
 	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Field', {
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 		alias: 'widget.filterBar-Item-Field',
