@@ -55,6 +55,7 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar'], function(Applicat
 			// Default configuration
 			var config = {
 				layout: 'auto',
+				id: 'ContentBrowser-ContentBrowserSearch',
 				items: [{
 					xtype: 'filterBar'
 				}

@@ -87,7 +87,7 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 			this.callParent(arguments);
 			this.initConfig(config);
 
-			if (config.editMode) {
+			if (config.editMode != undefined) {
 				this.editMode = config.editMode;
 			} else {
 				this.editMode = true;
@@ -224,7 +224,11 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 			var me = this;
 			Ext.each(this.items.getAt(0).items.items, function(obj) {
 				if (obj && obj.tpl) {
-					obj.tpl.overwrite(obj.el, me.data);
+					if (typeof obj.tpl == 'object') {
+						obj.tpl.overwrite(obj.el, me.data);
+					} else {
+						obj.data = me.data;
+					}
 				}
 			});
 		},
@@ -259,6 +263,25 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 		 *
 		 * @abstract
 		 */
-		serialize: Ext.emptyFn
+		serialize: Ext.emptyFn,
+
+
+		/**
+		 * updates the input fields according to a programmatically data change
+		 * every label type has to implent this specifically
+		 */
+		updateInputs: Ext.emptyFn,
+
+		/**
+		 * set's the data object with taking care of syncing the view
+		 *
+		 * @param option
+		 * @param value
+		 */
+		setData: function(option, value) {
+			this.data[option] = value;
+			this.refresh();
+			this.updateInputs();
+		}
 	});
 });

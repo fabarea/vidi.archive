@@ -43,18 +43,19 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 		alias: 'widget.filterBar-Item-Category',
 		componentCls: 'vidi-filterBar-Item-green',
+		data: {string: '', operator: TYPO3.Vidi.Components.FilterBar.Item.Category.Operators.findRecord('id', 'is').data},
 		displayItems: [
 			{
 				col: 'left',
 				xtype: 'component',
-				data: {field: {}, operator: {}},
+				data: { operator: {}},
 				tpl: '<strong>Category {operator.display}</strong>'
 			},
 			{
-			col: 'right',
-			xtype: 'component',
-			data: { string: ''},
-			tpl: '<strong>{string}</strong>'
+				col: 'right',
+				xtype: 'component',
+				data: { string: ''},
+				tpl: '<strong>{string}</strong>'
 		}],
 		editItems: [
 			{
@@ -75,6 +76,13 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 				string : input.getValue(),
 				operator: comboOp.store.findRecord('id', comboOp.getValue()).data
 			}
+		},
+		updateInputs: function() {
+			var input = this.items.getAt(1).items.getAt(1);
+			var comboOp = this.items.getAt(1).items.getAt(0);
+
+			input.setValue(this.data.string);
+			comboOp.setValue(this.data.operator.id);
 		}
 	});
 });
