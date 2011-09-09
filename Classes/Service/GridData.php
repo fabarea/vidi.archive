@@ -121,16 +121,13 @@ class Tx_Vidi_Service_GridData {
 			switch ($this->sort) {
 				case 'uid';
 				case 'change';
-				case 'workspace_Tstamp';
 				case 't3ver_oid';
 				case 'liveid';
 				case 'livepid':
 					usort($this->dataArray, array($this, 'intSort'));
 					break;
-				case 'label_Workspace';
 				case 'label_Live';
 				case 'label_Stage';
-				case 'workspace_Title';
 				case 'path_Live':
 						// case 'path_Workspace': This is the first sorting attribute
 					usort($this->dataArray, array($this, 'stringSort'));
