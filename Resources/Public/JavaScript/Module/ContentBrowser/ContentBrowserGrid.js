@@ -48,12 +48,28 @@ define(['Vidi/Core/Application'], function(Application) {
 		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid',
 
 		/**
+		 * Features
+		 *
+		 * @cfg {Array}
+		 */
+		features: [{ ftype: 'grouping' }],
+
+		/**
 		 * The store 
 		 *
 		 * @type {Object}
 		 */
 		store: null,
-win:null,
+
+		win:null,
+
+		dockedItems: [{
+			xtype: 'pagingtoolbar',
+			store: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',   // same store GridPanel is using
+			dock: 'bottom',
+			displayInfo: true
+		}],
+
 		/**
 		 * Initializer
 		 */
@@ -229,6 +245,7 @@ win:null,
 					{name:'title'}
 	//				{name:'lastuploaddate', type: 'date', dateFormat: 'timestamp'},
 				],
+				groupField: 'type',
 				paramNames: {
 					start : 'start',
 					limit : 'limit',
