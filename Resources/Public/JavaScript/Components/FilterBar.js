@@ -77,6 +77,13 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Compone
 					this.add(Ext.widget('filterBar-Item-Fulltext')); // add a Fulltext Label
 				}, this, {stopEvent: true}); // action Scope is the FilterBar, event won't be bubbled to parent container
 			}
+		},
+		serialize: function() {
+			var items = [];
+			for (var i = 0; i < this.items.length; i++) {
+				items[i] = this.items.get(i).serialize();
+			}
+			alert(Ext.JSON.encode(items));
 		}
 	});
 });

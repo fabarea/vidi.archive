@@ -94,6 +94,9 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 				operator: comboOp.store.findRecord('id', comboOp.getValue()).data,
 				field: comboField.store.findRecord('id', comboField.getValue()).data
 			}
+		},
+		serialize: function() {
+			return {type: 'field', operator: this.data.operator.id, search: this.data.string};
 		}
 	});
 });

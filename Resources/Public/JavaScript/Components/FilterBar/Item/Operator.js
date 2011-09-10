@@ -22,7 +22,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 
 	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Operator');
 
-		// Defining a store with all Operator Types
+	// Defining a store with all Operator Types
 	TYPO3.Vidi.Components.FilterBar.Item.Operator.Possibilities = Ext.create('Ext.data.Store', {
 		fields: ['display', 'id'],
 		data : [
@@ -48,22 +48,29 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 			edit: false,
 			display: false
 		},
-        data: { operator: TYPO3.Vidi.Components.FilterBar.Item.Operator.Possibilities.findRecord('id', '&&').data},
-		displayItems: [{
-			xtype: 'component',
-			data: { operator: {}},
-			tpl: '<strong>{operator.display}</strong>'
-		}],
-		editItems: [{
-			xtype: 'select',
-			fieldLabel: 'Select Operator',
-			store: TYPO3.Vidi.Components.FilterBar.Item.Operator.Possibilities
-		}],
+		data: { operator: TYPO3.Vidi.Components.FilterBar.Item.Operator.Possibilities.findRecord('id', '&&').data},
+		displayItems: [
+			{
+				xtype: 'component',
+				data: { operator: {}},
+				tpl: '<strong>{operator.display}</strong>'
+			}
+		],
+		editItems: [
+			{
+				xtype: 'select',
+				fieldLabel: 'Select Operator',
+				store: TYPO3.Vidi.Components.FilterBar.Item.Operator.Possibilities
+			}
+		],
 		applyData: function() {
 			var combobox = this.items.getAt(1).items.getAt(0);
 			this.data = {
 				operator : combobox.store.findRecord('id', combobox.getValue()).data
-			}
+			};
+		},
+		serialize: function() {
+			return this.data.operator.id;
 		}
 	});
 });

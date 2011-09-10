@@ -76,7 +76,9 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 				string : input.getValue(),
 				operator: comboOp.store.findRecord('id', comboOp.getValue()).data
 			}
+		},
+		serialize: function() {
+			return {type: 'collection', operator: this.data.operator.id, collection: '5'};
 		}
-
 	});
 });

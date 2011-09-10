@@ -55,6 +55,9 @@ define(['Vidi/Components/FilterBar/Item'], function(Application) {
 			this.data = {
 				string : input.getValue()
 			}
+		},
+		serialize: function() {
+			return {type: 'fulltext', string: this.data.string};
 		}
 	});
 });

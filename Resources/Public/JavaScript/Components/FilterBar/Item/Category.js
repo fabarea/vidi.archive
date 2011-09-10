@@ -83,6 +83,9 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 
 			input.setValue(this.data.string);
 			comboOp.setValue(this.data.operator.id);
+		},
+		serialize: function() {
+			return {type: 'category', operator: this.data.operator.id, category: this.data.category.uid};
 		}
 	});
 });
