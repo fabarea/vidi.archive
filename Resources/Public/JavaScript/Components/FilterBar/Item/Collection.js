@@ -44,6 +44,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 		alias: 'widget.filterBar-Item-Collection',
 		componentCls: 'vidi-filterBar-Item-brown',
+		data: {field: {}, string: '', operator: {}},
 		displayItems: [
 			{
 				col: 'left',

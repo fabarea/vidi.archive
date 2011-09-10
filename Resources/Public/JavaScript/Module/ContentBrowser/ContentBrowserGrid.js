@@ -237,34 +237,21 @@ define(['Vidi/Core/Application'], function(Application) {
 			this.store = Ext.create('Ext.data.DirectStore', {
 				storeId: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',
 				directFn: TYPO3.Vidi.Service.ExtDirect.Controller.ContentController.getRecords,
-				idProperty: 'uid',
+				//idProperty: 'uid',
+				autoLoad: false,
 				root: 'data',
 				totalProperty: 'total',
 				fields:[
-					{name:'uid', type: 'int'},
+					{name:'uid'},
 					{name:'title'}
 	//				{name:'lastuploaddate', type: 'date', dateFormat: 'timestamp'},
-				],
-				groupField: 'type',
-				paramNames: {
-					start : 'start',
-					limit : 'limit',
-					sort : 'sort',
-					dir : 'dir',
-					query: 'query'
-				},
-				baseParams: {
-					query: '',
-					repository: 1,
-					start: 0,
-					limit: 50
-
-				},
-				remoteSort: true,
-				sortInfo:{
+				]
+				//groupField: 'type',
+				//remoteSort: true,
+				/*sortInfo:{
 					field:'title',
 					direction:"ASC"
-				}
+				*/
 	//			listeners: {
 	//				beforeload: function(store, records){
 	//					var control = Ext.getCmp('rsearchField');

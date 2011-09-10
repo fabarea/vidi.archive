@@ -69,29 +69,41 @@ class Tx_Vidi_Service_ExtDirect_Controller_ContentController extends Tx_Extbase_
 	}
 
 	/**
-	 * Loads records
-	 *
+	 * @param string $query
 	 * @return array
 	 */
-	public function getRecords() {
-
-    $parameter = array ( 
-      'depth' => 990,
-      'id' => 1,
-      'limit' => 10,
-      'start' => 0
-    );
-
-      // To avoid too much work we use -1 to indicate that every page is relevant
-    $pageId = $parameter->id > 0 ? $parameter->id : -1;
-
-    $this->contentRepository = t3lib_div::makeInstance('tx_Vidi_Domain_Repository_ContentRepository'); 
-    $records = $this->contentRepository->findAll();
-
-    $vidiService = t3lib_div::makeInstance('Tx_Vidi_Service_GridData');
-		$data = $vidiService->generateGridList($records, $parameter);
-		return $data;
+	public function getRecords($parameters) {
+		$parameter = array (
+		  'depth' => 990,
+		  'id' => 1,
+		  'limit' => $parameters->limit,
+		  'start' => $parameters->start,
+		  'page' => $parameters->page,
+		  'filterTxt' => $parameters->query
+		);
+		$table = 'cache_extensions';
+		$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows("title, CONCAT(extkey, '', version) as uid", $table, 'lastversion=1' . ' AND ' . $this->generateWhereClauseFromQuery($table, $parameters->query), '','', '100'); //, '', '', '100');
+   		return array(
+			   'data' => $data,
+			   'total' => count($data)
+		   );
 	}
+
+	protected function generateWhereClauseFromQuery($table, $query) {
+		$query = json_decode($query);
+		$where = array('1=1');
+		foreach ($query AS $property) {
+			if (is_object($property)) {
+				switch($property->type) {
+					case 'fulltext':
+						$where[] = ' title LIKE \'%' . $property->string . '%\'';
+						break;
+				}
+			}
+		}
+		return implode(' AND ', $where);
+	}
+
 
 	/**
 	 * Loads repositories

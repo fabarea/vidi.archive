@@ -43,7 +43,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 		alias: 'widget.filterBar-Item-Category',
 		componentCls: 'vidi-filterBar-Item-green',
-		data: {string: '', operator: TYPO3.Vidi.Components.FilterBar.Item.Category.Operators.findRecord('id', 'is').data},
+		data: {category: '', operator: TYPO3.Vidi.Components.FilterBar.Item.Category.Operators.findRecord('id', 'is').data},
 		displayItems: [
 			{
 				col: 'left',
@@ -54,8 +54,8 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 			{
 				col: 'right',
 				xtype: 'component',
-				data: { string: ''},
-				tpl: '<strong>{string}</strong>'
+				data: { category: ''},
+				tpl: '<strong>{category}</strong>'
 		}],
 		editItems: [
 			{
@@ -73,7 +73,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 			var comboOp = this.items.getAt(1).items.getAt(0);
 
 			this.data = {
-				string : input.getValue(),
+				category : input.getValue(),
 				operator: comboOp.store.findRecord('id', comboOp.getValue()).data
 			}
 		},
@@ -81,7 +81,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 			var input = this.items.getAt(1).items.getAt(1);
 			var comboOp = this.items.getAt(1).items.getAt(0);
 
-			input.setValue(this.data.string);
+			input.setValue(this.data.category);
 			comboOp.setValue(this.data.operator.id);
 		},
 		serialize: function() {

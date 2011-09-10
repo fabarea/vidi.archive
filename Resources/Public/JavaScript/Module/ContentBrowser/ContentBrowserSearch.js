@@ -58,6 +58,12 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar'], function(Applicat
 				id: 'ContentBrowser-ContentBrowserSearch',
 				items: [{
 					xtype: 'filterBar'
+				}, {
+					xtype: 'button',
+					text: 'Serialize',
+					handler: function() {
+					//	this.ownerCt.items.get(0).serialize();
+					}
 				}
 				]
 			};

@@ -177,6 +177,8 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 			if (validate && valid) {
 				me.applyData();
 				me.refresh();
+
+				me.ownerCt.fireEvent('changed', me);
 			}
 				// close editing mode
 			if (!validate || valid) {

@@ -1,6 +1,4 @@
-"use strict";
-
-/*                                                                        *
+/*
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
@@ -65,6 +63,10 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Compone
 		 */
 		items: [{xtype: 'filterBar-Item-Fulltext'}
 		],
+		constructor: function() {
+			this.callParent(arguments);
+			this.addEvents('changed');
+		},
 		/**
 		 * A config object containing one or more event handlers to be added to this object during initialization.
 		 *
@@ -76,6 +78,11 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Compone
 				this.el.addListener('click', function() {
 					this.add(Ext.widget('filterBar-Item-Fulltext')); // add a Fulltext Label
 				}, this, {stopEvent: true}); // action Scope is the FilterBar, event won't be bubbled to parent container
+			},
+			changed: function() {
+				var store = Ext.StoreManager.lookup('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore');
+				store.getProxy().extraParams.query = this.serialize();
+				store.load();
 			}
 		},
 		serialize: function() {
@@ -83,7 +90,7 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Compone
 			for (var i = 0; i < this.items.length; i++) {
 				items[i] = this.items.get(i).serialize();
 			}
-			alert(Ext.JSON.encode(items));
+			return Ext.JSON.encode(items);
 		}
 	});
 });
