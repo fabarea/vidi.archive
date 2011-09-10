@@ -194,15 +194,15 @@ define($javascriptFiles,
 EOF;
 		}
 
-		$fileStarter = '/typo3temp/' . $camelExtensionName . '-starter.js';
+		$fileStarter = '../typo3temp/' . $camelExtensionName . '-starter.js';
 		// @todo: file is written each time. Should be detected as done by the CSS / JS Compressor in the Core
 		t3lib_div::writeFile(PATH_site . $fileStarter, $requireJsStarter);
 
-			// @todo: baseUrl: "/typo3/" must not be hardcoded
+			// @todo: baseUrl: must not be hardcoded
 		$requireJsTag = <<<EOF
 	<script type="text/javascript">
 	  var require = {
-			  baseUrl: "/typo3/",
+			  baseUrl: "",
 			  paths: {
 				  $extensionPath
 			  },
