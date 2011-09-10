@@ -30,7 +30,7 @@ if (!defined ("TYPO3_MODE"))    die ('Access denied.');
 
 // Hook only available for ExtJS 4 compatibility
 // @todo: remove this hook when TYPO3 v4 will be compatible with ExtJS 4
-if ($GLOBALS['_GET']['M'] == 'user_TaxonomyTxTaxonomyM1') {
+if ($GLOBALS['_GET']['M'] == 'user_VidiTxVidiM1') {
 	$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Xclass/class.ux_t3lib_pagerenderer.php';
 }
 
