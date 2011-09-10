@@ -138,7 +138,7 @@ div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Field,
 div.vidi-filterBar > div.vidi-filterBar-Item-orange > div >  div {
 	background-color: #ffb6c1;
 }
-div.vidi-filterBar > div.addAfter {
+div.vidi-filterBar div.addAfter {
 	position: absolute;
 	right:0px;
 	top:0px;
