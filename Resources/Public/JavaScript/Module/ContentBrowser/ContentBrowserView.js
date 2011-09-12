@@ -112,7 +112,7 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 						}
 					}]
 				}]
-			}
+			};
 		
 			Ext.apply(this, config);
 			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView.superclass.initComponent.call(this);
