@@ -55,11 +55,29 @@ define(['Vidi/Core/Application'], function(Application) {
 		features: [{ ftype: 'grouping' }],
 
 		/**
+		 * Plugins
+		 *
+		 * @type {Object}
+		 */
+		plugins: [
+			Ext.create('Ext.grid.plugin.CellEditing', {
+				clicksToEdit: 1
+			})
+		],
+
+		/**
 		 * The store 
 		 *
 		 * @type {Object}
 		 */
 		store: null,
+
+		/**
+		 * The selection type
+		 *
+		 * @cfg {String}
+		 */
+		selType: 'cellmodel',
 
 		win:null,
 
@@ -82,7 +100,7 @@ define(['Vidi/Core/Application'], function(Application) {
 			var config = {
 				store: this.store,
 				columns: [
-					{header: 'Title',  dataIndex: 'title', flex: 1}
+					{header: 'Title',  dataIndex: 'title', flex: 1, editor: 'textfield'}
 				],
 				height: 200,
 				width: '100%'
