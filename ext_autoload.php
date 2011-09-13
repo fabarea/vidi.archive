@@ -15,5 +15,6 @@ return array(
 	'tx_vidi_viewhelpers_extdirectproviderviewhelper' => $extensionClassesPath . 'ViewHelpers/Be/ExtDirectProviderViewHelper.php',
 	'tx_vidi_viewhelpers_be_modulecontainerviewhelper' => $extensionClassesPath . 'ViewHelpers/Be/ModuleContainerViewHelper.php',
 	'tx_vidi_domain_model_assettest' => $extensionPath . 'Tests/Unit/Domain/Model/AssetTest.php',
+	'tx_vidi_service_moduleloader' => $extensionClassesPath . 'Service/ModuleLoader.php'
 );
 ?>
