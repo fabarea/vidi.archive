@@ -1,5 +1,3 @@
-"use strict";
-
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -25,7 +23,7 @@
  * Register and configure the Module
  * 
  */
-define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterface/Layout'], function(Application, Registry) {
+define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterface/Layout', 'Vidi/Module/ContentBrowser/ContentBrowserView', 'Vidi/Module/Concept/ConceptTree'], function(Application, Registry) {
 
 	console.log("Registering Module Layout");
 	
@@ -34,39 +32,22 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 		configure: function() {
 			
 			console.log("Configuring User Interface module");
-			Registry.set('docheader/top', ['button1', '->', 'button2']);
-			Registry.set('docheader/bottom', ['button3', 'button4']);
+			Registry.set('docheader/top', ['btn1', '->', 'btn2']);
+			Registry.set('docheader/bottom', ['->', 'btn']);
 			
-			Registry.set('layout', 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {title: 'asdf'});
-
-			//Registry.set('layout', 'bar');
-			//Registry.set('layout', 'baz');
-
-			// append vs set
-			Registry.append("menu/main", 'edit', {title: 'Edit'});
-
-
-			
-			
-			Registry.set('form/editor', {
-				// By type
-				'string': {
-					xtype: 'textfield'
-				},
-				'superStringEditor': {
-					xtype: 'textarea',
-					transform: function(a) { }
-				}
-			});
+			Registry.set('layout', ['TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {title: 'asdf'}]);
 
 		}
 	});
 	
-	// Register Event
+		// Register Event
 	Application.on(
 		'TYPO3.Vidi.Application.afterBootstrap',
 		function(e) {
-			TYPO3.Vidi.Module.UserInterface.doc = new TYPO3.Vidi.Module.UserInterface.Layout();
+			Ext.ns('TYPO3.Vidi');
+			console.log(TYPO3.Vidi.Module.UserInterface.Layout);
+			TYPO3.Vidi.Module = Ext.create('TYPO3.Vidi.Module.UserInterface.Layout');
+			console.log('Application startet');
 		},
 		this
 	);

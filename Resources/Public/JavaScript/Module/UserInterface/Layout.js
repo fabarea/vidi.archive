@@ -1,5 +1,3 @@
-"use strict";
-
 Ext.ns("TYPO3.Vidi.Module.UserInterface");
 
 /*                                                                        *
@@ -102,9 +100,5 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 		}
 
 	});
-	
-	
-	return TYPO3.Vidi.Module.UserInterface.Layout;
-	
 });
 
