@@ -59,7 +59,7 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 	
 		// Register Event
 	Application.on(
-		'TYPO3.Vidi.Application.afterBootstrap',
+		'TYPO3.Vidi.Application.run',
 		function(e) {
 			Ext.ns('TYPO3.Vidi');
 			console.log(TYPO3.Vidi.Module.UserInterface.Layout);

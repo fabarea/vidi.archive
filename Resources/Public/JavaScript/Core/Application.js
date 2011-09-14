@@ -35,11 +35,6 @@ define(['Vidi/Core/Registry'], function(Registry) {
 	 * @singleton
 	 */
 	TYPO3.Vidi.Application = Ext.apply(new Ext.util.Observable(), {
-		
-		/**
-		 * @event afterBootstrap After bootstrap event. Should
-		 * be used for main initialization
-		 */
 
 		/**
 		 * List of all modules which have been registered
@@ -51,8 +46,7 @@ define(['Vidi/Core/Registry'], function(Registry) {
 			this._modules.push(module);
 		},
 
-		run: function() {
-
+		initialize: function() {
 			Registry.initialize();
 
 			for (var i in this._modules) {
@@ -61,34 +55,19 @@ define(['Vidi/Core/Registry'], function(Registry) {
 			Registry.compile();
 
 			Ext.QuickTips.init();
-			
+			this.fireEvent('TYPO3.Vidi.Application.afterBootstrap');
+		},
+		processModuleAdaption: function(callback) {
+			callback(Registry);
+			this.fireEvent('TYPO3.Vidi.Application.afterModuleAdaption');
+		},
+		run: function() {
 			if (console.log) {
 				console.log("Running Application");
 			}
-			
-			this.fireEvent('TYPO3.Vidi.Application.afterBootstrap');
+			this.fireEvent('TYPO3.Vidi.Application.run');
 		},
 
-
-		/**
-		 * Main bootstrap. This is called by Ext.onReady and calls all registered bootstraps.
-		 *
-		 * This method is called automatically.
-		 */
-		bootstrap: function() {
-			//this._configureExtJs();
-			//this._initializeExtDirect();
-			this._invokeBootstrappers();
-	//		this._initStateProvider();
-			//this._initStateDefaultValue();
-
-			// custom event
-			//this._registerEventBeforeLoading();
-			//this._registerEventAfterLoading();
-
-			// not used so far
-			//this._initializeHistoryManager();
-		},
 
 		/**
 		 * Hides the loading message of the application
@@ -144,85 +123,7 @@ define(['Vidi/Core/Registry'], function(Registry) {
 				},
 				this
 			);
-		},
-
-		/**
-		 * Registers a new bootstrap class.
-		 *
-		 * Every bootstrap class needs to extend TYPO3.Vidi.Application.AbstractBootstrap.
-		 * @param {TYPO3.Vidi.Application.AbstractBootstrap} bootstrap The bootstrap class to be registered.
-		 * @api
-		 */
-		registerBootstrap: function(bootstrap) {
-			this.bootstrappers.push(bootstrap);
-		},
-
-		/**
-		 * Invoke the registered bootstrappers.
-		 *
-		 * @access private
-		 * @return void
-		 */
-		_invokeBootstrappers: function() {
-			Ext.each(this.bootstrappers, function(bootstrapper) {
-				bootstrapper.initialize();
-			});
-		},
-
-		/**
-		 * Initialize History Manager
-		 *
-		 * @access private
-		 * @return void
-		 */
-		_initializeHistoryManager: function() {
-			Ext.History.on('change', function(token) {
-				this.fireEvent('TYPO3.Vidi.Application.navigate', token);
-			}, this);
-
-			// Handle initial token (on page load)
-			Ext.History.init(function(history) {
-				history.fireEvent('change', history.getToken());
-			}, this);
-
-			Ext.History.add(Ext.state.Manager.get('token'));
-		},
-
-		/**
-		 * Initilize state provider
-		 *
-		 * @access private
-		 * @return void
-		 */
-		_initStateProvider : function() {
-
-
-			// State configuration based on database
-			Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
-				key: 'moduleData.Vidi.States',
-				autoRead: false
-			}));
-
-			if (Ext.isObject(TYPO3.settings.Vidi.States)) {
-				Ext.state.Manager.getProvider().initState(TYPO3.settings.Vidi.States);
-			}
-
-			// State configuration based on cookie
-			//Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-		},
-
-		/**
-		 * Define state default value
-		 *
-		 * @access private
-		 * @return void
-		 */
-		_initStateDefaultValue : function() {
-			if (!Ext.state.Manager.get('token')) {
-				Ext.state.Manager.set('token', 'planner');
-			}
 		}
-
 	});
 	return TYPO3.Vidi.Application;
 });

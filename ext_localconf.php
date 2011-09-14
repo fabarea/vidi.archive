@@ -59,6 +59,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['Vidi'] = Array(
 	
 	// Code to launch the Application
 	'JavaScriptCode' => Array(
+		'Application.initialize();',
+		'Application.processModuleAdaption(Ext.emptyFn);',
 		'Application.run();'
 	)
 );
