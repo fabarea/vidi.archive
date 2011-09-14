@@ -48,7 +48,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 	/**
 	 * @class TYPO3.Vidi.Components.FilterBar.Item.Field
 	 *
-	 * A concrete implementation of a FilterBar Item, for Filtering via a Matcher of Field Content
+	 * A concrete implementation of a FilterBar Item, for Filtering via a Matcher of Field Vidi
 	 *
 	 * @namespace TYPO3.Vidi.Components.FilterBar.Field
 	 * @extends TYPO3.Vidi.Components.FilterBar.Item
