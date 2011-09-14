@@ -5,16 +5,13 @@
 $extensionPath = t3lib_extMgm::extPath('vidi');
 $extensionClassesPath = t3lib_extMgm::extPath('vidi') . 'Classes/';
 return array(
-	'tx_vidi_controller_contentcontroller' => $extensionClassesPath . 'Controller/ContentController.php',
-	'tx_vidi_domain_model_content' => $extensionClassesPath . 'Domain/Model/Content.php',
-	'tx_vidi_domain_repository_contentrepository' => $extensionClassesPath . 'Domain/Repository/ContentRepository.php',
+	'tx_vidi_controller_vidicontroller' => $extensionClassesPath . 'Controller/VidiController.php',
 	'tx_vidi_service_griddata' => $extensionClassesPath . 'Service/GridData.php',
-	'tx_vidi_service_extdirect_controller_contentcontroller' => $extensionClassesPath . 'Service/ExtDirect/Controller/ContentController.php',
+	'tx_vidi_service_extdirect_controller_contentcontroller' => $extensionClassesPath . 'Service/ExtDirect/Controller/VidiController.php',
 	'tx_vidi_viewhelpers_abstractviewhelper' => $extensionClassesPath . 'ViewHelpers/AbstractViewHelper.php',
 	'tx_vidi_viewhelpers_includecssfileviewhelper' => $extensionClassesPath . 'ViewHelpers/IncludeCssFileViewHelper.php',
 	'tx_vidi_viewhelpers_extdirectproviderviewhelper' => $extensionClassesPath . 'ViewHelpers/Be/ExtDirectProviderViewHelper.php',
 	'tx_vidi_viewhelpers_be_modulecontainerviewhelper' => $extensionClassesPath . 'ViewHelpers/Be/ModuleContainerViewHelper.php',
-	'tx_vidi_domain_model_assettest' => $extensionPath . 'Tests/Unit/Domain/Model/AssetTest.php',
 	'tx_vidi_service_moduleloader' => $extensionClassesPath . 'Service/ModuleLoader.php'
 );
 ?>

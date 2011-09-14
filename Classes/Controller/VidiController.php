@@ -42,6 +42,13 @@ class Tx_Vidi_Controller_VidiController extends Tx_Extbase_MVC_Controller_Action
 	protected $contentRepository;
 
 	/**
+	 * module Configuration
+	 *
+	 * @var array
+	 */
+	protected $configuration;
+	
+	/**
 	 * injectContentRepository
 	 *
 	 * @param Tx_Vidi_Domain_Repository_ContentRepository $contentRepository
@@ -51,32 +58,44 @@ class Tx_Vidi_Controller_VidiController extends Tx_Extbase_MVC_Controller_Action
 		$this->contentRepository = $contentRepository;
 	}
 
+
 	/**
-	 * action list
+	 * load the current configuration
 	 *
-	 * @return string The rendered list action
+	 * @return void
 	 */
-	public function listAction() {
+	public function initializeAction() {
+		$moduleCode = t3lib_div::_GP('M');
+		$this->configuration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
+
+		foreach($this->configuration->allowedDataTypes AS $table) {
+			if (isset($GLOBALS['TCA'][$table])) {
+				t3lib_div::loadTCA($table);
+			}
+		}
+	}
+
+	/**
+	 * the action to render as backend-module
+	 *
+	 * @return string The rendered module action
+	 */
+	public function moduleAction() {
+		$this->view->assign('moduleConfiguration', $this->configuration);
 		$configuration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if(empty($configuration['persistence']['storagePid'])){
 			$this->flashMessageContainer->add('No storagePid! You have to include the static template of this extension and set the constant plugin.tx_' . t3lib_div::lcfirst($this->extensionName) . '.persistence.storagePid in the constant editor');
 		}
-		# @todo: not necessary to fetch content here as it is done by ExtDirect later on. Find a more appropriate action for that
-		#$contents = $this->contentRepository->findAll();
-		#$this->view->assign('contents', $contents);
-	}
-	
-	/**
-	 * Initializes the View to be a Tx_MvcExtjs_ExtDirect_View that renders json without Template Files.
-	 * 
-	 * @return void
-	 */
-	public function initializeView() {
-		if ($this->request->getFormat() === 'extdirect') {
-			$this->view = $this->objectManager->create('Tx_MvcExtjs_MVC_View_ExtDirectView');
-			$this->view->setControllerContext($this->controllerContext);
-		}
 	}
 
+
+	/**
+	 * the action to render as popup
+	 *
+	 * @return string The renderd popup action
+	 */
+	public function popupAction() {
+		return 'not yet implemented';
+	}
 }
 ?>

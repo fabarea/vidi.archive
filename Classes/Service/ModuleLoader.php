@@ -76,7 +76,6 @@ class Tx_Vidi_Service_ModuleLoader {
 	public function __construct($extensionKey, $moduleKey = 'm1') {
 		$this->extensionKey = $extensionKey;
 		$this->moduleKey = $moduleKey;
-		$GLOBALS['TBE_MODULES_EXT']['vidi'][$extensionKey . '_' . $moduleKey] = array();
 	}
 
 	/**
@@ -120,9 +119,10 @@ class Tx_Vidi_Service_ModuleLoader {
 
 
 	public function register() {
-
-		$GLOBALS['TBE_MODULES_EXT']['vidi'][$this->extensionKey . '_' . $this->moduleKey]['allowedDataTypes'] = $this->allowedDataTypes;
-		$GLOBALS['TBE_MODULES_EXT']['vidi'][$this->extensionKey . '_' . $this->moduleKey]['trees'] = $this->trees;
+		$moduleCode = $this->mainModule . '_Vidi' . ucfirst($this->extensionKey) .  ucfirst($this->moduleKey);
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode] = array();
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['allowedDataTypes'] = $this->allowedDataTypes;
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['trees'] = $this->trees;
 
 		Tx_Extbase_Utility_Extension::registerModule(
 			'vidi',
@@ -130,7 +130,7 @@ class Tx_Vidi_Service_ModuleLoader {
 			$this->extensionKey . '_' . $this->moduleKey,
 			$this->position,
 			array(
-				'Content' => 'list',
+				'Vidi' => 'module, popup',
 			),
 			array(
 				'access' => 'user,group',
