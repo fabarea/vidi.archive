@@ -42,19 +42,22 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 					split: true,
 					bodyStyle: 'padding:15px'
 				},
-				items: [{
-					/*
-					 * CENTER PANEL
-					 */
-					xtype: 'panel',
-					region:'center',
-					margins: '0',
-					padding: '0',
-					bodyPadding: 0,
-					layout:'border',
-					cls: 'typo3-fullDoc',
-					items: this._getItems()
-				}]
+				cls: 'typo3-fullDoc',
+				items: [
+					this._docHeader,
+					{
+						/*
+						 * CENTER PANEL
+						 */
+						xtype: 'panel',
+						region:'center',
+						margins: '0',
+						padding: '0',
+						bodyPadding: 0,
+						layout: 'fit',
+						items: this._getItems()
+					}
+				]
 			};
 
 			Ext.apply(this, config);
@@ -65,7 +68,7 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 		 * default items
 		 * @private
 		 */
-		_defaultItems: {
+		_docHeader: {
 			region: 'north',
 			xtype: 'TYPO3.Vidi.Module.UserInterface.DocHeader',
 			ref: '../../docHeader'
@@ -79,21 +82,10 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 			var items, config;
 			
 			items = [];
-			items.push(this._defaultItems);
 			
 			config = Registry.get('layout');
 			Ext.each(config, function(item) {
-				items.push(
-					{
-						xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView',
-						region: 'center',
-						border: 0,
-						id: 'typo3-inner-docbody',
-						ref: '../../content',
-						layout: 'card',
-						activeItem: 0
-					}
-				);
+				items.push(item);
 			}, this);
 			
 			return items;

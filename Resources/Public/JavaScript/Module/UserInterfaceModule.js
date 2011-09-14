@@ -35,7 +35,24 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 			Registry.set('docheader/top', ['btn1', '->', 'btn2']);
 			Registry.set('docheader/bottom', ['->', 'btn']);
 			
-			Registry.set('layout', ['TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {title: 'asdf'}]);
+			Registry.set('layout', [{
+					xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView',
+					region: 'center',
+					border: 0,
+					id: 'typo3-inner-docbody',
+					ref: '../../content',
+					layout: 'card',
+					activeItem: 0
+				},
+				{
+					xtype: 'panel',
+					region: 'west',
+					collapsible: true,
+					width: 200,
+					items: {
+						xtype: 'TYPO3.Vidi.Module.Concept.Tree'
+					}
+				}]);
 
 		}
 	});

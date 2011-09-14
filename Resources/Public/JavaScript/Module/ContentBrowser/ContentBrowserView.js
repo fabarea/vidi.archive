@@ -22,7 +22,7 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid', 'Vidi/Module/ContentBrowser/ContentBrowserSearch'], function(Application) {
+define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid', 'Vidi/Components/FilterBar'], function(Application) {
 
 	/**
 	 * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView
@@ -80,9 +80,6 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 						collapsed: true,
 						region:'east',
 						split: true,
-//							collapseMode: 'omitted',
-//							animCollapse: true,
-//							width: '10%',
 						items: [{
 							xtype: 'container',
 							html: 'dummy text 1'
@@ -97,7 +94,7 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 							xtype: 'container',
 							layout: 'auto',
 							items: [{
-								xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserSearch'
+								xtype: 'filterBar'
 							}, {
 								xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'
 							}]
