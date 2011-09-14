@@ -196,8 +196,7 @@ EOF;
 
 		$fileStarter = '../typo3temp/' . $camelExtensionName . '-starter.js';
 		// @todo: file is written each time. Should be detected as done by the CSS / JS Compressor in the Core
-		t3lib_div::writeFile(PATH_site . $fileStarter, $requireJsStarter);
-
+		t3lib_div::writeFile(t3lib_div::resolveBackPath(PATH_site . 'typo3temp/' . $camelExtensionName . '-starter.js'), $requireJsStarter);
 			// @todo: baseUrl: must not be hardcoded
 		$requireJsTag = <<<EOF
 	<script type="text/javascript">
