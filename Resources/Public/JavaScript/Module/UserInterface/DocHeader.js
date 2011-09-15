@@ -21,7 +21,7 @@ Ext.ns("TYPO3.Vidi.Module.UserInterface");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterface/Layout'], function(Application, Registry, Layout) {
+define(['Vidi/Core/Application', 'Vidi/Core/Registry'], function(Application, Registry, Layout) {
 
 	/**
 	 * @class TYPO3.Vidi.Module.UserInterface.DocHeader
@@ -77,7 +77,7 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 			var items, config;
 			
 			items = [];
-			config = Registry.get('docheader/' + position);
+			config = TYPO3.TYPO3.Core.Registry.get('vidi/docheader/' + position);
 			Ext.each(config, function(item) {
 				if (item == '->') {
 					items.push('->');

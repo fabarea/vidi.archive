@@ -48,13 +48,6 @@ define(['Vidi/Core/Application'], function(Application) {
 		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid',
 
 		/**
-		 * Features
-		 *
-		 * @cfg {Array}
-		 */
-		features: [{ ftype: 'grouping' }],
-
-		/**
 		 * Plugins
 		 *
 		 * @type {Object}

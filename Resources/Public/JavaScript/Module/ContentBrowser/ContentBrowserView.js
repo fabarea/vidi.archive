@@ -22,7 +22,7 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid', 'Vidi/Components/FilterBar'], function(Application) {
+define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid', 'Vidi/Components/FilterBar', 'Vidi/Module/ContentBrowser/TreeRegion'], function(Application) {
 
 	/**
 	 * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView
@@ -39,7 +39,7 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 		 *
 		 * @cfg {String}
 		 */
-		extend: 'Ext.tab.Panel',
+		extend: 'Ext.container.Container',
 		
 		/**
 		 * The store 
@@ -54,60 +54,40 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 		initComponent: function() {
 
 			var config = {
-				xtype: 'tabpanel',
-				bodyStyle: 'padding:15px',
-				bodyPadding: 0,
-				margins: 0,
-				padding: 0,
-				plain: true,
-				collapsible: false,
+				layout: 'border',
 				region: 'center',
-				activeTab: 0,
 				items: [{
-					title: 'Tab 1',
-					cls: 'inner-tab-custom', // custom styles in layout-browser.css
-					layout: 'border',
-						
-					// Make sure IE can still calculate dimensions after a resize when the tab is not active.
-					// With display mode, if the tab is rendered but hidden, IE will mess up the layout on show:
-					hideMode: Ext.isIE ? 'offsets' : 'display',
+					/*
+						 * RIGHT PANEL
+						 */
+					xtype: 'panel',
+					collapsible: true,
+					collapsed: true,
+					region:'east',
+					split: true,
 					items: [{
-						/*
-							 * RIGHT PANEL
-							 */
-						xtype: 'panel',
-						collapsible: true,
-						collapsed: true,
-						region:'east',
-						split: true,
-						items: [{
-							xtype: 'container',
-							html: 'dummy text 1'
-						}]
-					}, {
-						/*
-							 * CENTER PANEL
-							 */
-						xtype: 'panel',
-						region:'center',
-						items: [{
-							xtype: 'container',
-							layout: 'auto',
-							items: [{
-								xtype: 'filterBar'
-							}, {
-								xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'
-							}]
-						}]
-					}, {
-						xtype: 'panel',
-						region: 'west',
-						collapsible: true,
-						width: 200,
-						items: {
-							xtype: 'TYPO3.Vidi.Module.Concept.Tree'
-						}
+						xtype: 'container',
+						html: 'dummy text 1'
 					}]
+				}, {
+					/*
+						 * CENTER PANEL
+						 */
+					xtype: 'container',
+					region: 'center',
+					layout: 'border',
+					items: [{
+						xtype: 'filterBar',
+						region: 'north'
+					}, {
+						xtype: 'container',
+						region: 'center',
+						layout: 'fit',
+						items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'}
+					}]
+
+				}, {
+					xtype: 'TYPO3.Vidi.Module.ContentBrowser.TreeRegion'
 				}]
 			};
 		

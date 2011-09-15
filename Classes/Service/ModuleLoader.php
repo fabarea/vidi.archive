@@ -68,6 +68,11 @@ class Tx_Vidi_Service_ModuleLoader {
 	 * @var string[]
 	 */
 	protected $allowedDataTypes = array();
+
+
+	protected $additionalJavaScriptFiles = array();
+
+	protected $javaScriptBasePath;
 	
 	/**
 	 * @param string $extensionKey
@@ -94,8 +99,8 @@ class Tx_Vidi_Service_ModuleLoader {
 			'xtype'			=> $xtype,
 			'dataProvider'	=> $dataProvider,
 			'tcaTreeConfig'	=> $tcaTreeConfig,
-			'sorting'		=> $order != -1 ? $order : 0,
-			'default'		=> $default
+			'collapsed'		=> !$default,
+			'title'			=> $table
 		);
 	}
 
@@ -121,8 +126,10 @@ class Tx_Vidi_Service_ModuleLoader {
 	public function register() {
 		$moduleCode = $this->mainModule . '_Vidi' . ucfirst($this->extensionKey) .  ucfirst($this->moduleKey);
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode] = array();
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['extKey'] = $this->extensionKey;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['allowedDataTypes'] = $this->allowedDataTypes;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['trees'] = $this->trees;
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['additionalJavaScriptFiles'] = $this->additionalJavaScriptFiles;
 
 		Tx_Extbase_Utility_Extension::registerModule(
 			'vidi',
@@ -208,5 +215,65 @@ class Tx_Vidi_Service_ModuleLoader {
 	 */
 	public function getPosition() {
 		return $this->position;
+	}
+
+	public function addJavaScriptFiles(array $files, $path = 'Resources/Public/JavaScript/') {
+		$this->javaScriptBasePath = $path;
+		$this->additionalJavaScriptFiles = $files;
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'][$this->extensionKey] = $path;
+	}
+
+	public static function checkAndCreateStarterFile($moduleCode) {
+		$configuration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
+		$configurationHash = md5(serialize($configuration));
+
+		if (!file_exists(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js')) {
+				// remove files from old configurations
+			$starterFiles = t3lib_div::getFilesInDir(PATH_site . 'typo3temp/vidi/', '.js', true);
+			foreach ($starterFiles AS $file) {
+				if (strpos($file, $moduleCode . '_') !== false) {
+					@unlink($file);
+				}
+			}
+
+				// create new File
+			$files = array();
+			foreach ($configuration['additionalJavaScriptFiles'] AS $key => $value) {
+				$files[] = $configuration['extKey'] . '/' . str_replace('.js', '', $value);
+			}
+
+			$starterCode = '
+				define(["Vidi/Core/Application","Vidi/Module/UserInterfaceModule","Vidi/Utils"], function(Application) {
+					Application.initialize();
+			';
+
+			if (count($files)) {
+				$files = '["' . implode('","', $files) . '"]';
+				$starterCode .= '
+				require(' . $files . ', function() {
+						if(console.log) console.log("Module Adaptions loaded");
+					});
+				;';
+			}
+
+			if (count($configuration['trees'])) {
+				$treeCode = array();
+				foreach($configuration['trees'] AS $tree) {
+					$treeCode[] = $tree;
+				}
+				$starterCode .='
+					console.log(TYPO3.TYPO3.Core.Registry);
+					TYPO3.TYPO3.Core.Registry.set(\'vidi/treeConfig\',' . json_encode($treeCode)  .', 99);
+					console.log(TYPO3.TYPO3.Core.Registry);
+				';
+
+			}
+			$starterCode .= '
+					Application.run();
+				});
+			';
+
+			t3lib_div::writeFileToTypo3tempDir(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js', $starterCode);
+		}
 	}
 }

@@ -138,9 +138,6 @@ class Tx_Vidi_ViewHelpers_Be_ModuleContainerViewHelper extends Tx_Vidi_ViewHelpe
 			$this->pageRenderer->enableConcatenateFiles();
 		}
 
-			// Add RequiresJS code
-		$this->generateRequireJS();
-
 		$includeCsh = FALSE;
 		$output = $doc->startPage($pageTitle, $includeCsh);
 		$output .= $this->pageRenderer->getBodyContent();
@@ -148,70 +145,6 @@ class Tx_Vidi_ViewHelpers_Be_ModuleContainerViewHelper extends Tx_Vidi_ViewHelpe
 		return $output;
 	}
 
-	/**
-	 * Add RequiresJS code
-	 * @todo: add Unit Test
-	 *
-	 * @return void
-	 */
-	protected function generateRequireJS() {
-			// Add RequireJS as special element
-			// @todo: RequireJS library must land in the Core eventually
-		$requireJsPath = t3lib_extMgm::extRelPath($this->extensionKey) . 'Resources/Public/Libraries/RequireJS/require.js';
 
-
-			// Computes all registred extension paths
-			// @todo: must be improved towards object oriented approach in the final release instead of the ungraceful $GLOBALS array (cf. t3lib_extMgm)
-		$extensionPath = array();
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'])) {
-
-
-			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'] as $extensionName => $datastructure) {
-				$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($extensionName);
-				$extensionPath[] = $extensionName . ': "' .t3lib_extMgm::extRelPath($extensionKey) . $datastructure['Path'] . '"';
-			}
-		}
-			// transform value to be readable by JS
-		$extensionPath = implode(',', $extensionPath);
-
-			// Computes all registred files
-			// @todo: must be improved towards object oriented approach in the final release instead of the ungraceful $GLOBALS array (cf. t3lib_extMgm)
-		$camelExtensionName = t3lib_div::underscoredToUpperCamelCase($this->extensionKey);
-		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'][$camelExtensionName]['Files'])) {
-
-				// json_encode with JSON_UNESCAPED_SLASHES option could be used here but unfortunately only available as of PHP 5.4
-			$javascriptFiles = implode('","', $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'][$camelExtensionName]['Files']);
-			$javascriptFiles = '["' . $javascriptFiles . '"]';
-
-			$javascriptCode = implode("\n", $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'][$camelExtensionName]['JavaScriptCode']);
-
-				// Render JS code to be put on <head>
-			$requireJsStarter = <<<EOF
-define($javascriptFiles,
-	function(Application) {
-		$javascriptCode
-});
-EOF;
-		}
-
-		$fileStarter = '../typo3temp/' . $camelExtensionName . '-starter.js';
-		// @todo: file is written each time. Should be detected as done by the CSS / JS Compressor in the Core
-		t3lib_div::writeFile(t3lib_div::resolveBackPath(PATH_site . 'typo3temp/' . $camelExtensionName . '-starter.js'), $requireJsStarter);
-			// @todo: baseUrl: must not be hardcoded
-		$requireJsTag = <<<EOF
-	<script type="text/javascript">
-	  var require = {
-			  baseUrl: "",
-			  paths: {
-				  $extensionPath
-			  },
-		  };
-	</script>
-	<script src="$requireJsPath" data-main="$fileStarter"></script>
-EOF;
-			// Adds the RequireJS code on the <head>
-		$this->pageRenderer->addHeaderData($requireJsTag);
-
-	}
 }
 ?>

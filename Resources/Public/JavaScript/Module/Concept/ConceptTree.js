@@ -81,7 +81,6 @@ define(['Vidi/Core/Application', 'Taxonomy/Module/Concept/ConceptTree'], functio
 		 * @param {Ext.EventObject} e The raw event object
 		 */
 		onItemClick: function(view, model, htmlElement, number, event) {
-			//console.log('Hello Steffen! This should add a Filter Criteria in the Filter Bar');
 			var widget = Ext.widget('filterBar-Item-Category', {editMode: false});
 			widget.setData('string', model.get('text'));
 			Ext.getCmp('ContentBrowser-ContentBrowserSearch').items.get(0).add(widget);

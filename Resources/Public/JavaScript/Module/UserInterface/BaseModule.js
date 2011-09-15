@@ -30,38 +30,22 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 	 * @namespace TYPO3.Vidi.Module.UserInterface
 	 * @extends Ext.Viewport
 	 */
-	TYPO3.Vidi.Module.UserInterface.Layout = Ext.extend(Ext.Viewport, {
+	TYPO3.Vidi.Module.UserInterface.BaseModule = Ext.extend(Ext.Viewport, {
 
 		initComponent: function() {
 
 			var config = {
 				renderTo: 'typo3-mod-php',
 				layout:'border',
-				defaults: {
-					collapsible: false,
-					split: true,
-					bodyStyle: 'padding:15px'
-				},
 				cls: 'typo3-fullDoc',
 				items: [
 					this._docHeader,
-					{
-						/*
-						 * CENTER PANEL
-						 */
-						xtype: 'panel',
-						region:'center',
-						margins: '0',
-						padding: '0',
-						bodyPadding: 0,
-						layout: 'fit',
-						items: this._getItems()
-					}
+					TYPO3.TYPO3.Core.Registry.get('vidi/mainModule')
 				]
 			};
 
 			Ext.apply(this, config);
-			TYPO3.Vidi.Module.UserInterface.Layout.superclass.initComponent.call(this);
+			TYPO3.Vidi.Module.UserInterface.BaseModule.superclass.initComponent.call(this);
 		},
 		
 		/**
@@ -70,27 +54,8 @@ define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterfac
 		 */
 		_docHeader: {
 			region: 'north',
-			xtype: 'TYPO3.Vidi.Module.UserInterface.DocHeader',
-			ref: '../../docHeader'
-		},
-		
-		/**
-		 * @private
-		 * @return {Array} an array items, fetched from the registry.
-		 */
-		_getItems: function() {
-			var items, config;
-			
-			items = [];
-			
-			config = Registry.get('layout');
-			Ext.each(config, function(item) {
-				items.push(item);
-			}, this);
-			
-			return items;
+			xtype: 'TYPO3.Vidi.Module.UserInterface.DocHeader'
 		}
-
 	});
 });
 

@@ -67,7 +67,12 @@ class Tx_Vidi_Controller_VidiController extends Tx_Extbase_MVC_Controller_Action
 	public function initializeAction() {
 		$moduleCode = t3lib_div::_GP('M');
 		$this->configuration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
+		$configurationHash = md5(serialize($this->configuration));
 
+		Tx_Vidi_Service_ModuleLoader::checkAndCreateStarterFile($moduleCode);
+
+		$this->objectManager->create('Tx_Vidi_Service_RequireJS')->load('../typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js');
+		
 		foreach($this->configuration->allowedDataTypes AS $table) {
 			if (isset($GLOBALS['TCA'][$table])) {
 				t3lib_div::loadTCA($table);

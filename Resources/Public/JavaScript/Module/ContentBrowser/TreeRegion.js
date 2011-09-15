@@ -1,3 +1,5 @@
+Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
+
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -17,49 +19,61 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-
-/**
- * 
- * Register and configure the Module
- * 
- */
-define(['Vidi/Core/Application', 'Vidi/Module/UserInterface/BaseModule', 'Vidi/Module/ContentBrowser/ContentBrowserView', 'Vidi/Module/Concept/ConceptTree'], function(Application) {
-
-	console.log("Registering Module Layout");
-	
-	// Register Layout Module
-	Application.registerModule({
-		configure: function() {
-			
-			console.log("Configuring User Interface module");
-
-			TYPO3.TYPO3.Core.Registry.set('vidi/docheader/top', ['btn1', '->', 'btn2'], 1);
-			TYPO3.TYPO3.Core.Registry.set('vidi/docheader/bottom', ['->', 'btn'], 1);
-			TYPO3.TYPO3.Core.Registry.set('vidi/treeConfig', [{
-				xtype: 'TYPO3.Vidi.Module.Concept.Tree',
-				title: 'Taxonomy',
-				collapsed: false
-			}], 1);
-			
-			TYPO3.TYPO3.Core.Registry.set('vidi/mainModule', {
-					xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView',
-					region: 'center',
-					id: 'typo3-inner-docbody'
-				});
-
-		}
-	});
-	
-		// Register Event
-	Application.on(
-		'TYPO3.Vidi.Application.run',
-		function(e) {
-			Ext.ns('TYPO3.Vidi');
-			TYPO3.Vidi.Module = Ext.create('TYPO3.Vidi.Module.UserInterface.BaseModule');
-
+Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
+	alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.TreeRegion',
+	extend: 'Ext.container.Container',
+	region: 'west',
+	width: 200,
+	layout:  {
+		type: 'accordion',
+		align: 'stretch'
+	},
+	items: [
+		{
+			xtype: 'panel',title: 'Taxonomy',
+			collapsible: true,
+			items: {
+				id: 'test34',
+				xtype: 'TYPO3.Vidi.Module.Concept.Tree'
+			}
 		},
-		this
-	);
+		{
+			xtype: 'panel',
+			collapsible: true,
+			title: 'Pages'
+		},
+		{
+			xtype: 'panel',
+			collapsible: true,
+			title: 'Files'
+		}
+	],
+	initComponent: function() {
 
-
+		var config = {
+			items: this.getTreeComponents()
+		};
+		Ext.apply(this, config);
+		this.callParent();
+	},
+	getTreeComponents: function() {
+		
+		var treeConfig = TYPO3.TYPO3.Core.Registry.get('vidi/treeConfig');
+		console.log(treeConfig);
+		var items = [];
+		Ext.each(treeConfig, function(entry) {
+			var dataProvider = eval([entry.dataProvider]) != undefined ? entry.DataProvider : Ext.emptyFn;
+			var type = Ext.ClassManager.getNameByAlias('widget.' + entry.xtype) != "" ? entry.xtype : 'TYPO3.Vidi.Tree.Standard';
+			items.push({
+				xtype: 'panel',
+				collapsed: entry.collapsed,
+				collapsible: true,
+				title: entry.title,
+				items: {
+					xtype: type
+				}
+			});
+		});
+		return items;
+	}
 });

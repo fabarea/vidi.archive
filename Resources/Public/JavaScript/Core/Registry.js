@@ -21,8 +21,6 @@ Ext.ns('TYPO3.TYPO3.Core');
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(function() {
-
 	/**
 	 * @class TYPO3.TYPO3.Core.Registry
 	 *
@@ -432,7 +430,5 @@ define(function() {
 			return context;
 		}
 	}));
-
+	TYPO3.TYPO3.Core.Registry.initialize();
 	// Registry from http://git.typo3.org/FLOW3/Packages/TYPO3.git?a=blob;f=Resources/Public/JavaScript/Core/Registry.js;h=7a9eb8b398c998672e639231befd15d1930fb245;hb=55afa72e0fe86e6654c3d1a77c9c1350fbc56f14
-	return TYPO3.TYPO3.Core.Registry;
-});

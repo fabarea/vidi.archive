@@ -21,7 +21,7 @@ Ext.ns("TYPO3.Vidi.Core");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Registry'], function(Registry) {
+define(['Vidi/Core/Registry'], function() {
 	
 	/**
 	 * @class TYPO3.Vidi.Core.Application
@@ -47,24 +47,22 @@ define(['Vidi/Core/Registry'], function(Registry) {
 		},
 
 		initialize: function() {
-			Registry.initialize();
-
+			TYPO3.TYPO3.Core.Registry.initialize();
 			for (var i in this._modules) {
+				console.log('init module');
 				this._modules[i].configure();
 			}
-			Registry.compile();
 
 			Ext.QuickTips.init();
 			this.fireEvent('TYPO3.Vidi.Application.afterBootstrap');
 		},
 		processModuleAdaption: function(callback) {
-			callback(Registry);
+			//callback(Registry);
 			this.fireEvent('TYPO3.Vidi.Application.afterModuleAdaption');
 		},
 		run: function() {
-			if (console.log) {
-				console.log("Running Application");
-			}
+			console.log("Running Application");
+			TYPO3.TYPO3.Core.Registry.compile();
 			this.fireEvent('TYPO3.Vidi.Application.run');
 		},
 
@@ -127,6 +125,3 @@ define(['Vidi/Core/Registry'], function(Registry) {
 	});
 	return TYPO3.Vidi.Application;
 });
-
-
-//Ext.onReady(TYPO3.Vidi.Application.bootstrap, TYPO3.Vidi.Application);
