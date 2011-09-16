@@ -1,5 +1,3 @@
-"use strict";
-
 Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
 	
 /*                                                                        *
@@ -48,17 +46,6 @@ define(['Vidi/Core/Application'], function(Application) {
 		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid',
 
 		/**
-		 * Plugins
-		 *
-		 * @type {Object}
-		 */
-		plugins: [
-			Ext.create('Ext.grid.plugin.CellEditing', {
-				clicksToEdit: 1
-			})
-		],
-
-		/**
 		 * The store 
 		 *
 		 * @type {Object}
@@ -73,13 +60,20 @@ define(['Vidi/Core/Application'], function(Application) {
 		selType: 'cellmodel',
 
 		win:null,
+		loadMask: true,
+		disableSelection: true,
+		invalidateScrollerOnRefresh: false,
 
 		dockedItems: [{
 			xtype: 'pagingtoolbar',
 			store: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',   // same store GridPanel is using
 			dock: 'bottom',
 			displayInfo: true
-		}],
+		},
+		  {
+			  xtype: 'filterBar',
+			  dock:'top'
+		  }],
 
 		/**
 		 * Initializer
@@ -93,15 +87,17 @@ define(['Vidi/Core/Application'], function(Application) {
 			var config = {
 				store: this.store,
 				columns: [
-					{header: 'Title',  dataIndex: 'title', flex: 1, editor: 'textfield'}
+					{header: 'Title',  dataIndex: 'title', flex: 1, editor: 'textfield'},
+					{header: 'Version',  dataIndex: 'version', flex: 1, editor: 'textfield'},
+					{header: 'Author',  dataIndex: 'authorname', flex: 1, editor: 'textfield'},
+					{header: 'Date',  dataIndex: 'lastuploaddate', flex: 1, editor: 'textfield'}
 				],
 				height: 200,
 				width: '100%'
 			};
 
 			Ext.apply(this, config);
-			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid.superclass.initComponent.call(this);
-			Application.fireEvent('TYPO3.Taxonomy.ConceptTree.afterInit', this);
+			this.callParent();
 		},
 
 
@@ -113,129 +109,11 @@ define(['Vidi/Core/Application'], function(Application) {
 		 * @return void
 		 */
 		onRender: function() {
-			this.store.load({
-				callback: function() {
-					console.log(this.getCount());
-				}
-			});
 			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid.superclass.onRender.apply(this, arguments);
+			//this.callParent();
 		},
 
 
-		_getCommand: function() {
-
-		return {
-			xtype: 'actioncolumn',
-			header: 'Actions',
-			width: 70,
-			hideable: false,
-	//		hidden: (TYPO3.settings.Workspaces.allView === '1'),
-			menuDisabled: true,
-			items: [
-	//			{
-	//				iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-workspace-preview'
-	//				,tooltip: TYPO3.lang["tooltip.viewElementAction"]
-	//				,handler: function(grid, rowIndex, colIndex) {
-	//					var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-	//					TYPO3.Workspaces.Actions.viewSingleRecord(record.json.table, record.json.uid);
-	//				},
-	//				getClass: function(v, meta, rec) {
-	//					if(!rec.json.allowedAction_view) {
-	//						return 'icon-hidden';
-	//					} else {
-	//						return '';
-	//					}
-	//				}
-	//			},
-				{
-					iconCls:'t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open',
-					tooltip: TYPO3.lang["tooltip.editElementAction"],
-					handler: function(grid, rowIndex, colIndex) {
-
-
-						// Basic request in Ext
-						Ext.Ajax.request({
-							//var newUrl = 'alt_doc.php?returnUrl=mod.php&M=web_list&id=51&edit[tt_content][210]=edit';
-							url: 'alt_doc.php',
-							params: {
-								'edit[tt_content][210]': 'edit'
-							},
-							success: function(result, request){
-								console.log( "Data Saved: " + result );
-								var frmConfirm = new TYPO3.Taxonomy.UserInterface.ConfirmWindow({
-									content: result
-	//								title: confirmTitle,
-	//								records: records,
-	//								tables: tables,
-	//								confirmText: confirmText,
-	//								confirmQuestion: confirmQuestion,
-	//								hideRecursive: hideRecursive,
-	//								recursiveCheckbox: recursiveCheckbox,
-	//								arePagesAffected: arePagesAffected,
-	//								command: command
-								}).show();
-							}
-						});
-	//					var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-	//					var newUrl = 'alt_doc.php?returnUrl=' + Ext.urlEncode({}, document.location.href).replace("?","%3F").replace("=", "%3D").replace(":","%3A").replace("/", "%2f") + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + record.json.table + '][' + record.json.uid + ']=edit';
-						//var newUrl = 'alt_doc.php?returnUrl=mod.php&M=web_list&id=51&edit[tt_content][210]=edit';
-						//window.location.href = newUrl;
-					},
-					getClass: function(v, meta, rec) {
-						if(!rec.json.allowedAction_edit) {
-							return 'icon-hidden';
-						} else {
-							return '';
-						}
-					}
-				}
-	//			{
-	//				iconCls:'t3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-pagemodule-open',
-	//				tooltip: TYPO3.lang["tooltip.openPage"],
-	//				handler: function(grid, rowIndex, colIndex) {
-	//					var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-	//					if (record.json.table == 'pages') {
-	//						top.loadEditId(record.json.t3ver_oid);
-	//					} else {
-	//						top.loadEditId(record.json.livepid);
-	//					}
-	//				},
-	//				getClass: function(v, meta, rec) {
-	//					if(!rec.json.allowedAction_editVersionedPage || !top.TYPO3.configuration.pageModule) {
-	//						return 'icon-hidden';
-	//					} else {
-	//						return '';
-	//					}
-	//				}
-	//			},
-	//			{
-	//				iconCls:'t3-icon t3-icon-actions t3-icon-actions-version t3-icon-version-document-remove',
-	//				tooltip: TYPO3.lang["tooltip.discardVersion"],
-	//				handler: function(grid, rowIndex, colIndex) {
-	//					var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
-	//					var configuration = {
-	//						title: TYPO3.lang["window.discard.title"],
-	//						msg: TYPO3.lang["window.discard.message"],
-	//						fn: function(result) {
-	//							if (result == 'yes') {
-	//								TYPO3.Workspaces.Actions.deleteSingleRecord(record.json.table, record.json.uid);
-	//							}
-	//						}
-	//					};
-	//
-	//					top.TYPO3.Dialog.QuestionDialog(configuration);
-	//				},
-	//				getClass: function(v, meta, rec) {
-	//					if(!rec.json.allowedAction_delete) {
-	//						return 'icon-hidden';
-	//					} else {
-	//						return '';
-	//					}
-	//				}
-	//			}
-			]};
-		},
-		
 		/**
 		 * Initialize the store
 		 *
@@ -244,113 +122,25 @@ define(['Vidi/Core/Application'], function(Application) {
 		 * @return void
 		 */
 		_initStore: function() {
-			
 			this.store = Ext.create('Ext.data.DirectStore', {
 				storeId: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',
-				directFn: TYPO3.Vidi.Service.ExtDirect.Controller.ContentController.getRecords,
-				//idProperty: 'uid',
-				autoLoad: false,
+				directFn: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData')),
+				buffered: true,
+				pageSize: 20,
+				idProperty: 'uid',
+				autoLoad: true,
 				root: 'data',
 				totalProperty: 'total',
+				remoteFilter: true,
+				remoteSort: true,
 				fields:[
 					{name:'uid'},
-					{name:'title'}
-	//				{name:'lastuploaddate', type: 'date', dateFormat: 'timestamp'},
+					{name:'title'},
+					{name:'authorname'},
+					{name:'version'},
+					{name:'lastuploaddate', type: 'date', dateFormat: 'timestamp'}
 				]
-				//groupField: 'type',
-				//remoteSort: true,
-				/*sortInfo:{
-					field:'title',
-					direction:"ASC"
-				*/
-	//			listeners: {
-	//				beforeload: function(store, records){
-	//					var control = Ext.getCmp('rsearchField');
-	//					if (control.getValue == '') {
-	//						return false;
-	//					}
-	//					store.setBaseParam('rep', Ext.getCmp('repCombo').getValue());
-	//					store.setBaseParam('installedOnly', this.showInstalledOnly);
-	//					if (!this.showInstalledOnly) {
-	//						this.filterMenuButton.removeClass('bold');
-	//					} else {
-	//						this.filterMenuButton.addClass('bold');
-	//					}
-	//
-	//				},
-	//				load: function(store, records){
-	//					var hasFilters = false;
-	//					TYPO3.EM.RemoteFilters.filters.each(function (filter) {
-	//						if (filter.active) {
-	//							hasFilters = true;
-	//						}
-	//					});
-	//					if (hasFilters) {
-	//						this.doClearFilters.show();
-	//					} else {
-	//						this.doClearFilters.hide();
-	//					}
-	//					if (records.length === 0) {
-	//
-	//					} else {
-	//
-	//					}
-	//				},
-	//				scope: this
-	//			},
-	//			highlightSearch: function(value) {
-	//				var control = Ext.getCmp('rsearchField');
-	//				if (control) {
-	//					var filtertext = control.getRawValue();
-	//					if (filtertext) {
-	//						var re = new RegExp(Ext.escapeRe(filtertext), 'gi');
-	//						var result = re.exec(value) || [];
-	//						if (result.length) {
-	//							return value.replace(result[0], '<span class="filteringList-highlight">' + result[0] + '</span>');
-	//						}
-	//					}
-	//				}
-	//				return value;
-	//			}
-	//
-			}
-			);
-				
-		},
-
-		test: function() {
-			var win = this.win || {};
-			if(!win){
-				win = new Ext.Window({
-					applyTo:'hello-win',
-					layout:'fit',
-					width:500,
-					height:300,
-					closeAction:'hide',
-					plain: true,
-					modal: true,
-
-					items: new Ext.TabPanel({
-						applyTo: 'hello-tabs',
-						autoTabs:true,
-						activeTab:0,
-						deferredRender:false,
-						border:false
-					})
-
-	//                buttons: [{
-	//                    text:'Submit',
-	//                    disabled:true
-	//                },{
-	//                    text: 'Close',
-	//                    handler: function(){
-	//                        win.hide();
-	//                    }
-	//                }]
-				});
-			}
-			win.show(this);
-
+			});
 		}
 	});
 });

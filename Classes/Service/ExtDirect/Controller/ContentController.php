@@ -73,20 +73,27 @@ class Tx_Vidi_Service_ExtDirect_Controller_ContentController extends Tx_Extbase_
 	 * @return array
 	 */
 	public function getRecords($parameters) {
-		$parameter = array (
-		  'depth' => 990,
-		  'id' => 1,
-		  'limit' => $parameters->limit,
-		  'start' => $parameters->start,
-		  'page' => $parameters->page,
-		  'filterTxt' => $parameters->query
-		);
 		$table = 'cache_extensions';
-		$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows("title, CONCAT(extkey, '', version) as uid", $table, 'lastversion=1' . ' AND ' . $this->generateWhereClauseFromQuery($table, $parameters->query), '','', '100'); //, '', '', '100');
-   		return array(
-			   'data' => $data,
-			   'total' => count($data)
-		   );
+		$sortParams = array();
+		foreach((array)$parameters->sort AS $sorting) {
+			$sortParams[] = $sorting->property . ' ' . $sorting->direction;
+		}
+
+		$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows( // $select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '',
+			"title, CONCAT(extkey, '', version) as uid, authorname, version, lastuploaddate",
+			$table,
+			'lastversion=1',
+			'',
+			implode(', ', $sortParams),
+			$parameters->start . ',' . $parameters->limit
+
+		);
+		
+		return array(
+			'data' => $data,
+			'total' => $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('extkey', $table, 'lastversion=1'),
+			'debug' => print_r($parameters, true)
+		);
 	}
 
 	protected function generateWhereClauseFromQuery($table, $query) {

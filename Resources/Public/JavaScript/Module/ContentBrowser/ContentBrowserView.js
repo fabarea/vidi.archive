@@ -57,38 +57,17 @@ define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid'
 				layout: 'border',
 				region: 'center',
 				items: [{
-					/*
-						 * RIGHT PANEL
-						 */
-					xtype: 'panel',
-					collapsible: true,
-					collapsed: true,
-					region:'east',
-					split: true,
-					items: [{
-						xtype: 'container',
-						html: 'dummy text 1'
-					}]
-				}, {
-					/*
-						 * CENTER PANEL
-						 */
-					xtype: 'container',
-					region: 'center',
-					layout: 'border',
-					items: [{
-						xtype: 'filterBar',
-						region: 'north'
-					}, {
-						xtype: 'container',
-						region: 'center',
-						layout: 'fit',
-						items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'}
-					}]
-
-				}, {
-					xtype: 'TYPO3.Vidi.Module.ContentBrowser.TreeRegion'
-				}]
+						xtype: 'panel',
+						collapsible: true,
+						collapsed: true,
+						region:'east',
+						split: true,
+						items: [
+							{xtype: 'container',html: 'dummy text 1'}]
+					},
+					{xtype:'panel',region:'center', layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'}},
+					{xtype: 'TYPO3.Vidi.Module.ContentBrowser.TreeRegion'}
+				]
 			};
 		
 			Ext.apply(this, config);
