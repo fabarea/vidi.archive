@@ -69,8 +69,10 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 				collapsed: entry.collapsed,
 				collapsible: true,
 				title: entry.title,
+				layout: 'fit',
 				items: {
-					xtype: type
+					xtype: type,
+					id: 'vidi-TreeRegion-tree-' + entry.table
 				}
 			});
 		});
