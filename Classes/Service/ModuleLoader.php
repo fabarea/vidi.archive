@@ -262,9 +262,7 @@ class Tx_Vidi_Service_ModuleLoader {
 					$treeCode[] = $tree;
 				}
 				$starterCode .='
-					console.log(TYPO3.TYPO3.Core.Registry);
 					TYPO3.TYPO3.Core.Registry.set(\'vidi/treeConfig\',' . json_encode($treeCode)  .', 99);
-					console.log(TYPO3.TYPO3.Core.Registry);
 				';
 
 			}
