@@ -82,16 +82,11 @@ define(['Vidi/Core/Application'], function(Application) {
 			
 			// Initialize the store
 			this._initStore();
-			
+
 			// Default configuration
 			var config = {
 				store: this.store,
-				columns: [
-					{header: 'Title',  dataIndex: 'title', flex: 1, editor: 'textfield'},
-					{header: 'Version',  dataIndex: 'version', flex: 1, editor: 'textfield'},
-					{header: 'Author',  dataIndex: 'authorname', flex: 1, editor: 'textfield'},
-					{header: 'Date',  dataIndex: 'lastuploaddate', flex: 1, editor: 'textfield'}
-				],
+				columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')['pages'],
 				height: 200,
 				width: '100%'
 			};
@@ -122,24 +117,32 @@ define(['Vidi/Core/Application'], function(Application) {
 		 * @return void
 		 */
 		_initStore: function() {
-			this.store = Ext.create('Ext.data.DirectStore', {
+			this.store = Ext.create('Ext.data.Store', {
 				storeId: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',
-				directFn: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData')),
+				//directFn: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData')),
 				buffered: true,
 				pageSize: 20,
 				idProperty: 'uid',
 				autoLoad: true,
-				root: 'data',
-				totalProperty: 'total',
+				proxy: {
+					type: 'direct',
+					api: {
+						read: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData'))
+					},
+					extraParams: {
+						'moduleCode': TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode'),
+						'query': ''
+					},
+					reader: {
+						type: 'json',
+						root: 'data',
+						totalProperty: 'total'
+					},
+					simpleSortMode: false
+				},
 				remoteFilter: true,
 				remoteSort: true,
-				fields:[
-					{name:'uid'},
-					{name:'title'},
-					{name:'authorname'},
-					{name:'version'},
-					{name:'lastuploaddate', type: 'date', dateFormat: 'timestamp'}
-				]
+				fields: TYPO3.TYPO3.Core.Registry.get('vidi/fieldConfiguration')['pages']
 			});
 		}
 	});

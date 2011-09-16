@@ -45,7 +45,7 @@ define(['Vidi/Core/Application', 'Vidi/Module/UserInterface/BaseModule', 'Vidi/M
 				'treeRegion': 'TYPO3.Vidi.Module.ContentBrowser.TreeRegion',
 				'mainGrid': 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'
 			});*/
-			TYPO3.TYPO3.Core.Registry.set('vidi/DataProviderRegistry/GridData', 'TYPO3.Vidi.Service.ExtDirect.Controller.ContentController.getRecords');
+			TYPO3.TYPO3.Core.Registry.set('vidi/DataProviderRegistry/GridData', 'TYPO3.Vidi.Service.ExtDirect.GridData.getRecords');
 
 			TYPO3.TYPO3.Core.Registry.set('vidi/mainModule', {
 					xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView',

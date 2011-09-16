@@ -242,18 +242,11 @@ class Tx_Vidi_Service_ModuleLoader {
 				$files[] = $configuration['extKey'] . '/' . str_replace('.js', '', $value);
 			}
 
-			$starterCode = '
-				define(["Vidi/Core/Application","Vidi/Module/UserInterfaceModule","Vidi/Utils"], function(Application) {
-					Application.initialize();
-			';
+			$starterCode = 'define(["Vidi/Core/Application","Vidi/Module/UserInterfaceModule","Vidi/Utils"], function(Application) {' . LF . "\tApplication.initialize();\n\n";
 
 			if (count($files)) {
 				$files = '["' . implode('","', $files) . '"]';
-				$starterCode .= '
-				require(' . $files . ', function() {
-						if(console.log) console.log("Module Adaptions loaded");
-					});
-				;';
+				$starterCode .= "\n\trequire(" . $files . ", function() {\n\t\tif(console.log) console.log('Module Adaptions loaded');\n\t});\n";
 			}
 
 			if (count($configuration['trees'])) {
@@ -261,17 +254,29 @@ class Tx_Vidi_Service_ModuleLoader {
 				foreach($configuration['trees'] AS $tree) {
 					$treeCode[] = $tree;
 				}
-				$starterCode .='
-					TYPO3.TYPO3.Core.Registry.set(\'vidi/treeConfig\',' . json_encode($treeCode)  .', 99);
-				';
+				$starterCode .= self::createRegistryCode('vidi/treeConfig', $treeCode);
 
 			}
-			$starterCode .= '
-					Application.run();
-				});
-			';
+			$gridDataService = t3lib_div::makeInstance('Tx_Vidi_Service_ExtDirect_GridData');
+			$fieldConfigurationData = array();
+			$columnConfigurationData = array();
+			foreach ($configuration['allowedDataTypes'] AS $table) {
+				$fieldConfigurationData[$table] = $gridDataService->buildFieldConfiguration($moduleCode, $table);
+				$columnConfigurationData[$table] = $gridDataService->buildColumnConfiguration($moduleCode, $table);
+			}
+			$starterCode .= self::createRegistryCode('vidi/fieldConfiguration', $fieldConfigurationData);
+			$starterCode .= self::createRegistryCode('vidi/columnConfiguration', $columnConfigurationData);
+
+			$starterCode .= self::createRegistryCode('vidi/moduleCode', $moduleCode);
+			$starterCode .= self::createRegistryCode('vidi/currentTable', $configuration['allowedDataTypes'][0]);
+			
+			$starterCode .= "\n\tApplication.run();\n});";
 
 			t3lib_div::writeFileToTypo3tempDir(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js', $starterCode);
 		}
+	}
+
+	protected static function createRegistryCode($path, $data) {
+		return "	TYPO3.TYPO3.Core.Registry.set('" . $path ."', ". json_encode($data) . ", 99);\n";
 	}
 }

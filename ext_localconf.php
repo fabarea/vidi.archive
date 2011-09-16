@@ -34,10 +34,10 @@ if (strpos($GLOBALS['_GET']['M'],'_Vidi') !== false) {
 	$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Xclass/class.ux_t3lib_pagerenderer.php';
 }
 
-// Register ExtDirect Endpoint 
+	// Register ExtDirect Endpoint for the Grid
 t3lib_extMgm::registerExtDirectComponent(
-    'TYPO3.Vidi.Service.ExtDirect.Controller.ContentController',
-    'EXT:vidi/Classes/Service/ExtDirect/Controller/ContentController.php:Tx_Vidi_Service_ExtDirect_Controller_ContentController'
+	'TYPO3.Vidi.Service.ExtDirect.GridData',
+	'EXT:vidi/Classes/Service/ExtDirect/GridData.php:Tx_Vidi_Service_ExtDirect_GridData'
 );
 
 // @todo: registration should be Object Oriented via t3lib_extMgm, for instance
