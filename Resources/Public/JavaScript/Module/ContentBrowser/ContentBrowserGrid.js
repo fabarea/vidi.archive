@@ -86,7 +86,7 @@ define(['Vidi/Core/Application'], function(Application) {
 			// Default configuration
 			var config = {
 				store: this.store,
-				columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')['pages'],
+				columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')['tt_content'],
 				height: 200,
 				width: '100%'
 			};
@@ -142,7 +142,7 @@ define(['Vidi/Core/Application'], function(Application) {
 				},
 				remoteFilter: true,
 				remoteSort: true,
-				fields: TYPO3.TYPO3.Core.Registry.get('vidi/fieldConfiguration')['pages']
+				fields: TYPO3.TYPO3.Core.Registry.get('vidi/fieldConfiguration')['tt_content']
 			});
 		}
 	});
