@@ -60,7 +60,7 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		return array(
 			'data' => $data,
 			'total' => $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $this->table, ''),
-			//'debug' => print_r($this->getFields(), true)
+			'debug' => print_r($this->generateWhereClauseFromQuery($parameters->query), true)
 		);
 	}
 
@@ -152,8 +152,9 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 
 	protected function generateWhereClauseFromQuery($query) {
 		$whereClause = '';
-		if ($query !== null) {
-			$filterBarService = t3lib_div::makeInstance('Tx_Vidi_Service_FilterBar');
+		if ($query !== null && $query != '') {
+			$filterBarService = t3lib_div::makeInstance('Tx_Vidi_Service_FilterBar', $this->table);
+			$whereClause .= $filterBarService->generateWhereClause($query);
 		}
 		return $whereClause;
 	}
