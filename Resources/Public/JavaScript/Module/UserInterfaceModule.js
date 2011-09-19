@@ -23,7 +23,7 @@
  * Register and configure the Module
  * 
  */
-define(['Vidi/Core/Application', 'Vidi/Module/UserInterface/BaseModule', 'Vidi/Module/ContentBrowser/ContentBrowserView', 'Vidi/Module/Concept/ConceptTree'], function(Application) {
+define(['Vidi/Core/Application', 'Vidi/Module/UserInterface/BaseModule', 'Vidi/Module/ContentBrowser/ContentBrowserView', 'Vidi/Module/UserInterface/Tree'], function(Application) {
 
 	console.log("Registering Module Layout");
 	
@@ -37,7 +37,7 @@ define(['Vidi/Core/Application', 'Vidi/Module/UserInterface/BaseModule', 'Vidi/M
 			TYPO3.TYPO3.Core.Registry.set('vidi/docheader/bottom', ['->', 'btn'], 1);
 			TYPO3.TYPO3.Core.Registry.set('vidi/treeConfig', [{
 				xtype: 'TYPO3.Vidi.Module.Concept.Tree',
-				title: 'Taxonomy',
+				title: 'temp',
 				collapsed: false
 			}], 1);
 

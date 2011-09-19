@@ -28,26 +28,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		type: 'accordion',
 		align: 'stretch'
 	},
-	items: [
-		{
-			xtype: 'panel',title: 'Taxonomy',
-			collapsible: true,
-			items: {
-				id: 'test34',
-				xtype: 'TYPO3.Vidi.Module.Concept.Tree'
-			}
-		},
-		{
-			xtype: 'panel',
-			collapsible: true,
-			title: 'Pages'
-		},
-		{
-			xtype: 'panel',
-			collapsible: true,
-			title: 'Files'
-		}
-	],
+	items: [],
 	initComponent: function() {
 
 		var config = {
@@ -62,17 +43,19 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		console.log(treeConfig);
 		var items = [];
 		Ext.each(treeConfig, function(entry) {
-			var dataProvider = eval([entry.dataProvider]) != undefined ? entry.DataProvider : Ext.emptyFn;
-			var type = Ext.ClassManager.getNameByAlias('widget.' + entry.xtype) != "" ? entry.xtype : 'TYPO3.Vidi.Tree.Standard';
+			var directFn = (entry.directFn != undefined && eval(entry.directFn) != undefined) ? entry.directFn : 'TYPO3.Vidi.Service.ExtDirect.TreeData.getTreeData';
+			var type = Ext.ClassManager.getNameByAlias('widget.' + entry.xtype) != "" ? entry.xtype : 'TYPO3.Vidi.Module.UserInterface.Tree';
+			var rootUid = (entry.tcaTreeConfig != undefined && entry.tcaTreeConfig.rootUid != undefined)? entry.tcaTreeConfig.rootUid : 0;
 			items.push({
 				xtype: 'panel',
-				collapsed: entry.collapsed,
 				collapsible: true,
-				title: entry.title,
+				title: entry.title || 'dummy',
 				layout: 'fit',
 				items: {
 					xtype: type,
-					id: 'vidi-TreeRegion-tree-' + entry.table
+					directFn: directFn,
+					rootUid: rootUid,
+					id: 'vidi-TreeRegion-tree-' + (entry.table || entry.title)
 				}
 			});
 		});

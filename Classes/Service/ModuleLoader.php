@@ -11,15 +11,13 @@ class Tx_Vidi_Service_ModuleLoader {
 	protected $_preconfiguredTrees = array(
 		0 => array(
 			'pages',
-			'TYPO3.Components.Tree.StandardTree',
-			'TYPO3.Components.Vidi.TCAtreeProvider',
-			array()
+			'TYPO3.Vidi.Module.UserInterface.Tree',
+			'TYPO3.Vidi.TCAtreeProvider'
 		),
 		1=> array(
 			'__FILES',
-			'TYPO3.Components.FAL.Tree',
-			'TYPO3.Components.FAL.FileTreeProvider',
-			array()
+			'TYPO3.FAL.Components.Tree',
+			'TYPO3.FAL.Components.FileTreeProvider'
 		),
 	);
 
@@ -86,7 +84,7 @@ class Tx_Vidi_Service_ModuleLoader {
 	/**
 	 * adds a tree component to the vidi module
 	 *
-	 * @param string $table
+	 * @param string $title
 	 * @param string $xtype
 	 * @param string $dataProvider
 	 * @param array $tcaTreeConfig
@@ -94,20 +92,27 @@ class Tx_Vidi_Service_ModuleLoader {
 	 * @param boolean $default
 	 * @return void
 	 */
-	public function addTree($table, $xtype, $dataProvider, array $tcaTreeConfig, $order = -1, $default = false) {
-		$this->trees[$table] = array(
+	public function addCustomTree($title, $xtype, $dataProvider) {
+		$this->trees[md5($title)] = array(
+			'title'			=> $title,
 			'xtype'			=> $xtype,
 			'dataProvider'	=> $dataProvider,
-			'tcaTreeConfig'	=> $tcaTreeConfig,
-			'collapsed'		=> !$default,
-			'title'			=> $table
+		);
+	}
+
+
+	public function addTcaBasedTree($table, array $tcaTreeConfig) {
+		$this->trees[$table] = array(
+			'title'			=> $table,
+			'table'			=> $table,
+			'tcaTreeConfig'	=> $tcaTreeConfig
 		);
 	}
 
 	public function addStandardTree($tree) {
 		if (isset($this->_preconfiguredTrees[$tree])) {
 			$config = &$this->_preconfiguredTrees[$tree];
-			$this->addTree($config[0], $config[1], $config[2], $config[3]);
+			$this->addCustomTree($config[0], $config[1], $config[2]);
 		}
 	}
 	

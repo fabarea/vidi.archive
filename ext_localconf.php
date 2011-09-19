@@ -40,6 +40,11 @@ t3lib_extMgm::registerExtDirectComponent(
 	'EXT:vidi/Classes/Service/ExtDirect/GridData.php:Tx_Vidi_Service_ExtDirect_GridData'
 );
 
+	// Register ExtDirect Endpoint for the Trees
+t3lib_extMgm::registerExtDirectComponent(
+	'TYPO3.Vidi.Service.ExtDirect.TreeData',
+	'EXT:vidi/Classes/Service/ExtDirect/TreeData.php:Tx_Vidi_Service_ExtDirect_TreeData'
+);
 // @todo: registration should be Object Oriented via t3lib_extMgm, for instance
 // Register JavaScript Dynamic File Loading through RequireJS
 // Note: key "Vidi" is the name of the extension in a camel case syntax
