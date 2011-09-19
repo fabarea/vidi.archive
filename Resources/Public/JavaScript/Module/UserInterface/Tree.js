@@ -14,7 +14,11 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.Tree', {
 		this.store = Ext.create('Ext.data.TreeStore', {
 			proxy: {
 				type: 'direct',
-				directFn: eval(config.directFn)
+				directFn: eval(config.directFn),
+				extraParams: {
+					tree: config.treeIndex,
+					moduleCode: TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode')
+				}
 			}
 		});
 		this.callParent([config]);

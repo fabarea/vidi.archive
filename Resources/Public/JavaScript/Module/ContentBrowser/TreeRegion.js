@@ -42,7 +42,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		var treeConfig = TYPO3.TYPO3.Core.Registry.get('vidi/treeConfig');
 		console.log(treeConfig);
 		var items = [];
-		Ext.each(treeConfig, function(entry) {
+		Ext.Object.each(treeConfig, function(index, entry) {
 			var directFn = (entry.directFn != undefined && eval(entry.directFn) != undefined) ? entry.directFn : 'TYPO3.Vidi.Service.ExtDirect.TreeData.getTreeData';
 			var type = Ext.ClassManager.getNameByAlias('widget.' + entry.xtype) != "" ? entry.xtype : 'TYPO3.Vidi.Module.UserInterface.Tree';
 			var rootUid = (entry.tcaTreeConfig != undefined && entry.tcaTreeConfig.rootUid != undefined)? entry.tcaTreeConfig.rootUid : 0;
@@ -55,7 +55,8 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 					xtype: type,
 					directFn: directFn,
 					rootUid: rootUid,
-					id: 'vidi-TreeRegion-tree-' + (entry.table || entry.title)
+					id: 'vidi-TreeRegion-tree-' + index,
+					treeIndex: index
 				}
 			});
 		});

@@ -35,16 +35,8 @@ define(['Vidi/Core/Application', 'Vidi/Module/UserInterface/BaseModule', 'Vidi/M
 
 			TYPO3.TYPO3.Core.Registry.set('vidi/docheader/top', ['btn1', '->', 'btn2'], 1);
 			TYPO3.TYPO3.Core.Registry.set('vidi/docheader/bottom', ['->', 'btn'], 1);
-			TYPO3.TYPO3.Core.Registry.set('vidi/treeConfig', [{
-				xtype: 'TYPO3.Vidi.Module.Concept.Tree',
-				title: 'temp',
-				collapsed: false
-			}], 1);
+			TYPO3.TYPO3.Core.Registry.set('vidi/treeConfig', {}, 1);
 
-			/*TYPO3.TYPO3.Core.Registry.set('vidi/CompononentRegistry', {
-				'treeRegion': 'TYPO3.Vidi.Module.ContentBrowser.TreeRegion',
-				'mainGrid': 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'
-			});*/
 			TYPO3.TYPO3.Core.Registry.set('vidi/DataProviderRegistry/GridData', 'TYPO3.Vidi.Service.ExtDirect.GridData.getRecords');
 
 			TYPO3.TYPO3.Core.Registry.set('vidi/mainModule', {

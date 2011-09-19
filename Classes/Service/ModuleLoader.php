@@ -255,11 +255,11 @@ class Tx_Vidi_Service_ModuleLoader {
 			}
 
 			if (count($configuration['trees'])) {
-				$treeCode = array();
+				/*$treeCode = array();
 				foreach($configuration['trees'] AS $tree) {
 					$treeCode[] = $tree;
-				}
-				$starterCode .= self::createRegistryCode('vidi/treeConfig', $treeCode);
+				}*/
+				$starterCode .= self::createRegistryCode('vidi/treeConfig', $configuration['trees']);
 
 			}
 			$gridDataService = t3lib_div::makeInstance('Tx_Vidi_Service_ExtDirect_GridData');

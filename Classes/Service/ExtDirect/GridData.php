@@ -31,14 +31,7 @@
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Vidi_Service_ExtDirect_GridData {
-
-	/**
-	 * the module Configuration will be copied
-	 *
-	 * @var null|array
-	 */
-	protected $moduleConfiguration = null;
+class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_AbstractDataProvider {
 
 	/**
 	 * the tableName we will act on
@@ -157,22 +150,22 @@ class Tx_Vidi_Service_ExtDirect_GridData {
 		return implode(', ', $sortParams);
 	}
 
-	protected function loadConfiguration($moduleCode, $table) {
-		$this->moduleConfiguration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
-		if ($table === null) {
-			$this->table = $this->moduleConfiguration['allowedDataTypes'][0];
-		} else {
-			$this->table = $table;
-		}
-		t3lib_div::loadTCA($this->table);
-	}
-
 	protected function generateWhereClauseFromQuery($query) {
 		$whereClause = '';
 		if ($query !== null) {
 			$filterBarService = t3lib_div::makeInstance('Tx_Vidi_Service_FilterBar');
 		}
 		return $whereClause;
+	}
+
+	protected function loadConfiguration($moduleCode, $table) {
+		parent::loadConfiguration($moduleCode);
+		if ($table === null) {
+			$this->table = $this->moduleConfiguration['allowedDataTypes'][0];
+		} else {
+			$this->table = $table;
+		}
+		t3lib_div::loadTCA($this->table);
 	}
 
 }
