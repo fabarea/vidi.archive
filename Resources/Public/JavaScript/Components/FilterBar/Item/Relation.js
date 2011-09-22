@@ -21,47 +21,48 @@
  *                                                                        */
 define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/SelectBox'], function(Application) {
 
-	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Category');
+	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 	
 		// Define a store which has all available Operators
-	TYPO3.Vidi.Components.FilterBar.Item.Category.Operators = Ext.create('Ext.data.Store', {
+	TYPO3.Vidi.Components.FilterBar.Item.Relation.Operators = Ext.create('Ext.data.Store', {
 		fields: ['display', 'id'],
 		data : [
-			{ display: "is", id: 'is' }
+			{display: "is", id: '=' },
+			{display: "is not", id: '!='}
 		]
 	});
 
 	/**
-	 * @class TYPO3.Vidi.Components.FilterBar.Item.Category
+	 * @class TYPO3.Vidi.Components.FilterBar.Item.Relation
 	 *
-	 * A concrete implementation of a FilterBar Item, for Filtering via Category
+	 * A concrete implementation of a FilterBar Item, for Filtering via Relation
 	 *
-	 * @namespace TYPO3.Vidi.Components.FilterBar.Category
+	 * @namespace TYPO3.Vidi.Components.FilterBar.Relation
 	 * @extends TYPO3.Vidi.Components.FilterBar.Item
 	 */
-	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Category', {
+	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Relation', {
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
-		alias: 'widget.filterBar-Item-Category',
+		alias: 'widget.filterBar-Item-Relation',
 		componentCls: 'vidi-filterBar-Item-green',
-		data: {category: '', operator: TYPO3.Vidi.Components.FilterBar.Item.Category.Operators.findRecord('id', 'is').data},
+		data: {record: '', operator: TYPO3.Vidi.Components.FilterBar.Item.Relation.Operators.findRecord('id', '=').data},
 		displayItems: [
 			{
 				col: 'left',
 				xtype: 'component',
 				data: { operator: {}},
-				tpl: '<strong>Category {operator.display}</strong>'
+				tpl: '<strong>{operator.display} related to</strong>'
 			},
 			{
 				col: 'right',
 				xtype: 'component',
-				data: { category: ''},
-				tpl: '<strong>{category}</strong>'
+				data: { record: ''},
+				tpl: '<strong>{record}</strong>'
 		}],
 		editItems: [
 			{
 				xtype: 'select',
-				fieldLabel: 'Category',
-				store: TYPO3.Vidi.Components.FilterBar.Item.Category.Operators
+				fieldLabel: 'Record',
+				store: TYPO3.Vidi.Components.FilterBar.Item.Relation.Operators
 			},
 			{
 				xtype: 'textfield',
@@ -73,7 +74,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 			var comboOp = this.items.getAt(1).items.getAt(0);
 
 			this.data = {
-				category : input.getValue(),
+				record : input.getValue(),
 				operator: comboOp.store.findRecord('id', comboOp.getValue()).data
 			}
 		},
@@ -81,11 +82,11 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 			var input = this.items.getAt(1).items.getAt(1);
 			var comboOp = this.items.getAt(1).items.getAt(0);
 
-			input.setValue(this.data.category);
+			input.setValue(this.data.record);
 			comboOp.setValue(this.data.operator.id);
 		},
 		serialize: function() {
-			return {type: 'category', operator: this.data.operator.id, category: this.data.category.uid};
+			return {type: 'relation', operator: this.data.operator.id, record: this.data.record.uid};
 		}
 	});
 });

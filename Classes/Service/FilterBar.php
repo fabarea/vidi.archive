@@ -116,7 +116,11 @@ class Tx_Vidi_Service_FilterBar {
 				break;
 			case '=':
 			case '!=':
-				$search = $GLOBALS['TYPO3_DB']->quoteStr($search, $this->table);
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($search)) {
+					$search = intval($search);
+				} else {
+					$search = "'" . $GLOBALS['TYPO3_DB']->quoteStr($search, $this->table) . "'";
+				}
 				$operator = ($operator == '!=' ? ' != ' : ' = ');
 				break;
 		}

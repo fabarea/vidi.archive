@@ -44,7 +44,7 @@ define([], function(Application) {
 					children: [
 						{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Fulltext", cls: 'Fulltext', html: 'Fulltext', title: 'Fulltext'},
 						{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Field", cls: 'Field', html: 'Field', title: 'Field'},
-						{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Category", cls: 'Category', html: 'Category', title: 'Category'},
+						{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Relation", cls: 'Relation', html: 'Relation', title: 'Relation'},
 						{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Operator", cls: 'Operator', html: 'Operator', title: 'Operator'},
 						{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Collection", cls: 'Collection', html: 'Collection', title: 'Collection'}
 					]

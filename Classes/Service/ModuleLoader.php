@@ -232,9 +232,9 @@ class Tx_Vidi_Service_ModuleLoader {
 		$configuration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
 		$configurationHash = md5(serialize($configuration));
 
-		if (!file_exists(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js')) {
+		if (!file_exists(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js') || t3lib_extMgm::getExtensionCacheBehaviour() == 0) {
 				// remove files from old configurations
-			$starterFiles = t3lib_div::getFilesInDir(PATH_site . 'typo3temp/vidi/', '.js', true);
+			$starterFiles = t3lib_div::getFilesInDir(PATH_site . 'typo3temp/vidi/', 'js', true);
 			foreach ($starterFiles AS $file) {
 				if (strpos($file, $moduleCode . '_') !== false) {
 					@unlink($file);

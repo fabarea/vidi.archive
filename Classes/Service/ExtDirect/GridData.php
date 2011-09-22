@@ -48,7 +48,7 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
 
 		$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			implode(', ', $this->getFields()),
+			implode(', ', $this->filterColumnsViaAccess($this->getFields())),
 			$this->table,
 			$this->generateWhereClauseFromQuery($parameters->query),
 			'',
@@ -60,11 +60,43 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		return array(
 			'data' => $data,
 			'total' => $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $this->table, ''),
-			'debug' => print_r($this->generateWhereClauseFromQuery($parameters->query), true)
+			'debug' => $this->generateWhereClauseFromQuery($parameters->query)
 		);
 	}
 
+	public function getTableFields($parameters) {
+		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
+		$data = array();
+		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $column => $configuration) {
+			if ($this->hasAccessToColumn($column)) {
+				$field = array(
+					'title' => $GLOBALS['LANG']->sL($configuration['label']),
+					'name' => $column,
+					'type' => $this->detectExtJSType($configuration['config'])
+				);
 
+				$data[] = $field;
+			}
+		}
+
+		return array(
+			'data' => $data,
+			'total' => count($data)
+		);
+	}
+
+	protected function filterColumnsViaAccess($columns) {
+		foreach($columns AS $index => $name) {
+			if (!$this->hasAccessToColumn($name)) {
+				unset($columns[$index]);
+			}
+		}
+		return array_values($columns);
+	}
+	protected function hasAccessToColumn($column) {
+		return ((!$GLOBALS['TCA'][$this->table]['columns'][$column]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $column))
+			&& $GLOBALS['TCA'][$this->table]['columns'][$column]['config']['type'] != 'passthrough') || $GLOBALS['BE_USER']->isAdmin();
+	}
 
 	protected function getFields() {
 		return array_unique(array_merge(array('uid', 'pid'), array_keys((array)$GLOBALS['TCA'][$this->table]['columns'])));
@@ -81,7 +113,7 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 
 		foreach ($GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
 			$data = array(
-				'text' => $name,
+				'text' => $GLOBALS['LANG']->sL($configuration['label']),
 				'dataIndex' => $name,
 				'hidden' => !t3lib_div::inList($GLOBALS['TCA'][$this->table]['interface']['showRecordFieldList'], $name),
 				'sortable'=> true
@@ -105,28 +137,9 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 			$data = array(
 				'name' => $name
 			);
-			$type = 'auto';
-			switch($configuration['config']['type']) {
-				case 'text':
-					$type = 'string';
-					break;
-				case 'input':
-					if(strpos($configuration['config']['eval'], 'date') !== false) {
-						$type = 'date';
-						$data['dateFormat'] = 'd.m.Y. H:i';
-					} elseif(strpos($configuration['config']['eval'], 'int') !== false || strpos($configuration['config']['eval'], 'num') !== false || strpos($configuration['config']['eval'], 'year') !== false) {
-						$type = 'int';
-					} elseif (strpos($configuration['config']['eval'], 'double') !== false) {
-						$type = 'float';
-					}
-					break;
-				case 'check':
-					if (count($configuration['config']['items']) == 1) {
-						$type = 'boolean';
-					} else {
-						$type = 'int';
-					}
-					break;
+			$type = $this->detectExtJSType($configuration['config']);
+			if ($type == 'date') {
+				$data['dateFormat'] = 'd.m.Y. H:i';
 			}
 			$data['type'] = $type;
 			$fields[] = $data;
@@ -135,6 +148,34 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		return $fields;
 	}
 
+	protected function detectExtJSType($configuration) {
+		switch($configuration['type']) {
+			case 'text':
+				$type = 'string';
+				break;
+			case 'input':
+				if(strpos($configuration['eval'], 'date') !== false) {
+					$type = 'date';
+				} elseif(strpos($configuration['eval'], 'int') !== false || strpos($configuration['eval'], 'num') !== false || strpos($configuration['eval'], 'year') !== false) {
+					$type = 'int';
+				} elseif (strpos($configuration['eval'], 'double') !== false) {
+					$type = 'float';
+				} else {
+					$type = 'string';
+				}
+				break;
+			case 'check':
+				if (count($configuration['items']) == 1) {
+					$type = 'boolean';
+				} else {
+					$type = 'int';
+				}
+				break;
+			default:
+					$type = 'auto';
+		}
+		return $type;
+	}
 
 	/**
 	 * build sorting clause out of ExtJS sorting params

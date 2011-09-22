@@ -25,14 +25,14 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 	 * @class TYPO3.Vidi.Components.FilterBar.Item
 	 * @abstract
 	 *
-	 * A abstract base class for all types of filter labels within th efilterbar
+	 * A abstract base class for all types of filter labels within the filterbar
 	 *
 	 * @namespace TYPO3.Vidi.Components.FilterBar
 	 * @extends Ext.container.Container
 	 */
 	Ext.define('TYPO3.Vidi.Components.FilterBar.Item', {
 		extend: 'Ext.container.Container',
-		alias: 'widget.filterBar.Item',
+		//alias: 'widget.filterBar.Item',
 		baseCls: 'vidi-filterBar-Item',
 		/**
 		 * Marks wether the component is in edit Mode
@@ -78,7 +78,7 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 		 */
 		data: {
 		},
-
+		virgin: true,
 		layout: 'filterBar-Item-ExtendedCardLayout',		// DO NOT CHANGE
 		constructor: function(config) {
 			config = config || {};
@@ -122,7 +122,7 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 			afterRender: function() {
 				var me = this;
 					// register the action on the "close" button
-				this.el.select('.removeButton').addListener('click', me.destroy, me, {stopEvent: true});
+				this.el.select('.removeButton').addListener('click', this.removeMyself, me, {stopEvent: true});
 					// prevent a normal click anywhere within get's bubbled to the filterBar, because
 					// this would create a new label within the filterbar on each click
 				this.el.addListener('click', Ext.emptyFn, this, {stopEvent: true});
@@ -174,11 +174,11 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 			var valid = me.isValid();
 			
 				// only update the display if the data is valid to prevent errors
-			if (validate && valid) {
+			if (this.editMode && validate && valid) {
 				me.applyData();
 				me.refresh();
-
-				me.ownerCt.fireEvent('changed', me);
+				me.virgin = false;
+				me.ownerCt.fireEvent('VIDI_filterDataInBarChanged', me);
 			}
 				// close editing mode
 			if (!validate || valid) {
@@ -284,6 +284,13 @@ define(['Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout', 'Vidi/Compon
 			this.data[option] = value;
 			this.refresh();
 			this.updateInputs();
+		},
+		removeMyself: function() {
+			this.ownerCt.items.remove(this);
+			this.destroy();
+			if (!this.virgin) {
+				this.ownerCt.fireEvent('VIDI_filterDataInBarChanged', this);
+			}
 		}
 	});
 });

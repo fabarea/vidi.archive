@@ -125,7 +125,7 @@ div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Fulltext {
 div.vidi-filterBar > div.vidi-filterBar-Item-green >div> div.leftSide {
 	background-color:green;
 }
-div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Category,
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Relation,
 div.vidi-filterBar > div.vidi-filterBar-Item-green > div >  div {
 	background-color: #90ee90;
 }

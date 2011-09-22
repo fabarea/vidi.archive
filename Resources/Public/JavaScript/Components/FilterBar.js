@@ -18,8 +18,8 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Fulltext',
-		'Vidi/Components/FilterBar/Item/Operator' ,'Vidi/Components/FilterBar/Item/Category' ,
+define(['Vidi/Core/Application','Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Fulltext',
+		'Vidi/Components/FilterBar/Item/Operator', 'Vidi/Components/FilterBar/Item/Relation',
 		'Vidi/Components/FilterBar/Item/Collection', 'Vidi/Components/FilterBar/Item/Field'
 		], function(Application) {
 
@@ -61,11 +61,10 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Compone
 		 *
 		 * @cfg {Object/Object[]} items
 		 */
-		items: [{xtype: 'filterBar-Item-Fulltext'}
-		],
+		items: [],
 		constructor: function() {
 			this.callParent(arguments);
-			this.addEvents('changed');
+			this.addEvents('VIDI_filterDataInBarChanged');
 		},
 		/**
 		 * A config object containing one or more event handlers to be added to this object during initialization.
@@ -79,7 +78,7 @@ define(['Vidi/Core/Application', 'Vidi/Components/FilterBar/Item', 'Vidi/Compone
 					this.add(Ext.widget('filterBar-Item-Fulltext')); // add a Fulltext Label
 				}, this, {stopEvent: true}); // action Scope is the FilterBar, event won't be bubbled to parent container
 			},
-			changed: function() {
+			VIDI_filterDataInBarChanged: function() {
 				var store = Ext.StoreManager.lookup('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore');
 				store.getProxy().extraParams.query = this.serialize();
 				store.load();
