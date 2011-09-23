@@ -14,21 +14,11 @@ if (TYPO3_MODE === 'BE') {
 	 * @var Tx_Vidi_Service_ModuleLoader $moduleLoader
 	 */
 	$moduleLoader = t3lib_div::makeInstance('Tx_Vidi_Service_ModuleLoader', $_EXTKEY);
-	//$moduleLoader->addStandardTree(Tx_Vidi_Service_ModuleLoader::TREE_PAGES);
-	//$moduleLoader->addTree('taxonomy', 'TYPO3.Vidi.Module.UserInterface.Tree', '', array());
-	//$moduleLoader->addTree('tablets', 'TYPO3.Vidi.Module.UserInterface.Tree', '', array());
-	$moduleLoader->addTcaBasedTree('pages', array(
-		'parentField' => 'pid',
-		'rootUid' => 0
-	));
+	$moduleLoader->addStandardTree(Tx_Vidi_Service_ModuleLoader::TREE_PAGES);
 
 	$moduleLoader->setAllowedDataTypes(array('tt_content', 'pages', 'cache_extensions', 'tx_ttnews',  '__FILES'));
 	$moduleLoader->register();
 
-/*	$moduleLoader2 = t3lib_div::makeInstance('Tx_Vidi_Service_ModuleLoader', $_EXTKEY, 'm2');
-	$moduleLoader2->addStandardTree(Tx_Vidi_Service_ModuleLoader::TREE_PAGES);
-	$moduleLoader2->setAllowedDataTypes(array('cache_extensions', 'tx_ttnews', 'tt_content', '__FILES'));
-	$moduleLoader2->register();*/
 }
 
 

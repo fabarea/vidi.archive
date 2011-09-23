@@ -5,16 +5,22 @@
  */
 class Tx_Vidi_Service_ModuleLoader {
 
-	const TREE_PAGES = 1;
-	const TREE_FILES = 2;
+	const TREE_PAGES = 0;
+	const TREE_FILES = 1;
 
 	protected $_preconfiguredTrees = array(
 		0 => array(
-			'pages',
-			'TYPO3.Vidi.Module.UserInterface.Tree',
-			'TYPO3.Vidi.TCAtreeProvider'
+			'table' => 'pages',
+			'title' => 'Pagetree',
+			'tcaTreeConfig' => array(
+				'parentField' => 'pid',
+				'rootUid' => 0
+			),
+			'relationConfiguration' => array(
+				'*' => array('foreignField' => 'pid')
+			)
 		),
-		1=> array(
+		1 => array(
 			'__FILES',
 			'TYPO3.FAL.Components.Tree',
 			'TYPO3.FAL.Components.FileTreeProvider'
@@ -84,19 +90,18 @@ class Tx_Vidi_Service_ModuleLoader {
 	/**
 	 * adds a tree component to the vidi module
 	 *
-	 * @param string $title
-	 * @param string $xtype
-	 * @param string $dataProvider
-	 * @param array $tcaTreeConfig
-	 * @param int $order
-	 * @param boolean $default
+	 * @param string $title	The headline of the tree
+	 * @param string $xtype	The Xtype of the tree-panel
+	 * @param string $dataProvider	ExtDirect Provider function for treeStore (readOnly)
+	 * @param array $relationConfiguration configures the relation from the tree to the data-tables 
 	 * @return void
 	 */
-	public function addCustomTree($title, $xtype, $dataProvider) {
+	public function addCustomTree($title, $xtype, $dataProvider, array $relationConfiguration) {
 		$this->trees[md5($title)] = array(
 			'title'			=> $title,
 			'xtype'			=> $xtype,
 			'dataProvider'	=> $dataProvider,
+			'relationConfiguration' => $relationConfiguration,
 		);
 	}
 
@@ -111,14 +116,7 @@ class Tx_Vidi_Service_ModuleLoader {
 
 	public function addStandardTree($tree) {
 		if (isset($this->_preconfiguredTrees[$tree])) {
-			$config = &$this->_preconfiguredTrees[$tree];
-			$this->addCustomTree($config[0], $config[1], $config[2]);
-		}
-	}
-	
-	public function removeTree($table) {
-		if(isset($this->trees[$table])) {
-			unset($this->trees[$table]);
+			$this->trees[count($this->trees) + 1] = $this->_preconfiguredTrees[$tree];
 		}
 	}
 

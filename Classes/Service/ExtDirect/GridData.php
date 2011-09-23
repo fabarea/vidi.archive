@@ -87,6 +87,7 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 	public function getTableRelationFields($parameters) {
 		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
 		$relations = array();
+		$columns = array();
 		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $column => $configuration) {
 			if ($this->hasAccessToColumn($column) && $this->detectExtJSType($configuration['config']) == 'relation') {
 				$field = array(
@@ -95,7 +96,29 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 					'relationTable' => $configuration['config']['foreign_table'],
 					'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$configuration['config']['foreign_table']]['ctrl']['title'])
 				);
+				$columns[] = $column;
 				$relations[] = $field;
+			}
+		}
+		foreach ($this->moduleConfiguration['trees'] AS $tree) {
+			if (isset($tree['relationConfiguration'])) {
+				if (isset($tree['relationConfiguration']['*']) && !in_array($tree['relationConfiguration']['*']['foreignField'], $columns)) {
+					$relations[] = array(
+						'title' => 'Tree (' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title']) . ')',
+						'column' => $tree['relationConfiguration']['*']['foreignField'],
+						'relationTable' => $tree['table'],
+						'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title'])
+					);
+				}
+
+				if (isset($tree['relationConfiguration'][$this->table]) && !in_array($tree['relationConfiguration'][$this->table]['foreignField'], $columns)) {
+					$relations[] = array(
+						'title' => 'Tree (' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title']) . ')',
+						'column' => $tree['relationConfiguration'][$this->table]['foreignField'],
+						'relationTable' => $tree['table'],
+						'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title'])
+					);
+				}
 			}
 		}
 
@@ -114,7 +137,7 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		$data = array();
 
 		if (array_key_exists($relatedTable, $GLOBALS['TCA'])) {
-			$searchFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$this->table]['ctrl']['searchFields'], TRUE);
+			$searchFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$relatedTable]['ctrl']['searchFields'], TRUE);
 			$array = array();
 			$like = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($typeAhead, $relatedTable), $relatedTable) . '%\'';
 
