@@ -73,6 +73,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Layout.ExtendedCardLayout', {
 			if(item.id.substr(item.id.length - 7) == 'display') {
 				item.el.addListener('click', this.owner.toggleEditingMode, this.owner, {stopEvent: true});
 			}
+			item.ownerCt = this.owner;
 		}
 	},
 	/**

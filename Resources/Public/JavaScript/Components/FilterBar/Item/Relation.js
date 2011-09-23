@@ -43,8 +43,8 @@ Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 			{
 				col: 'right',
 				xtype: 'component',
-				data: { record: ''},
-				tpl: '<strong>{record}</strong>'
+				data: { record: '', relation: ''},
+				tpl: '<strong>{relation.relationTitle} / {record.title}</strong>'
 		}],
 		editItems: [
 			{
@@ -53,7 +53,11 @@ Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 				store: 'TYPO3.Vidi.Stores.AvailableRelations',
 				listeners: {
 					select: function(selectbox, currentRecords) {
-						
+						var selected = currentRecords[0];
+						console.log(selectbox);
+						selectbox.up('.filterBar-Item-Relation').relationStore.getProxy().extraParams.relationColum = selected.get('id');
+						selectbox.up('.filterBar-Item-Relation').relationStore.getProxy().extraParams.relationTable = selected.get('relationTable');
+						selectbox.ownerCt.items.getAt(2).setDisabled(false);
 					}
 				}
 			},
@@ -66,18 +70,22 @@ Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 				xtype: 'combobox',
 				name: 'searchstring',
 				allowBlank: false,
+				forceSelection:true,
+				queryMode: 'remote',
 				typeAhead: true,
 				disabled: true,
+				hideTrigger:true,
+				queryDelay:50,
+				minChars:1,
+				displayField: 'title',
+				valueField: 'uid',
 				triggerCls: ""
 		}],
 		relationStore: null,
 		constructor: function() {
 			this.relationStore = Ext.create('Ext.data.Store', {
 				fields: [{name: 'title', type: 'string'}, {name: 'uid', type: 'int'}],
-				autoLoad: false,
-				queryMode: 'remote',
-				displayField: 'title',
-				valueField: 'uid',
+				autoLoad: true,
 				proxy: {
 					type: 'direct',
 					directFn: TYPO3.Vidi.Service.ExtDirect.GridData.getRelatedRecords,
@@ -103,22 +111,31 @@ Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 			this.callParent(arguments);
 		},
 		applyData: function() {
-			var input = this.items.getAt(1).items.getAt(1);
-			var comboOp = this.items.getAt(1).items.getAt(0);
+			var relatedRecordSelector = this.items.getAt(1).items.getAt(2);
+			var operatorSelector = this.items.getAt(1).items.getAt(1);
+			var relationSelector = this.items.getAt(1).items.getAt(0);
 
 			this.data = {
-				record : input.getValue(),
-				operator: comboOp.store.findRecord('id', comboOp.getValue()).data
+				record : relatedRecordSelector.store.findRecord('uid', relatedRecordSelector.getValue()).data,
+				operator: operatorSelector.store.findRecord('id', operatorSelector.getValue()).data,
+				relation : relationSelector.store.findRecord('id', relationSelector.getValue()).data
 			}
+			console.log(this.data);
 		},
 		updateInputs: function() {
 			var input = this.items.getAt(1).items.getAt(1);
 			var comboOp = this.items.getAt(1).items.getAt(0);
 
-			input.setValue(this.data.record);
+			input.setValue(this.data.record.id);
 			comboOp.setValue(this.data.operator.id);
 		},
 		serialize: function() {
-			return {type: 'relation', operator: this.data.operator.id, record: this.data.record.uid};
+			return {
+				type: 'relation',
+				operator: this.data.operator.id,
+				relationTable: this.data.relation.relationTable,
+				relationColumn: this.data.relation.id,
+				record: this.data.record.uid
+			};
 		}
 	});

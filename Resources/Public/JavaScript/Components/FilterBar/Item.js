@@ -100,7 +100,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item', {
 				twoCols: this.twoCols.display		// configure the layoutManager according to the settings
 			},
 			id: this.id + '-card-display',
-			items: this.displayItems	// add the items for Display
+			items: this.displayItems,	// add the items for Display,
 		}));
 
 			// add the card for editing the label
@@ -113,7 +113,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item', {
 				twoCols: this.twoCols.edit
 			},
 				// add the Items for Editing mode, and always add the button, to exit the Editing Mode.
-			items: Ext.Array.merge(this.editItems, [{col: 'right', xtype: 'button', text: 'OK', handler: this.toggleEditingMode, scope: this}])
+			items: Ext.Array.merge(this.editItems, [{col: 'right', xtype: 'button', text: 'OK', handler: this.toggleEditingMode, scope: this}]),
 		}));
 	},
 	listeners: {

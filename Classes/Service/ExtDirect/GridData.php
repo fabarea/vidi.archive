@@ -111,24 +111,29 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		$relationColumn = $parameters->relationColumn;
 		$typeAhead = $parameters->query;
 
-		$searchFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$this->table]['ctrl']['searchFields'], TRUE);
-		$array = array();
-		$like = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($typeAhead, $relatedTable), $relatedTable) . '%\'';
+		$data = array();
 
-		foreach ($searchFields AS $field) {
-			$array[] = $field . ' LIKE ' . $like;
+		if (array_key_exists($relatedTable, $GLOBALS['TCA'])) {
+			$searchFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$this->table]['ctrl']['searchFields'], TRUE);
+			$array = array();
+			$like = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($typeAhead, $relatedTable), $relatedTable) . '%\'';
+
+			foreach ($searchFields AS $field) {
+				$array[] = $field . ' LIKE ' . $like;
+			}
+			$searchQuery = ' (' . implode(' OR ', $array) . ') ';
+
+			$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid,' . $GLOBALS['TCA'][$relatedTable]['ctrl']['label'] . ' AS title',
+				$GLOBALS['TYPO3_DB']->quoteStr($relatedTable, $relatedTable),
+				'0=1 OR ' . $searchQuery
+			);
 		}
-		$searchQuery = ' (' . implode(' OR ', $array) . ') ';
-
-		$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'uid,' . $GLOBALS['TCA'][$relatedTable]['ctrl']['label'] . ' AS title',
-			$GLOBALS['TYPO3_DB']->quoteStr($relatedTable, $relatedTable),
-			$searchQuery
-		);
 
 		return array(
 			'data' => $data,
-			'total' => count($data)
+			'total' => count($data),
+			'debug' => $searchQuery
 		);
 	}
 
