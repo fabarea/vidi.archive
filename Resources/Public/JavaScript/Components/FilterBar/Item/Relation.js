@@ -123,11 +123,13 @@ Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 			console.log(this.data);
 		},
 		updateInputs: function() {
-			var input = this.items.getAt(1).items.getAt(1);
-			var comboOp = this.items.getAt(1).items.getAt(0);
+			var relatedRecordSelector = this.items.getAt(1).items.getAt(2);
+			var operatorSelector = this.items.getAt(1).items.getAt(1);
+			var relationSelector = this.items.getAt(1).items.getAt(0);
 
-			input.setValue(this.data.record.id);
-			comboOp.setValue(this.data.operator.id);
+			relationSelector.select(this.data.relation.id);
+			operatorSelector.select(this.data.operator.id);
+			relatedRecordSelector.select(this.data.record.uid);
 		},
 		serialize: function() {
 			return {

@@ -23,5 +23,10 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.Tree', {
 			}
 		});
 		this.callParent([config]);
+	},
+	listeners: {
+		itemclick: function(tree, record) {
+			tree.up('TYPO3-Vidi-Module-ContentBrowser-TreeRegion').addFilterToQuery(tree.ownerCt.treeIndex, record);
+		}
 	}
 });

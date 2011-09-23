@@ -71,6 +71,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	},
 	  {
 		  xtype: 'filterBar',
+		  id: 'TYPO3-VIDI-FilterBar',
 		  dock:'top'
 	  }],
 

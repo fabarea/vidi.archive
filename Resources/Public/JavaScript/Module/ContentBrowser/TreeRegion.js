@@ -19,8 +19,9 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
+
 Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
-	alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.TreeRegion',
+	alias: 'widget.TYPO3-Vidi-Module-ContentBrowser-TreeRegion',
 	extend: 'Ext.container.Container',
 	region: 'west',
 	width: 200,
@@ -37,10 +38,33 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		Ext.apply(this, config);
 		this.callParent();
 	},
+	addFilterToQuery: function(treeIndex, record) {
+		var relationFilter = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Relation',{
+			editMode: false
+		});
+		var treeConfig = TYPO3.TYPO3.Core.Registry.get('vidi/treeConfig');
+		var currentTable = TYPO3.TYPO3.Core.Registry.get('vidi/currentTable');
+		var relationColumn = null;
+		if (treeConfig[treeIndex].relationConfiguration[currentTable] != undefined) {
+			relationColumn = treeConfig[treeIndex].relationConfiguration[currentTable]['foreignField'];
+		} else if (treeConfig[treeIndex].relationConfiguration['*'] != undefined) {
+			relationColumn = treeConfig[treeIndex].relationConfiguration['*']['foreignField'];
+		}
+		if (relationColumn != null) {
+			relationFilter.data = {
+				'relation': Ext.StoreManager.get('TYPO3.Vidi.Stores.AvailableRelations').findRecord('id', relationColumn).data,
+				'operator': Ext.StoreManager.get('TYPO3.Vidi.Stores.FilterBar.RelationOperators').findRecord('id', '=').data,
+				'record': {uid: record.data.id, title: record.data.text}
+			};
+			relationFilter.updateInputs();
+			relationFilter.refresh();
+			Ext.ComponentManager.get('TYPO3-VIDI-FilterBar').add(relationFilter);
+		}
+
+	},
 	getTreeComponents: function() {
 		
 		var treeConfig = TYPO3.TYPO3.Core.Registry.get('vidi/treeConfig');
-		console.log(treeConfig);
 		var items = [];
 		Ext.Object.each(treeConfig, function(index, entry) {
 			var directFn = (entry.directFn != undefined && eval(entry.directFn) != undefined) ? entry.directFn : 'TYPO3.Vidi.Service.ExtDirect.TreeData.getTreeData';
