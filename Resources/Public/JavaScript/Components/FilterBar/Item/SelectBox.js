@@ -1,3 +1,4 @@
+Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.SelectBox');
 
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
@@ -19,42 +20,37 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-define([], function(Application) {
+/**
+ * @class TYPO3.Vidi.Components.FilterBar.Item.SelectBox
+ *
+ * preconfiguress a ExtJS Combobox to behave like an selectBox,
+ *
+ * @namespace TYPO3.Vidi.Components.FilterBar.SelectBox
+ * @extends Ext.form.field.ComboBox
+ */
+Ext.define('TYPO3.Vidi.Components.FilterBar.Item.SelectBox', {
+	extend: 'Ext.form.field.ComboBox',
+	alias: 'widget.select',
 
-	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.SelectBox');
+	queryMode: 'local',
+	displayField: 'display',
+	editable: false,
 
+	forceSelection: true,
+	valueField: 'id',
 	/**
-	 * @class TYPO3.Vidi.Components.FilterBar.Item.SelectBox
+	 * override the original validateValue, which returns true as soon as the value is not undefined
+	 * a SelectBox only is valid, when the input value is not empty.
 	 *
-	 * preconfiguress a ExtJS Combobox to behave like an selectBox,
-	 *
-	 * @namespace TYPO3.Vidi.Components.FilterBar.SelectBox
-	 * @extends Ext.form.field.ComboBox
+	 * @override
+	 * @param value
+	 * @return boolean
 	 */
-	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.SelectBox', {
-		extend: 'Ext.form.field.ComboBox',
-		alias: 'widget.select',
-
-		queryMode: 'local',
-		displayField: 'display',
-		editable: false,
-
-		forceSelection: true,
-		valueField: 'id',
-		/**
-		 * override the original validateValue, which returns true as soon as the value is not undefined
-		 * a SelectBox only is valid, when the input value is not empty.
-		 *
-		 * @override
-		 * @param value
-		 * @return boolean
-		 */
-		validateValue: function(value) {
-			if (value == "") {
-				this.markInvalid("Please Select");
-				return false;
-			}
-			return true;
+	validateValue: function(value) {
+		if (value == "") {
+			this.markInvalid("Please Select");
+			return false;
 		}
-	});
+		return true;
+	}
 });

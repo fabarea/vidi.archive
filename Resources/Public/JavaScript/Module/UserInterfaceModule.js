@@ -23,41 +23,39 @@
  * Register and configure the Module
  * 
  */
-define(['Vidi/Core/Application', 'Vidi/Module/UserInterface/BaseModule', 'Vidi/Module/ContentBrowser/ContentBrowserView', 'Vidi/Module/UserInterface/Tree'], function(Application) {
 
-	console.log("Registering Module Layout");
-	
-	// Register Layout Module
-	Application.registerModule({
-		configure: function() {
-			
-			console.log("Configuring User Interface module");
+console.log("Registering Module Layout");
 
-			TYPO3.TYPO3.Core.Registry.set('vidi/docheader/top', ['btn1', '->', 'btn2'], 1);
-			TYPO3.TYPO3.Core.Registry.set('vidi/docheader/bottom', ['->', 'btn'], 1);
-			TYPO3.TYPO3.Core.Registry.set('vidi/treeConfig', {}, 1);
+// Register Layout Module
+TYPO3.Vidi.Application.registerModule({
+	configure: function() {
 
-			TYPO3.TYPO3.Core.Registry.set('vidi/DataProviderRegistry/GridData', 'TYPO3.Vidi.Service.ExtDirect.GridData.getRecords');
+		console.log("Configuring User Interface module");
 
-			TYPO3.TYPO3.Core.Registry.set('vidi/mainModule', {
-					xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView',
-					region: 'center',
-					id: 'typo3-inner-docbody'
-				});
+		TYPO3.TYPO3.Core.Registry.set('vidi/docheader/top', ['btn1', '->', 'btn2'], 1);
+		TYPO3.TYPO3.Core.Registry.set('vidi/docheader/bottom', ['->', 'btn'], 1);
+		TYPO3.TYPO3.Core.Registry.set('vidi/treeConfig', {}, 1);
 
-		}
-	});
-	
-		// Register Event
-	Application.on(
-		'TYPO3.Vidi.Application.run',
-		function(e) {
-			Ext.ns('TYPO3.Vidi');
-			TYPO3.Vidi.Module = Ext.create('TYPO3.Vidi.Module.UserInterface.BaseModule');
+		TYPO3.TYPO3.Core.Registry.set('vidi/DataProviderRegistry/GridData', 'TYPO3.Vidi.Service.ExtDirect.GridData.getRecords');
 
-		},
-		this
-	);
-
-
+		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule', {
+				xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView',
+				region: 'center',
+				id: 'typo3-inner-docbody'
+			});
+	}
 });
+
+	// Register Event
+TYPO3.Vidi.Application.on(
+	'TYPO3.Vidi.Application.run',
+	function() {
+		Ext.ns('TYPO3.Vidi');
+		TYPO3.Vidi.Module = Ext.create('TYPO3.Vidi.Module.UserInterface.BaseModule');
+		Ext.data.StoreManager.each(function(item) {
+			if(item.proxy.type = 'direct') {
+				item.load();
+			}
+		});
+	}
+);

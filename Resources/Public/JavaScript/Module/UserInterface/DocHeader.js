@@ -1,5 +1,3 @@
-"use strict";
-
 Ext.ns("TYPO3.Vidi.Module.UserInterface");
 	
 /*                                                                        *
@@ -21,102 +19,98 @@ Ext.ns("TYPO3.Vidi.Module.UserInterface");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Application', 'Vidi/Core/Registry'], function(Application, Registry, Layout) {
+/**
+ * @class TYPO3.Vidi.Module.UserInterface.DocHeader
+ *
+ * The outermost user interface component.
+ *
+ * @namespace TYPO3.Vidi.Module.UserInterface
+ * @extends Ext.Panel
+ */
+Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
+	extend: 'Ext.Panel',
+	alias: 'widget.TYPO3.Vidi.Module.UserInterface.DocHeader',
 
-	/**
-	 * @class TYPO3.Vidi.Module.UserInterface.DocHeader
-	 * 
-	 * The outermost user interface component.
-	 * 
-	 * @namespace TYPO3.Vidi.Module.UserInterface
-	 * @extends Ext.Panel
-	 */
-	Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
-		extend: 'Ext.Panel',
-		alias: 'widget.TYPO3.Vidi.Module.UserInterface.DocHeader',
-
-		initComponent: function() {
+	initComponent: function() {
 
 
-			var config = {
-				xtype: 'panel',
-				id: 'typo3-docheader',
-				border: false,
-				height: 54,
-				dockedItems: [{
-						xtype: 'toolbar',
-						// @todo: put that into class
-						style: {
-							backgroundColor: '#585858',
-						},
-						dock: 'top',
-						items: this._getItems('top')
-					} , {
+		var config = {
+			xtype: 'panel',
+			id: 'typo3-docheader',
+			border: false,
+			height: 54,
+			dockedItems: [{
+					xtype: 'toolbar',
+					// @todo: put that into class
+					style: {
+						backgroundColor: '#585858',
+					},
+					dock: 'top',
+					items: this._getItems('top')
+				} , {
 
-						// @todo: put that into class
-						style: {
-							backgroundColor: '#DADADA',
-						},
-						xtype: 'toolbar',
-						dock: 'bottom',
-						items: this._getItems('bottom')
+					// @todo: put that into class
+					style: {
+						backgroundColor: '#DADADA',
+					},
+					xtype: 'toolbar',
+					dock: 'bottom',
+					items: this._getItems('bottom')
 
-					}]
-			}
-			
-		
-			Ext.apply(this, config);
-			TYPO3.Vidi.Module.UserInterface.DocHeader.superclass.initComponent.call(this);
-		},
-		
-		/**
-		 * @private
-		 * @return {Array} an array items, fetched from the registry.
-		 */
-		_getItems: function(position) {
-			var items, config;
-			
-			items = [];
-			config = TYPO3.TYPO3.Core.Registry.get('vidi/docheader/' + position);
-			Ext.each(config, function(item) {
-				if (item == '->') {
-					items.push('->');
-					
-				}
-				else {
-					items.push(this._getComponent(item));
-				}
-			}, this);
-			
-			return items;
-		},
-		
-		
-		/**
-		 * @private
-		 * @return {Object}
-		 */
-		_getComponent: function(item) {
-			var configuration;
-			
-			configuration = {
-//				text: 'Action menu',
-//				menu: [action] // Add the action directly to a menu
-			};
-			
-			configuration = Ext.create('Ext.Action', {
-				text: item,
-				iconCls: 'icon-add',
-				handler: function(){
-					//Ext.example.msg('Click', 'You clicked on "Action 1".');
-					console.log(item)
-				}
-			});
-			
-			return configuration;
+				}]
 		}
 
-	});
-	
+
+		Ext.apply(this, config);
+		TYPO3.Vidi.Module.UserInterface.DocHeader.superclass.initComponent.call(this);
+	},
+
+	/**
+	 * @private
+	 * @return {Array} an array items, fetched from the registry.
+	 */
+	_getItems: function(position) {
+		var items, config;
+
+		items = [];
+		config = TYPO3.TYPO3.Core.Registry.get('vidi/docheader/' + position);
+		Ext.each(config, function(item) {
+			if (item == '->') {
+				items.push('->');
+
+			}
+			else {
+				items.push(this._getComponent(item));
+			}
+		}, this);
+
+		return items;
+	},
+
+
+	/**
+	 * @private
+	 * @return {Object}
+	 */
+	_getComponent: function(item) {
+		var configuration;
+
+		configuration = {
+//				text: 'Action menu',
+//				menu: [action] // Add the action directly to a menu
+		};
+
+		configuration = Ext.create('Ext.Action', {
+			text: item,
+			iconCls: 'icon-add',
+			handler: function(){
+				//Ext.example.msg('Click', 'You clicked on "Action 1".');
+				console.log(item)
+			}
+		});
+
+		return configuration;
+	}
+
 });
 

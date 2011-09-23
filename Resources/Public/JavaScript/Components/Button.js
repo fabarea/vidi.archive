@@ -1,4 +1,3 @@
-"use strict";
 
 Ext.ns("TYPO3.Vidi.Components");
 	
@@ -21,42 +20,39 @@ Ext.ns("TYPO3.Vidi.Components");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Application'], function(Application) {
+/**
+ * @class TYPO3.Vidi.Components.Button
+ *
+ * An extended Ext.Button Component with clean markup, ready to be styled by CSS3.
+ *
+ * @namespace TYPO3.Vidi.Components
+ * @extends Ext.Button
+ */
+Ext.define('TYPO3.Vidi.Components.Button', {
 
 	/**
-	 * @class TYPO3.Vidi.Components.Button
-	 * 
-	 * An extended Ext.Button Component with clean markup, ready to be styled by CSS3.
-	 * 
-	 * @namespace TYPO3.Vidi.Components
-	 * @extends Ext.Button
+	 * The Component being extended
+	 *
+	 * @cfg {String}
 	 */
-	Ext.define('TYPO3.Vidi.Components.Button', {
-		
-		/**
-		 * The Component being extended
-		 *
-		 * @cfg {String}
-		 */
-		extend: 'Ext.Button',
-		
-		/**
-		 * The Alias of the Component - "xtype" 
-		 *
-		 * @cfg {String}
-		 */
-		alias: 'widget.TYPO3.Vidi.Components.Button',
+	extend: 'Ext.Button',
 
-		buttonSelector: 'button span:first-child',
-		menuClassTarget: 'button span',
+	/**
+	 * The Alias of the Component - "xtype"
+	 *
+	 * @cfg {String}
+	 */
+	alias: 'widget.TYPO3.Vidi.Components.Button',
 
-		template: new Ext.Template(
-			'<div id="{2}" class="TYPO3-TYPO3-Components-Button"><button type="{0}" class="{1}"><span></span></button></div>'
-		).compile(),
+	buttonSelector: 'button span:first-child',
+	menuClassTarget: 'button span',
 
-		getTemplateArgs: function() {
-			return [this.type, this.cls + ' TYPO3-TYPO3-Components-Button-scale-' + this.scale, this.id];
-		}
-	});
+	template: new Ext.Template(
+		'<div id="{2}" class="TYPO3-TYPO3-Components-Button"><button type="{0}" class="{1}"><span></span></button></div>'
+	).compile(),
+
+	getTemplateArgs: function() {
+		return [this.type, this.cls + ' TYPO3-TYPO3-Components-Button-scale-' + this.scale, this.id];
+	}
 });
 

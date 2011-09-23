@@ -1,5 +1,4 @@
-
-
+Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -19,18 +18,7 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/SelectBox'], function(Application) {
 
-	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
-	
-		// Define a store which has all available Operators
-	TYPO3.Vidi.Components.FilterBar.Item.Relation.Operators = Ext.create('Ext.data.Store', {
-		fields: ['display', 'id'],
-		data : [
-			{display: "is", id: '=' },
-			{display: "is not", id: '!='}
-		]
-	});
 
 	/**
 	 * @class TYPO3.Vidi.Components.FilterBar.Item.Relation
@@ -44,7 +32,7 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 		alias: 'widget.filterBar-Item-Relation',
 		componentCls: 'vidi-filterBar-Item-green',
-		data: {record: '', operator: TYPO3.Vidi.Components.FilterBar.Item.Relation.Operators.findRecord('id', '=').data},
+		data: {relation: {}, record: '', operator: {}},
 		displayItems: [
 			{
 				col: 'left',
@@ -61,14 +49,59 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 		editItems: [
 			{
 				xtype: 'select',
-				fieldLabel: 'Record',
-				store: TYPO3.Vidi.Components.FilterBar.Item.Relation.Operators
+				fieldLabel: 'Relation',
+				store: 'TYPO3.Vidi.Stores.AvailableRelations',
+				listeners: {
+					select: function(selectbox, currentRecords) {
+						
+					}
+				}
 			},
 			{
-				xtype: 'textfield',
+				xtype: 'select',
+				fieldLabel: 'Record',
+				store: 'TYPO3.Vidi.Stores.FilterBar.RelationOperators'
+			},
+			{
+				xtype: 'combobox',
 				name: 'searchstring',
-				allowBlank: false
+				allowBlank: false,
+				typeAhead: true,
+				disabled: true,
+				triggerCls: ""
 		}],
+		relationStore: null,
+		constructor: function() {
+			this.relationStore = Ext.create('Ext.data.Store', {
+				fields: [{name: 'title', type: 'string'}, {name: 'uid', type: 'int'}],
+				autoLoad: false,
+				queryMode: 'remote',
+				displayField: 'title',
+				valueField: 'uid',
+				proxy: {
+					type: 'direct',
+					directFn: TYPO3.Vidi.Service.ExtDirect.GridData.getRelatedRecords,
+					extraParams: {
+						'moduleCode': '',
+						'relationTable': '',
+						'relationColum': '',
+						'query': ''
+					},
+					reader: {
+						type: 'json',
+						root: 'data',
+						totalProperty: 'total'
+					}
+				},
+				listeners: {
+					beforeLoad: function() {
+						this.proxy.extraParams.moduleCode = TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode');
+					}
+				}
+			});
+			this.editItems[2].store = this.relationStore;
+			this.callParent(arguments);
+		},
 		applyData: function() {
 			var input = this.items.getAt(1).items.getAt(1);
 			var comboOp = this.items.getAt(1).items.getAt(0);
@@ -89,4 +122,3 @@ define(['Vidi/Components/FilterBar/Item', 'Vidi/Components/FilterBar/Item/Select
 			return {type: 'relation', operator: this.data.operator.id, record: this.data.record.uid};
 		}
 	});
-});

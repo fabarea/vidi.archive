@@ -21,107 +21,104 @@ Ext.ns("TYPO3.Vidi.Core");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Registry'], function() {
-	
+
+/**
+ * @class TYPO3.Vidi.Core.Application
+ *
+ * The main entry point which controls the lifecycle of the application.
+ *
+ * This is the main event handler of the application.
+ *
+ * @namespace TYPO3.Vidi.Core
+ * @extends Ext.util.Observable
+ * @singleton
+ */
+TYPO3.Vidi.Application = Ext.apply(new Ext.util.Observable(), {
+
 	/**
-	 * @class TYPO3.Vidi.Core.Application
-	 *
-	 * The main entry point which controls the lifecycle of the application.
-	 *
-	 * This is the main event handler of the application.
-	 *
-	 * @namespace TYPO3.Vidi.Core
-	 * @extends Ext.util.Observable
-	 * @singleton
+	 * List of all modules which have been registered
+	 * @private
 	 */
-	TYPO3.Vidi.Application = Ext.apply(new Ext.util.Observable(), {
+	_modules: [],
 
-		/**
-		 * List of all modules which have been registered
-		 * @private
-		 */
-		_modules: [],
+	registerModule: function(module) {
+		this._modules.push(module);
+	},
 
-		registerModule: function(module) {
-			this._modules.push(module);
-		},
-
-		initialize: function() {
-			TYPO3.TYPO3.Core.Registry.initialize();
-			for (var i in this._modules) {
-				console.log('init module');
-				this._modules[i].configure();
-			}
-
-			Ext.QuickTips.init();
-			this.fireEvent('TYPO3.Vidi.Application.afterBootstrap');
-		},
-		processModuleAdaption: function(callback) {
-			//callback(Registry);
-			this.fireEvent('TYPO3.Vidi.Application.afterModuleAdaption');
-		},
-		run: function() {
-			console.log("Running Application");
-			TYPO3.TYPO3.Core.Registry.compile();
-			this.fireEvent('TYPO3.Vidi.Application.run');
-		},
-
-
-		/**
-		 * Hides the loading message of the application
-		 *
-		 */
-		_registerEventBeforeLoading: function() {
-			this.on(
-				'TYPO3.Vidi.Application.busy',
-				function() {
-					Ext.get('loading-mask').setStyle({
-						visibility: 'visible',
-						top: 0,
-						left: 0,
-						width: '100%',
-						height: '100%',
-						opacity: 0.4
-					});
-					Ext.get('loading').setStyle({
-						visibility: 'visible',
-						opacity: 1
-					});
-				},
-				this
-			);
-		},
-		/**
-		 * Hides the loading message of the application
-		 *
-		 */
-		_registerEventAfterLoading: function() {
-			this.on(
-				'TYPO3.Vidi.Application.afterbusy',
-				function() {
-					var loading;
-					loading = Ext.get('loading');
-
-					//  Hide loading message
-					loading.fadeOut({
-						duration: 0.2,
-						remove: false
-					});
-
-					//  Hide loading mask
-					Ext.get('loading-mask').shift({
-						xy: loading.getXY(),
-						width: loading.getWidth(),
-						height: loading.getHeight(),
-						remove: false,
-						duration: 0.35,
-						opacity: 0,
-						easing: 'easeOut'
-					});
-				},
-				this
-			);
+	initialize: function() {
+		TYPO3.TYPO3.Core.Registry.initialize();
+		for (var i in this._modules) {
+			console.log('init module');
+			this._modules[i].configure();
 		}
-	});
-	return TYPO3.Vidi.Application;
+
+		Ext.QuickTips.init();
+		this.fireEvent('TYPO3.Vidi.Application.afterBootstrap');
+	},
+	processModuleAdaption: function(callback) {
+		//callback(Registry);
+		this.fireEvent('TYPO3.Vidi.Application.afterModuleAdaption');
+	},
+	run: function() {
+		console.log("Running Application");
+		TYPO3.TYPO3.Core.Registry.compile();
+		this.fireEvent('TYPO3.Vidi.Application.run');
+	},
+
+
+	/**
+	 * Hides the loading message of the application
+	 *
+	 */
+	_registerEventBeforeLoading: function() {
+		this.on(
+			'TYPO3.Vidi.Application.busy',
+			function() {
+				Ext.get('loading-mask').setStyle({
+					visibility: 'visible',
+					top: 0,
+					left: 0,
+					width: '100%',
+					height: '100%',
+					opacity: 0.4
+				});
+				Ext.get('loading').setStyle({
+					visibility: 'visible',
+					opacity: 1
+				});
+			},
+			this
+		);
+	},
+	/**
+	 * Hides the loading message of the application
+	 *
+	 */
+	_registerEventAfterLoading: function() {
+		this.on(
+			'TYPO3.Vidi.Application.afterbusy',
+			function() {
+				var loading;
+				loading = Ext.get('loading');
+
+				//  Hide loading message
+				loading.fadeOut({
+					duration: 0.2,
+					remove: false
+				});
+
+				//  Hide loading mask
+				Ext.get('loading-mask').shift({
+					xy: loading.getXY(),
+					width: loading.getWidth(),
+					height: loading.getHeight(),
+					remove: false,
+					duration: 0.35,
+					opacity: 0,
+					easing: 'easeOut'
+				});
+			},
+			this
+		);
+	}
 });

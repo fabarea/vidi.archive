@@ -1,3 +1,4 @@
+Ext.ns('TYPO3.Vidi.Module.UserInterface.Tree');
 
 Ext.define('TYPO3.Vidi.Module.UserInterface.Tree', {
 	alias: 'widget.TYPO3.Vidi.Module.UserInterface.Tree',

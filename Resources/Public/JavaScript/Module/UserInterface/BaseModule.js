@@ -20,42 +20,40 @@ Ext.ns("TYPO3.Vidi.Module.UserInterface");
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-define(['Vidi/Core/Application', 'Vidi/Core/Registry', 'Vidi/Module/UserInterface/DocHeader'], function(Application, Registry) {
-	
+
+/**
+ * @class TYPO3.Vidi.Module.UserInterface.DocHeader
+ *
+ * The outermost user interface component.
+ *
+ * @namespace TYPO3.Vidi.Module.UserInterface
+ * @extends Ext.Viewport
+ */
+TYPO3.Vidi.Module.UserInterface.BaseModule = Ext.extend(Ext.Viewport, {
+
+	initComponent: function() {
+
+		var config = {
+			renderTo: 'typo3-mod-php',
+			layout:'border',
+			cls: 'typo3-fullDoc',
+			items: [
+				this._docHeader,
+				TYPO3.TYPO3.Core.Registry.get('vidi/mainModule')
+			]
+		};
+
+		Ext.apply(this, config);
+		TYPO3.Vidi.Module.UserInterface.BaseModule.superclass.initComponent.call(this);
+	},
+
 	/**
-	 * @class TYPO3.Vidi.Module.UserInterface.DocHeader
-	 * 
-	 * The outermost user interface component.
-	 * 
-	 * @namespace TYPO3.Vidi.Module.UserInterface
-	 * @extends Ext.Viewport
+	 * default items
+	 * @private
 	 */
-	TYPO3.Vidi.Module.UserInterface.BaseModule = Ext.extend(Ext.Viewport, {
-
-		initComponent: function() {
-
-			var config = {
-				renderTo: 'typo3-mod-php',
-				layout:'border',
-				cls: 'typo3-fullDoc',
-				items: [
-					this._docHeader,
-					TYPO3.TYPO3.Core.Registry.get('vidi/mainModule')
-				]
-			};
-
-			Ext.apply(this, config);
-			TYPO3.Vidi.Module.UserInterface.BaseModule.superclass.initComponent.call(this);
-		},
-		
-		/**
-		 * default items
-		 * @private
-		 */
-		_docHeader: {
-			region: 'north',
-			xtype: 'TYPO3.Vidi.Module.UserInterface.DocHeader'
-		}
-	});
+	_docHeader: {
+		region: 'north',
+		xtype: 'TYPO3.Vidi.Module.UserInterface.DocHeader'
+	}
 });
 

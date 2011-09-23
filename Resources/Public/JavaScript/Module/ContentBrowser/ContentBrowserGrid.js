@@ -19,131 +19,129 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Core/Application'], function(Application) {
+
+/**
+ * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid
+ *
+ * The outermost user interface component.
+ *
+ * @namespace TYPO3.Vidi.Module.ContentBrowser
+ * @extends Ext.Panel
+ */
+Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 
 	/**
-	 * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid
-	 * 
-	 * The outermost user interface component.
-	 * 
-	 * @namespace TYPO3.Vidi.Module.ContentBrowser
-	 * @extends Ext.Panel
+	 * The Component being extended
+	 *
+	 * @cfg {String}
 	 */
-	Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
-		
-		/**
-		 * The Component being extended
-		 *
-		 * @cfg {String}
-		 */
-		extend: 'Ext.grid.Panel',
-		
-		/**
-		 * The Alias of the Component - "xtype" 
-		 *
-		 * @cfg {String}
-		 */
-		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid',
+	extend: 'Ext.grid.Panel',
 
-		/**
-		 * The store 
-		 *
-		 * @type {Object}
-		 */
-		store: null,
+	/**
+	 * The Alias of the Component - "xtype"
+	 *
+	 * @cfg {String}
+	 */
+	alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid',
 
-		/**
-		 * The selection type
-		 *
-		 * @cfg {String}
-		 */
-		selType: 'cellmodel',
+	/**
+	 * The store
+	 *
+	 * @type {Object}
+	 */
+	store: null,
 
-		win:null,
-		loadMask: true,
-		disableSelection: true,
-		invalidateScrollerOnRefresh: false,
+	/**
+	 * The selection type
+	 *
+	 * @cfg {String}
+	 */
+	selType: 'cellmodel',
 
-		dockedItems: [{
-			xtype: 'pagingtoolbar',
-			store: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',   // same store GridPanel is using
-			dock: 'bottom',
-			displayInfo: true
-		},
-		  {
-			  xtype: 'filterBar',
-			  dock:'top'
-		  }],
+	win:null,
+	loadMask: true,
+	disableSelection: true,
+	invalidateScrollerOnRefresh: false,
 
-		/**
-		 * Initializer
-		 */
-		initComponent: function() {
-			
-			// Initialize the store
-			this._initStore();
+	dockedItems: [{
+		xtype: 'pagingtoolbar',
+		store: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',   // same store GridPanel is using
+		dock: 'bottom',
+		displayInfo: true
+	},
+	  {
+		  xtype: 'filterBar',
+		  dock:'top'
+	  }],
 
-			// Default configuration
-			var config = {
-				store: this.store,
-				columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')['tt_content'],
-				height: 200,
-				width: '100%'
-			};
+	/**
+	 * Initializer
+	 */
+	initComponent: function() {
 
-			Ext.apply(this, config);
-			this.callParent();
-		},
+		// Initialize the store
+		this._initStore();
+
+		// Default configuration
+		var config = {
+			store: this.store,
+			columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')['tt_content'],
+			height: 200,
+			width: '100%'
+		};
+
+		Ext.apply(this, config);
+		this.callParent();
+	},
 
 
-		/**
-		 * When object is rendered
-		 *
-		 * @access public
-		 * @method onRender
-		 * @return void
-		 */
-		onRender: function() {
-			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid.superclass.onRender.apply(this, arguments);
-			//this.callParent();
-		},
+	/**
+	 * When object is rendered
+	 *
+	 * @access public
+	 * @method onRender
+	 * @return void
+	 */
+	onRender: function() {
+		TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid.superclass.onRender.apply(this, arguments);
+		//this.callParent();
+	},
 
 
-		/**
-		 * Initialize the store
-		 *
-		 * @access private
-		 * @method _initStore
-		 * @return void
-		 */
-		_initStore: function() {
-			this.store = Ext.create('Ext.data.Store', {
-				storeId: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',
-				//directFn: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData')),
-				buffered: true,
-				pageSize: 20,
-				idProperty: 'uid',
-				autoLoad: true,
-				proxy: {
-					type: 'direct',
-					api: {
-						read: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData'))
-					},
-					extraParams: {
-						'moduleCode': TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode'),
-						'query': ''
-					},
-					reader: {
-						type: 'json',
-						root: 'data',
-						totalProperty: 'total'
-					},
-					simpleSortMode: false
+	/**
+	 * Initialize the store
+	 *
+	 * @access private
+	 * @method _initStore
+	 * @return void
+	 */
+	_initStore: function() {
+		this.store = Ext.create('Ext.data.Store', {
+			storeId: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',
+			//directFn: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData')),
+			buffered: true,
+			pageSize: 20,
+			idProperty: 'uid',
+			autoLoad: true,
+			proxy: {
+				type: 'direct',
+				api: {
+					read: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData'))
 				},
-				remoteFilter: true,
-				remoteSort: true,
-				fields: TYPO3.TYPO3.Core.Registry.get('vidi/fieldConfiguration')['tt_content']
-			});
-		}
-	});
+				extraParams: {
+					'moduleCode': TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode'),
+					'query': ''
+				},
+				reader: {
+					type: 'json',
+					root: 'data',
+					totalProperty: 'total'
+				},
+				simpleSortMode: false
+			},
+			remoteFilter: true,
+			remoteSort: true,
+			fields: TYPO3.TYPO3.Core.Registry.get('vidi/fieldConfiguration')['tt_content']
+		});
+	}
 });

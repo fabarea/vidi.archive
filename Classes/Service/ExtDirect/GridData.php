@@ -68,16 +68,63 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
 		$data = array();
 		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $column => $configuration) {
-			if ($this->hasAccessToColumn($column)) {
+			if ($this->hasAccessToColumn($column) && ($type = $this->detectExtJSType($configuration['config'])) != 'relation') {
 				$field = array(
 					'title' => $GLOBALS['LANG']->sL($configuration['label']),
 					'name' => $column,
-					'type' => $this->detectExtJSType($configuration['config'])
+					'type' => $type
 				);
-
 				$data[] = $field;
 			}
 		}
+
+		return array(
+			'data' => $data,
+			'total' => count($data)
+		);
+	}
+
+	public function getTableRelationFields($parameters) {
+		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
+		$relations = array();
+		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $column => $configuration) {
+			if ($this->hasAccessToColumn($column) && $this->detectExtJSType($configuration['config']) == 'relation') {
+				$field = array(
+					'title' => $GLOBALS['LANG']->sL($configuration['label']) . ' (' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$configuration['config']['foreign_table']]['ctrl']['title']) . ')',
+					'column' => $column,
+					'relationTable' => $configuration['config']['foreign_table'],
+					'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$configuration['config']['foreign_table']]['ctrl']['title'])
+				);
+				$relations[] = $field;
+			}
+		}
+
+		return array(
+			'data' => $relations,
+			'total' => count($relations)
+		);
+	}
+
+	public function getRelatedRecords($parameters) {
+		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
+		$relatedTable = $parameters->relationTable;
+		$relationColumn = $parameters->relationColumn;
+		$typeAhead = $parameters->query;
+
+		$searchFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$this->table]['ctrl']['searchFields'], TRUE);
+		$array = array();
+		$like = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($typeAhead, $relatedTable), $relatedTable) . '%\'';
+
+		foreach ($searchFields AS $field) {
+			$array[] = $field . ' LIKE ' . $like;
+		}
+		$searchQuery = ' (' . implode(' OR ', $array) . ') ';
+
+		$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'uid,' . $GLOBALS['TCA'][$relatedTable]['ctrl']['label'] . ' AS title',
+			$GLOBALS['TYPO3_DB']->quoteStr($relatedTable, $relatedTable),
+			$searchQuery
+		);
 
 		return array(
 			'data' => $data,
@@ -169,6 +216,22 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 					$type = 'boolean';
 				} else {
 					$type = 'int';
+				}
+				break;
+			case 'select':
+				if ($configuration['foreign_table']) {
+					$type = 'relation';
+				} else {
+					$type = 'auto';
+				}
+				break;
+			case 'group':
+				if ($configuration['internal_type'] == 'db') {
+					$type = 'relation';
+				} elseif($configuration['internal_type'] == 'file' || $configuration['internal_type'] == 'file_reference') {
+					$type = 'file';
+				} else {
+					$type = 'auto';
 				}
 				break;
 			default:

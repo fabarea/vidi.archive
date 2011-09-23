@@ -229,6 +229,35 @@ class Tx_Vidi_Service_ModuleLoader {
 	}
 
 	public static function checkAndCreateStarterFile($moduleCode) {
+		$jsFiles = array(
+				'Vidi/Core/Registry',
+				'Vidi/Core/Application',
+				'Vidi/Module/UserInterfaceModule',
+				'Vidi/Utils',
+				'Vidi/Module/ContentBrowser/ContentBrowserGrid',
+				'Vidi/Module/ContentBrowser/ContentBrowserView',
+				'Vidi/Module/ContentBrowser/TreeRegion',
+				'Vidi/Module/UserInterface/BaseModule',
+				'Vidi/Module/UserInterface/DocHeader',
+				'Vidi/Module/UserInterface/Tree',
+				'Vidi/Components/FilterBar',
+				'Vidi/Components/Button',
+				'Vidi/Components/FilterBar/Item',
+				'Vidi/Components/FilterBar/Item/Collection',
+				'Vidi/Components/FilterBar/Item/Field',
+				'Vidi/Components/FilterBar/Item/Fulltext',
+				'Vidi/Components/FilterBar/Item/Operator',
+				'Vidi/Components/FilterBar/Item/Relation',
+				'Vidi/Components/FilterBar/Item/SelectBox',
+				'Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout',
+				'Vidi/Components/FilterBar/Item/Layout/InnerLayout',
+				'Vidi/Stores/AvailableFields',
+				'Vidi/Stores/AvailableRelations',
+				'Vidi/Stores/FilterBar/CollectionOperators',
+				'Vidi/Stores/FilterBar/FieldOperators',
+				'Vidi/Stores/FilterBar/RelationOperators',
+				'Vidi/Stores/FilterBar/Operators',
+		);
 		$configuration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
 		$configurationHash = md5(serialize($configuration));
 
@@ -247,7 +276,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				$files[] = $configuration['extKey'] . '/' . str_replace('.js', '', $value);
 			}
 
-			$starterCode = 'define(["Vidi/Core/Application","Vidi/Module/UserInterfaceModule","Vidi/Utils"], function(Application) {' . LF . "\tApplication.initialize();\n\n";
+			$starterCode = 'require(["' . implode('","', $jsFiles) . '"], function() {' . LF . "\nTYPO3.Vidi.Application.initialize();\n\n";
 
 			if (count($files)) {
 				$files = '["' . implode('","', $files) . '"]';
@@ -275,7 +304,7 @@ class Tx_Vidi_Service_ModuleLoader {
 			$starterCode .= self::createRegistryCode('vidi/moduleCode', $moduleCode);
 			$starterCode .= self::createRegistryCode('vidi/currentTable', $configuration['allowedDataTypes'][0]);
 			
-			$starterCode .= "\n\tApplication.run();\n});";
+			$starterCode .= "\n\nTYPO3.Vidi.Application.run();\n});";
 
 			t3lib_div::writeFileToTypo3tempDir(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js', $starterCode);
 		}

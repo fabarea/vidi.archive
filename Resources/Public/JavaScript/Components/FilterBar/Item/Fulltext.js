@@ -1,4 +1,4 @@
-
+Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Fulltext');
 
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
@@ -19,45 +19,43 @@
  *                                                                        *
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
-define(['Vidi/Components/FilterBar/Item'], function(Application) {
-	Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Fulltext');
 
-	/**
-	 * @class TYPO3.Vidi.Components.FilterBar.Item.Fulltext
-	 *
-	 * A concrete implementation of a FilterBar Item, for Filtering via a fulltext search within all textfields
-	 *
-	 * @namespace TYPO3.Vidi.Components.FilterBar.Fulltext
-	 * @extends TYPO3.Vidi.Components.FilterBar.Item
-	 */
-	Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Fulltext', {
-		extend: 'TYPO3.Vidi.Components.FilterBar.Item',
-		alias: 'widget.filterBar-Item-Fulltext',
-		componentCls: 'vidi-filterBar-Item-blue',
 
-		twoCols: {
-			edit: false,
-			display: false
-		},
-		displayItems: [{
-						   xtype: 'component',
-						   data: { string: ''},
-						   tpl: '<strong>{string}</strong>'
-					   }],
-		editItems: [{
-						xtype: 'textfield',
-						name: 'searchstring',
-						allowBlank: false,
-						fieldLabel: 'Fulltext'
-					}],
-		applyData: function() {
-			var input = this.items.getAt(1).items.getAt(0);
-			this.data = {
-				string : input.getValue()
-			}
-		},
-		serialize: function() {
-			return {type: 'fulltext', string: this.data.string};
+/**
+ * @class TYPO3.Vidi.Components.FilterBar.Item.Fulltext
+ *
+ * A concrete implementation of a FilterBar Item, for Filtering via a fulltext search within all textfields
+ *
+ * @namespace TYPO3.Vidi.Components.FilterBar.Fulltext
+ * @extends TYPO3.Vidi.Components.FilterBar.Item
+ */
+Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Fulltext', {
+	extend: 'TYPO3.Vidi.Components.FilterBar.Item',
+	alias: 'widget.filterBar-Item-Fulltext',
+	componentCls: 'vidi-filterBar-Item-blue',
+
+	twoCols: {
+		edit: false,
+		display: false
+	},
+	displayItems: [{
+					   xtype: 'component',
+					   data: { string: ''},
+					   tpl: '<strong>{string}</strong>'
+				   }],
+	editItems: [{
+					xtype: 'textfield',
+					name: 'searchstring',
+					allowBlank: false,
+					fieldLabel: 'Fulltext'
+				}],
+	applyData: function() {
+		var input = this.items.getAt(1).items.getAt(0);
+		this.data = {
+			string : input.getValue()
 		}
-	});
+	},
+	serialize: function() {
+		return {type: 'fulltext', string: this.data.string};
+	}
 });

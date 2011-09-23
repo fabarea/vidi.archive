@@ -1,7 +1,5 @@
-"use strict";
-
 Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
-	
+
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -22,56 +20,54 @@ Ext.ns("TYPO3.Vidi.Module.ContentBrowser");
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-define(['Vidi/Core/Application', 'Vidi/Module/ContentBrowser/ContentBrowserGrid', 'Vidi/Components/FilterBar', 'Vidi/Module/ContentBrowser/TreeRegion'], function(Application) {
+
+/**
+ * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView
+ *
+ * The outermost user interface component.
+ *
+ * @namespace TYPO3.Vidi.Module.ContentBrowser
+ * @extends Ext.Panel
+ */
+Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {
 
 	/**
-	 * @class TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView
-	 * 
-	 * The outermost user interface component.
-	 * 
-	 * @namespace TYPO3.Vidi.Module.ContentBrowser
-	 * @extends Ext.Panel
+	 * The Component being extended
+	 *
+	 * @cfg {String}
 	 */
-	return Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {
-		
-		/**
-		 * The Component being extended
-		 *
-		 * @cfg {String}
-		 */
-		extend: 'Ext.container.Container',
-		
-		/**
-		 * The store 
-		 *
-		 * @type {Object}
-		 */
-		alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView',
+	extend: 'Ext.container.Container',
 
-		/**
-		 * Initializer
-		 */
-		initComponent: function() {
+	/**
+	 * The store
+	 *
+	 * @type {Object}
+	 */
+	alias: 'widget.TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView',
 
-			var config = {
-				layout: 'border',
-				region: 'center',
-				items: [{
-						xtype: 'panel',
-						collapsible: true,
-						collapsed: true,
-						region:'east',
-						split: true,
-						items: [
-							{xtype: 'container',html: 'dummy text 1'}]
-					},
-					{xtype:'panel',region:'center', layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'}},
-					{xtype: 'TYPO3.Vidi.Module.ContentBrowser.TreeRegion'}
-				]
-			};
-		
-			Ext.apply(this, config);
-			TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView.superclass.initComponent.call(this);
-		}
-	});
+	/**
+	 * Initializer
+	 */
+	initComponent: function() {
+
+		var config = {
+			layout: 'border',
+			region: 'center',
+			items: [{
+					xtype: 'panel',
+					collapsible: true,
+					collapsed: true,
+					region:'east',
+					split: true,
+					items: [
+						{xtype: 'container',html: 'dummy text 1'}]
+				},
+				{xtype:'panel',region:'center', layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'}},
+				{xtype: 'TYPO3.Vidi.Module.ContentBrowser.TreeRegion'}
+			]
+		};
+
+		Ext.apply(this, config);
+		TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView.superclass.initComponent.call(this);
+	}
 });
