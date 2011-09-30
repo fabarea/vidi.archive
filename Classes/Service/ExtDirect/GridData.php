@@ -66,7 +66,7 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 
 	public function getTableFields($parameters) {
 		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
-		$data = array();
+		$columns = array();
 		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $column => $configuration) {
 			if ($this->hasAccessToColumn($column) && ($type = $this->detectExtJSType($configuration['config'])) != 'relation') {
 				$field = array(
@@ -74,47 +74,31 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 					'name' => $column,
 					'type' => $type
 				);
-				$data[] = $field;
+				if ($type == 'relation') {
+					$field['relationTable'] = $configuration['config']['foreign_table'];
+					$field['relationTitle'] = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$configuration['config']['foreign_table']]['ctrl']['title']);
+				}
+				$columns[] = $field;
 			}
 		}
 
-		return array(
-			'data' => $data,
-			'total' => count($data)
-		);
-	}
-
-	public function getTableRelationFields($parameters) {
-		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
-		$relations = array();
-		$columns = array();
-		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $column => $configuration) {
-			if ($this->hasAccessToColumn($column) && $this->detectExtJSType($configuration['config']) == 'relation') {
-				$field = array(
-					'title' => $GLOBALS['LANG']->sL($configuration['label']) . ' (' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$configuration['config']['foreign_table']]['ctrl']['title']) . ')',
-					'column' => $column,
-					'relationTable' => $configuration['config']['foreign_table'],
-					'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$configuration['config']['foreign_table']]['ctrl']['title'])
-				);
-				$columns[] = $column;
-				$relations[] = $field;
-			}
-		}
 		foreach ($this->moduleConfiguration['trees'] AS $tree) {
 			if (isset($tree['relationConfiguration'])) {
 				if (isset($tree['relationConfiguration']['*']) && !in_array($tree['relationConfiguration']['*']['foreignField'], $columns)) {
-					$relations[] = array(
+					$columns[] = array(
 						'title' => 'Tree (' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title']) . ')',
-						'column' => $tree['relationConfiguration']['*']['foreignField'],
+						'name' => $tree['relationConfiguration']['*']['foreignField'],
+						'type' => 'relation',
 						'relationTable' => $tree['table'],
 						'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title'])
 					);
 				}
 
 				if (isset($tree['relationConfiguration'][$this->table]) && !in_array($tree['relationConfiguration'][$this->table]['foreignField'], $columns)) {
-					$relations[] = array(
+					$columns[] = array(
 						'title' => 'Tree (' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title']) . ')',
-						'column' => $tree['relationConfiguration'][$this->table]['foreignField'],
+						'name' => $tree['relationConfiguration'][$this->table]['foreignField'],
+						'type' => 'relation',
 						'relationTable' => $tree['table'],
 						'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title'])
 					);
@@ -123,10 +107,11 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		}
 
 		return array(
-			'data' => $relations,
-			'total' => count($relations)
+			'data' => $columns,
+			'total' => count($columns)
 		);
 	}
+
 
 	public function getRelatedRecords($parameters) {
 		$this->loadConfiguration($parameters->moduleCode, $parameters->table);

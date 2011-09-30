@@ -10,7 +10,9 @@ Ext.create('Ext.data.Store', {
 		{ display: "greater then or equals" , id: '>=', types: ['int', 'float'] },
 		{ display: "greater then" , id: '>', types: ['int', 'float'] },
 		{ display: "less then or equals" , id: '<=', types: ['int', 'float'] },
-		{ display: "less then" , id: '<', types: ['int', 'float'] }
+		{ display: "less then" , id: '<', types: ['int', 'float'] },
+		{ display: "relates to" , id: 'rel', types: ['relation'] },
+		{ display: "relates not to" , id: '!rel', types: ['relation'] }
 	],
 	remoteFilter: false
 });

@@ -245,15 +245,15 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Components/FilterBar/Item/Field',
 				'Vidi/Components/FilterBar/Item/Fulltext',
 				'Vidi/Components/FilterBar/Item/Operator',
-				'Vidi/Components/FilterBar/Item/Relation',
+			//	'Vidi/Components/FilterBar/Item/Relation',
 				'Vidi/Components/FilterBar/Item/SelectBox',
 				'Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout',
 				'Vidi/Components/FilterBar/Item/Layout/InnerLayout',
 				'Vidi/Stores/AvailableFields',
-				'Vidi/Stores/AvailableRelations',
+			//	'Vidi/Stores/AvailableRelations',
 				'Vidi/Stores/FilterBar/CollectionOperators',
 				'Vidi/Stores/FilterBar/FieldOperators',
-				'Vidi/Stores/FilterBar/RelationOperators',
+			//	'Vidi/Stores/FilterBar/RelationOperators',
 				'Vidi/Stores/FilterBar/Operators',
 		);
 		$configuration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];

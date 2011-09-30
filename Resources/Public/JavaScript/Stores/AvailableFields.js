@@ -1,6 +1,6 @@
 	// Define a store which has all available fields
 Ext.create('Ext.data.Store', {
-	fields: [{name: 'display', mapping: 'title'}, {name: 'id', mapping: 'name'}, 'type'],
+	fields: [{name: 'display', mapping: 'title'}, {name: 'id', mapping: 'name'}, 'type', 'relationTable', 'relationTitle'],
 	storeId: 'TYPO3.Vidi.Stores.AvailableFieldsOfCurrentTable',
 	idProperty: 'name',
 	autoLoad: false,

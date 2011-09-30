@@ -7,7 +7,7 @@ class Tx_Vidi_Service_FilterBar {
 	protected $table;
 
 	/**
-	 * @var
+	 * @var array[]
 	 */
 	protected $query;
 
@@ -67,10 +67,6 @@ class Tx_Vidi_Service_FilterBar {
 		}
 	}
 
-	protected function buildClause() {
-
-	}
-
 	protected function buildClauseSingle(stdClass $filterParam) {
 		$result ='';
 		switch($filterParam->type) {
@@ -82,6 +78,10 @@ class Tx_Vidi_Service_FilterBar {
 				break;
 			case 'field':
 				$result = $this->buildClauseSingle_field($filterParam);
+				break;
+			case 'relation':
+					// ask taxonomy
+				$result = '';
 				break;
 		}
 		return $result;
@@ -106,25 +106,48 @@ class Tx_Vidi_Service_FilterBar {
 	protected function buildClauseSingle_field(stdClass $filterParam) {
 		$field = $GLOBALS['TYPO3_DB']->quoteStr(trim($filterParam->field), $this->table);
 		$operator = $filterParam->operator;
-		$search = $filterParam->search;
 
-		switch ($operator) {
-			case 'l':
-			case '!l':
-				$search = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($search, $this->table), $this->table) . '%\'';
-				$operator = ($operator == '!l' ? ' NOT LIKE ' : ' LIKE ');
-				break;
-			case '=':
-			case '!=':
-				if (t3lib_utility_Math::canBeInterpretedAsInteger($search)) {
-					$search = intval($search);
-				} else {
-					$search = "'" . $GLOBALS['TYPO3_DB']->quoteStr($search, $this->table) . "'";
-				}
-				$operator = ($operator == '!=' ? ' != ' : ' = ');
-				break;
+		if ($operator == 'rel' || $operator == '!rel') {
+			return $this->buildClauseSingle_relation($filterParam);
+		} else {
+			$search = $filterParam->search;
+
+			switch ($operator) {
+				case 'l':
+				case '!l':
+					$search = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($search, $this->table), $this->table) . '%\'';
+					$operator = ($operator == '!l' ? ' NOT LIKE ' : ' LIKE ');
+					break;
+				case '=':
+				case '!=':
+					if (t3lib_utility_Math::canBeInterpretedAsInteger($search)) {
+						$search = intval($search);
+					} else {
+						$search = "'" . $GLOBALS['TYPO3_DB']->quoteStr($search, $this->table) . "'";
+					}
+					$operator = ($operator == '!=' ? ' != ' : ' = ');
+					break;
+			}
+			return $field .$operator . $search;
 		}
-		return $field .$operator . $search;
 	}
 
+	protected function buildClauseSingle_relation(stdClass $filterParam) {
+		$field = $GLOBALS['TYPO3_DB']->quoteStr(trim($filterParam->field), $this->table);
+		$relatedTable = $filterParam->relatedTable;
+		$relatedUid = intval($filterParam->search);
+
+		/** @var t3lib_TcaRelationService $relationService */
+		$relationService = t3lib_div::makeInstance('t3lib_TcaRelationService', $relatedTable, NULL, $this->table, $field);
+
+			// lets get all uids of type "$this->table" which have an relation to "$relatedTable" via column "$field"
+		$uids = $relationService->getRecordUidsWithRelationToCurrentRecord(array('uid' => $relatedUid));
+
+		if ($filterParam->operator == 'rel') {
+			return ' uid IN (' . implode(',', $uids) . ') ';
+		} else {
+			return ' uid NOT IN (' . implode(',', $uids) . ') ';
+		}
+
+	}
 }

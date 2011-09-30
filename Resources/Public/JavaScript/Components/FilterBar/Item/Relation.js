@@ -54,7 +54,6 @@ Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 				listeners: {
 					select: function(selectbox, currentRecords) {
 						var selected = currentRecords[0];
-						console.log(selectbox);
 						selectbox.up('.filterBar-Item-Relation').relationStore.getProxy().extraParams.relationColum = selected.get('id');
 						selectbox.up('.filterBar-Item-Relation').relationStore.getProxy().extraParams.relationTable = selected.get('relationTable');
 						selectbox.ownerCt.items.getAt(2).setDisabled(false);
@@ -120,7 +119,6 @@ Ext.ns('TYPO3.Vidi.Components.FilterBar.Item.Relation');
 				operator: operatorSelector.store.findRecord('id', operatorSelector.getValue()).data,
 				relation : relationSelector.store.findRecord('id', relationSelector.getValue()).data
 			}
-			console.log(this.data);
 		},
 		updateInputs: function() {
 			var relatedRecordSelector = this.items.getAt(1).items.getAt(2);
