@@ -82,11 +82,46 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 			store.load();
 		}
 	},
+	add: function() {
+		this.callParent(arguments);
+	},
 	serialize: function() {
 		var items = [];
 		for (var i = 0; i < this.items.length; i++) {
 			items[i] = this.items.get(i).serialize();
 		}
 		return Ext.JSON.encode(items);
+	},
+	load: function(json) {
+		var me = this;
+
+		me.removeAll();
+		var objects = Ext.JSON.decode(json);
+		Ext.Array.each(objects, function(object) {
+			var type = "TYPO3.Vidi.Components.FilterBar.Item.";
+			if (object.type) {
+				switch(object.type) {
+					case 'fulltext':
+						type += 'Fulltext';
+						break;
+					case 'field':
+						type += 'Field';
+						break;
+					case 'relation':
+						type += 'Relation';
+						break;
+					case 'collection':
+						type += 'Collection';
+						break;
+				}
+			} else if (object == '&&' || object == '||') {
+				type += 'Operator';
+			}
+			console.log(type);
+			var filterTag = eval(type + ".unserialize")(object);
+			me.add(filterTag);
+		});
+
+		this.fireEvent('VIDI_filterDataInBarChanged');
 	}
 });

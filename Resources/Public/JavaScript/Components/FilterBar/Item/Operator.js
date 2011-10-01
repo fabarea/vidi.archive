@@ -60,5 +60,20 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Operator', {
 	},
 	serialize: function() {
 		return this.data.operator.id;
+	},
+	updateInputs: function() {
+		var combobox = this.items.getAt(1).items.getAt(0);
+		combobox.setValue(this.data.operator.id);
+	},
+	statics: {
+		unserialize: function(data) {
+			var tag = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Operator',{
+				editMode: false
+			});
+			tag.data.operator = Ext.StoreManager.get('TYPO3.Vidi.Stores.FilterBar.Operators').findRecord('id', data).data;
+			tag.refresh();
+			tag.updateInputs();
+			return tag;
+		}
 	}
 });

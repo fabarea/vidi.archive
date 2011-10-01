@@ -54,13 +54,11 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {
 			layout: 'border',
 			region: 'center',
 			items: [{
-					xtype: 'panel',
-					collapsible: true,
-					collapsed: true,
+					xtype: 'TYPO3-Vidi-View-Filter-ListPanel',
+					//collapsible: true,
+					//collapsed: true,
 					region:'east',
-					split: true,
-					items: [
-						{xtype: 'container',html: 'dummy text 1'}]
+					//split: true
 				},
 				{xtype:'panel',region:'center', layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'}},
 				{xtype: 'TYPO3-Vidi-Module-ContentBrowser-TreeRegion'}

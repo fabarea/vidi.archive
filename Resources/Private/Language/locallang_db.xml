@@ -6,9 +6,13 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_vidi_domain_model_asset">Asset</label>
-			<label index="tx_vidi_domain_model_asset.title">Title</label>
-			<label index="tx_vidi_domain_model_asset.description">Description</label>
+			<label index="tx_vidi_filter">dynamic record filter</label>
+			<label index="tx_vidi_filter.name">name</label>
+			<label index="tx_vidi_filter.description">description</label>
+			<label index="tx_vidi_filter.criteria">serialized search description</label>
+			<label index="tx_vidi_filter.table">corresponding table</label>
+			<label index="tx_vidi_filter.public">visibility of this filter</label>
+			<label index="tx_vidi_filter.public.1">public</label>
 		</languageKey>
 	</data>
 </T3locallang>

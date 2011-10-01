@@ -17,7 +17,6 @@ Ext.create('Ext.data.Store', {
 	},
 	listeners: {
 		beforeLoad: function() {
-			console.log('load');
 			this.proxy.extraParams.moduleCode = TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode');
 		}
 	},

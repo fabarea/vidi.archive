@@ -268,9 +268,21 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item', {
 
 	/**
 	 * updates the input fields according to a programmatically data change
-	 * every label type has to implent this specifically
+	 * every label type has to implement this specifically
 	 */
 	updateInputs: Ext.emptyFn,
+
+	statics: {
+		/**
+		 * method for unserializing, creates objekt from stored filter,
+		 * should return an instance configured with the data
+		 * 
+		 * @param rawObject
+		 * @return TYPO3.Vidi.Components.FilterBar.Item
+		 */
+		unserialize: Ext.emptyFn
+	},
+
 
 	/**
 	 * set's the data object with taking care of syncing the view
@@ -283,6 +295,8 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item', {
 		this.refresh();
 		this.updateInputs();
 	},
+
+
 	removeMyself: function() {
 		this.ownerCt.items.remove(this);
 		this.destroy();

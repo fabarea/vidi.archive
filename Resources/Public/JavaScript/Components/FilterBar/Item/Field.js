@@ -53,68 +53,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Field', {
 			store: 'TYPO3.Vidi.Stores.AvailableFieldsOfCurrentTable',
 			listeners: {
 				select: function(field, current) {
-					var type = current[0].get('type');
-					var operatorField = field.ownerCt.items.getAt(1);
-					operatorField.store.clearFilter();
-					operatorField.store.filter([{filterFn: function(item) {
-						return Ext.Array.contains(item.get('types'), type);
-					}}]);
-					operatorField.clearValue();
-					operatorField.clearInvalid();
-					operatorField.getPicker();
-					operatorField.picker.refresh();
-
-
-					var inputField = field.ownerCt.items.getAt(3);
-					var recordField = field.ownerCt.items.getAt(2);
-
-					recordField.setDisabled(false);
-					inputField.setDisabled(false);
-
-					if (type == 'relation') {
-						inputField.hide();
-						recordField.show();
-						inputField.setDisabled(true);
-						recordField.setDisabled(false);
-
-						recordField.clearValue();
-						recordField.clearInvalid();
-
-						field.up('.filterBar-Item-Field').relationStore.getProxy().extraParams.relationColum = current[0].get('id');
-						field.up('.filterBar-Item-Field').relationStore.getProxy().extraParams.relationTable = current[0].get('relationTable');
-
-						recordField.getPicker();
-						recordField.picker.refresh();
-
-					} else {
-						inputField.show();
-						recordField.hide();
-						inputField.setDisabled(false);
-						recordField.setDisabled(true);
-
-
-						switch (type) {
-							case 'int':
-								inputField.regex = /^[0-9]+$/;
-								break;
-							case 'float':
-								inputField.regex = /^[0-9]*\.[0-9]+$/;
-								break;
-							case 'boolean':
-								inputField.regex = /^(true|false|1|0)$/;
-								break;
-							case 'date':
-								inputField.regex = /^$/;
-								break;
-							case 'string':
-							default:
-								inputField.regex = undefined;
-								break;
-						}
-						inputField.clearInvalid();
-						inputField.validate();
-					}
-
+					field.up('.filterBar-Item-Field')._selectColumn(current[0], field);
 				}
 			}
 		},
@@ -207,21 +146,26 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Field', {
 			var comboOp = this.items.getAt(1).items.getAt(1);
 
 			comboField.select(this.data.field.id);
+			this._selectColumn(comboField.store.findRecord('id', this.data.field.id), comboField);
+
 			comboOp.select(this.data.operator.id);
+
 			if (this.data.field.type == 'relation') {
-				comboRecord.select(this.data.search.uid);
 
 				input.hide();
 				comboRecord.show();
 				input.setDisabled(true);
 				comboRecord.setDisabled(false);
-			} else {
-				input.setValue(this.data.search.uid);
 
+				comboRecord.select(this.data.search.uid);
+				comboRecord.setValue(this.data.search.uid);
+			} else {
 				input.show();
 				comboRecord.hide();
 				input.setDisabled(false);
 				comboRecord.setDisabled(true);
+
+				input.setValue(this.data.search.uid);
 			}
 
 		},
@@ -233,5 +177,68 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Field', {
 			field: this.data.field.id,
 			relatedTable: this.data.field.relationTable
 		};
+	},
+	_selectColumn: function(currentRecord, selectBox) {
+		var type = currentRecord.get('type');
+		var operatorField = selectBox.ownerCt.items.getAt(1);
+		var inputField = selectBox.ownerCt.items.getAt(3);
+		var recordField = selectBox.ownerCt.items.getAt(2);
+
+		operatorField.store.clearFilter();
+		operatorField.store.filter([{filterFn: function(item) {
+			return Ext.Array.contains(item.get('types'), type);
+		}}]);
+		operatorField.clearValue();
+		operatorField.clearInvalid();
+		if (operatorField.el) {
+			operatorField.getPicker();
+			operatorField.picker.refresh();
+		}
+
+
+		recordField.setDisabled(false);
+		inputField.setDisabled(false);
+
+		if (type == 'relation') {
+			inputField.hide();
+			recordField.show();
+			inputField.setDisabled(true);
+			recordField.setDisabled(false);
+
+			recordField.clearValue();
+			recordField.clearInvalid();
+
+			this.relationStore.getProxy().extraParams.relationColum = currentRecord.get('id');
+			this.relationStore.getProxy().extraParams.relationTable = currentRecord.get('relationTable');
+
+		} else {
+			inputField.show();
+			recordField.hide();
+			inputField.setDisabled(false);
+			recordField.setDisabled(true);
+
+
+			switch (type) {
+				case 'int':
+					inputField.regex = /^[0-9]+$/;
+					break;
+				case 'float':
+					inputField.regex = /^[0-9]*\.[0-9]+$/;
+					break;
+				case 'boolean':
+					inputField.regex = /^(true|false|1|0)$/;
+					break;
+				case 'date':
+					inputField.regex = /^$/;
+					break;
+				case 'string':
+				default:
+					inputField.regex = undefined;
+					break;
+			}
+			inputField.clearInvalid();
+			inputField.validate();
+		}
+
 	}
 });

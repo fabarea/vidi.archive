@@ -57,5 +57,20 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Fulltext', {
 	},
 	serialize: function() {
 		return {type: 'fulltext', string: this.data.string};
+	},
+	updateInputs: function() {
+		var input = this.items.getAt(1).items.getAt(0);
+		input.setValue(this.data.string);
+	},
+	statics: {
+		unserialize: function(data) {
+			var tag = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Fulltext',{
+				editMode: false
+			});
+			tag.data.string = data.string;
+			tag.refresh();
+			tag.updateInputs();
+			return tag;
+		}
 	}
 });

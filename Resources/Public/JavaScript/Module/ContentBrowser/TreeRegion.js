@@ -39,7 +39,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		this.callParent();
 	},
 	addFilterToQuery: function(treeIndex, record) {
-		var relationFilter = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Relation',{
+		var relationFilter = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Field',{
 			editMode: false
 		});
 		var treeConfig = TYPO3.TYPO3.Core.Registry.get('vidi/treeConfig');
@@ -52,9 +52,9 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		}
 		if (relationColumn != null) {
 			relationFilter.data = {
-				'relation': Ext.StoreManager.get('TYPO3.Vidi.Stores.AvailableRelations').findRecord('id', relationColumn).data,
-				'operator': Ext.StoreManager.get('TYPO3.Vidi.Stores.FilterBar.RelationOperators').findRecord('id', '=').data,
-				'record': {uid: record.data.id, title: record.data.text}
+				'field': Ext.StoreManager.get('TYPO3.Vidi.Stores.AvailableFieldsOfCurrentTable').findRecord('id', relationColumn).data,
+				'operator': Ext.StoreManager.get('TYPO3.Vidi.Stores.FilterBar.FieldOperators').findRecord('id', 'rel').data,
+				'search': {uid: record.data.id, title: record.data.text}
 			};
 			relationFilter.updateInputs();
 			relationFilter.refresh();

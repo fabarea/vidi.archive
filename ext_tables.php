@@ -3,6 +3,28 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
+
+t3lib_extMgm::addLLrefForTCAdescr('tx_vidi_filter', 'EXT:vidi/Resources/Private/Language/csh_filter.xml');
+$TCA['tx_vidi_filter'] = array(
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:vidi/Resources/Private/Language/locallang_db.xml:tx_vidi_filter',
+		'label' => 'name',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => true,
+		'delete' => 'deleted',
+		'hideTable' => true,
+		'readOnly' => true,
+		'rootLevel' => 1,
+		'groupName' => 'system',
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Filter.php',
+		'typeicon_classes' => array(
+			'default' => 'actions-system-tree-search-open',
+		),
+	),
+);
+
 // Override ExtJS Theme for ExtJS 4 compatibility
 // @todo: remove this hook when TYPO3 v4 will be compatible with ExtJS 4
 if (strpos($GLOBALS['_GET']['M'],'_Vidi') !== false) {
