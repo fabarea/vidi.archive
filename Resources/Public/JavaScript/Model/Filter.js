@@ -5,7 +5,7 @@ Ext.define('TYPO3.Vidi.Model.Filter', {
 	fields: [
 		{name: 'uid',			type: 'int'},
 		{name: 'name',			type: 'string'},
-		{name: 'name',			type: 'string'},
+		{name: 'description',	type: 'string'},
 		{name: 'tableName', 	type: 'string', mapping: 'table_name'},
 		{name: 'criteria',		type: 'string'},
 		{name: 'public',		type: 'boolean', defaultValue: false}

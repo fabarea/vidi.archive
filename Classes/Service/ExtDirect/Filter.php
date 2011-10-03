@@ -40,7 +40,7 @@ class Tx_Vidi_Service_ExtDirect_Filter extends Tx_Vidi_Service_ExtDirect_Abstrac
 		$filters = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid,name,table_name,description,criteria,public',
 			'tx_vidi_filter',
-			'table_name = \''. $table . '\''
+			'table_name = \''. $table . '\' AND ( public = 1 OR ( public = 0 AND cruser_id = ' . $GLOBALS['BE_USER']->user['uid'] . ' ))'
 		);
 
 		return array(
@@ -50,8 +50,24 @@ class Tx_Vidi_Service_ExtDirect_Filter extends Tx_Vidi_Service_ExtDirect_Abstrac
 		);
 	}
 
-	public function create($params) {
+	public function create($newFilter) {
+		$dataArray = array(
+			'table_name'	=> $GLOBALS['TYPO3_DB']->quoteStr($newFilter->tableName, 'tx_vidi_filter') ,
+			'description'	=> $GLOBALS['TYPO3_DB']->quoteStr($newFilter->description, 'tx_vidi_filter'),
+			'name'			=> $GLOBALS['TYPO3_DB']->quoteStr($newFilter->name, 'tx_vidi_filter'),
+			'criteria'		=> $newFilter->criteria,
+			'public'		=> (boolean)$newFilter->public,
+			'cruser_id'		=> $GLOBALS['BE_USER']->user['uid'],
+			'crdate'		=> time(),
+			'tstamp'		=> time()
+		);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_vidi_filter', $dataArray, TRUE);
 
+		if ($GLOBALS['TYPO3_DB']->sql_error() == '') {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function update($params) {

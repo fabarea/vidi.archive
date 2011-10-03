@@ -137,3 +137,26 @@ $Id: newsletter.css 37081 2010-08-21 11:26:34Z fabien_u $
 .t3-vidi-hidden {
 	display: none;
 }
+
+li.x-item-selected {
+	background-color:#ff8;
+}
+
+div.t3-vidi-filterManager {
+	padding: 5px;
+}
+
+div.t3-vidi-filterManager h3 {
+	border-bottom: 1px dashed black;
+}
+
+
+div.t3-vidi-filterManager ul {
+	padding-left:15px;
+}
+
+div.t3-vidi-filterManager ul li {
+	padding: 2px;
+	list-style: outside disc;
+	line-height: 1.5em;
+}
