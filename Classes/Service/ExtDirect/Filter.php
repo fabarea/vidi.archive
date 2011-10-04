@@ -40,7 +40,7 @@ class Tx_Vidi_Service_ExtDirect_Filter extends Tx_Vidi_Service_ExtDirect_Abstrac
 		$filters = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid,name,table_name,description,criteria,public',
 			'tx_vidi_filter',
-			'table_name = \''. $table . '\' AND ( public = 1 OR ( public = 0 AND cruser_id = ' . $GLOBALS['BE_USER']->user['uid'] . ' ))'
+			'deleted = 0 AND table_name = \''. $table . '\' AND ( public = 1 OR ( public = 0 AND cruser_id = ' . $GLOBALS['BE_USER']->user['uid'] . ' ))'
 		);
 
 		return array(
@@ -52,16 +52,16 @@ class Tx_Vidi_Service_ExtDirect_Filter extends Tx_Vidi_Service_ExtDirect_Abstrac
 
 	public function create($newFilter) {
 		$dataArray = array(
-			'table_name'	=> $GLOBALS['TYPO3_DB']->quoteStr($newFilter->tableName, 'tx_vidi_filter') ,
-			'description'	=> $GLOBALS['TYPO3_DB']->quoteStr($newFilter->description, 'tx_vidi_filter'),
-			'name'			=> $GLOBALS['TYPO3_DB']->quoteStr($newFilter->name, 'tx_vidi_filter'),
+			'table_name'	=> $newFilter->tableName,
+			'description'	=> $newFilter->description,
+			'name'			=> $newFilter->name,
 			'criteria'		=> $newFilter->criteria,
 			'public'		=> (boolean)$newFilter->public,
 			'cruser_id'		=> $GLOBALS['BE_USER']->user['uid'],
 			'crdate'		=> time(),
 			'tstamp'		=> time()
 		);
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_vidi_filter', $dataArray, TRUE);
+		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_vidi_filter', $dataArray);
 
 		if ($GLOBALS['TYPO3_DB']->sql_error() == '') {
 			return true;
@@ -70,11 +70,31 @@ class Tx_Vidi_Service_ExtDirect_Filter extends Tx_Vidi_Service_ExtDirect_Abstrac
 		}
 	}
 
-	public function update($params) {
+	public function update($filter) {
+		$dataArray = array(
+			'table_name'	=> $filter->tableName ,
+			'description'	=> $filter->description,
+			'name'			=> $filter->name,
+			'criteria'		=> $filter->criteria,
+			'public'		=> (boolean)$filter->public,
+			'tstamp'		=> time()
+		);
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_vidi_filter', 'uid = ' . intval($filter->uid), $dataArray);
 
+		if ($GLOBALS['TYPO3_DB']->sql_error() == '') {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public function destroy($params) {
+	public function destroy($filter) {
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_vidi_filter', 'uid = ' . intval($filter->uid), array('deleted' => 1, 'tstamp' => time()));
+		if ($GLOBALS['TYPO3_DB']->sql_error() == '') {
+			return true;
+		} else {
+			return false;
+		}
 
 	}
 }

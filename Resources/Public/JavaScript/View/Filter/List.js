@@ -18,6 +18,7 @@ var rowTemplate = new Ext.XTemplate(
 Ext.define('TYPO3.Vidi.View.Filter.List', {
 	extend: 'Ext.view.View',
 	alias: 'widget.TYPO3-Vidi-View-Filter-List',
+	id: 'TYPO3-Vidi-View-Filter-List',
 	tpl: rowTemplate,
 	itemSelector: 'li',
 	disableSelection: false,
@@ -27,7 +28,7 @@ Ext.define('TYPO3.Vidi.View.Filter.List', {
 	constructor: function() {
 		this.store = Ext.create('Ext.data.Store', {
 			model: 'TYPO3.Vidi.Model.Filter',
-			id: 'TYPO3.Vidi.Stores.Filters',
+			storeId: 'TYPO3.Vidi.Stores.Filters',
 			groupField: 'public',
 			groupDir: 'ASC',
 			autoLoad:true,

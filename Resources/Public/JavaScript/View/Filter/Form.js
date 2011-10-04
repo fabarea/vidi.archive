@@ -27,12 +27,12 @@ Ext.define('TYPO3.Vidi.View.Filter.Form', {
                         fieldLabel: 'Beschreibung'
                     },
 					{
-                        xtype: 'checkboxfield',
-                        name : 'public',
-						fieldLabel: 'share the filter',
-                        boxLabel: 'public',
-						inputValue: '1'
-                    }
+						xtype : 'checkbox',
+						fieldLabel: 'Status:',
+						boxLabel  : 'public/shared',
+						name      : 'public',
+						inputValue: 'true'
+					}
                 ]
             }
         ];
@@ -53,7 +53,7 @@ Ext.define('TYPO3.Vidi.View.Filter.Form', {
 					if (!invalid) {
 						form.getRecord().set(form.getValues());
 						form.getRecord().save();
-						Ext.getStoreManager('TYPO3.Vidi.Stores.Filter').sync();
+						Ext.ComponentManager.get('TYPO3-Vidi-View-Filter-List').refresh();
 						window.close();
 						window.destroy();
 

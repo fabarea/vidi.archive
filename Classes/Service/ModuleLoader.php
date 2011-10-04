@@ -21,9 +21,12 @@ class Tx_Vidi_Service_ModuleLoader {
 			)
 		),
 		1 => array(
-			'__FILES',
-			'TYPO3.FAL.Components.Tree',
-			'TYPO3.FAL.Components.FileTreeProvider'
+			'table' => '__FILES',
+			'title' => 'FileTree',
+			'dataProvider' => 'TYPO3.Components.FileTree.DataProvider.getTreeData',
+			'relationConfiguration' => array(
+				'*' => array('foreignField' => 'collection')
+			)
 		),
 	);
 
@@ -287,13 +290,9 @@ class Tx_Vidi_Service_ModuleLoader {
 			}
 
 			if (count($configuration['trees'])) {
-				/*$treeCode = array();
-				foreach($configuration['trees'] AS $tree) {
-					$treeCode[] = $tree;
-				}*/
 				$starterCode .= self::createRegistryCode('vidi/treeConfig', $configuration['trees']);
-
 			}
+
 			$gridDataService = t3lib_div::makeInstance('Tx_Vidi_Service_ExtDirect_GridData');
 			$fieldConfigurationData = array();
 			$columnConfigurationData = array();
