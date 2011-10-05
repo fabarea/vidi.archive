@@ -143,7 +143,7 @@ class Tx_Vidi_Service_ModuleLoader {
 			$this->extensionKey . '_' . $this->moduleKey,
 			$this->position,
 			array(
-				'Vidi' => 'module, popup',
+				'Vidi' => 'module, browse',
 			),
 			array(
 				'access' => 'user,group',

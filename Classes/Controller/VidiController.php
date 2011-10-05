@@ -95,12 +95,16 @@ class Tx_Vidi_Controller_VidiController extends Tx_Extbase_MVC_Controller_Action
 
 
 	/**
-	 * the action to render as popup
+	 * Render the RecordPicker (formally known as the ElementBrowser)
 	 *
-	 * @return string The renderd popup action
+	 * @param string $callbackMethod
+	 * @param string $objectId
+	 * @return void
 	 */
-	public function popupAction() {
-		return 'not yet implemented';
+	public function browseAction($callbackMethod = '', $objectId = '') {
+		$this->view->assign('callbackMethod', $callbackMethod);
+		$this->view->assign('objectId', $objectId);
+		$this->view->assign('moduleConfiguration', $this->configuration);
 	}
 }
 ?>
