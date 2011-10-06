@@ -9,9 +9,8 @@ class Tx_Vidi_Service_ExtDirect_AbstractDataProvider {
 	 */
 	protected $moduleConfiguration = null;
 
-	protected function loadConfiguration($moduleCode) {
+	protected function initialize($moduleCode) {
 		$this->moduleConfiguration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
-
 	}
 
 }

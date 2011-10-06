@@ -34,7 +34,7 @@
 class Tx_Vidi_Service_ExtDirect_Filter extends Tx_Vidi_Service_ExtDirect_AbstractDataProvider {
 
 	public function read($params) {
-		$this->loadConfiguration($params->moduleCode);
+		$this->initialize($params->moduleCode);
 		$table = $params->currentTable;
 
 		$filters = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(

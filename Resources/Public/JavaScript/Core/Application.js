@@ -1,5 +1,3 @@
-"use strict";
-
 Ext.ns("TYPO3.Vidi.Core");
 
 /*                                                                        *

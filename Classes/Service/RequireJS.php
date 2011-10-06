@@ -12,7 +12,7 @@ class Tx_Vidi_Service_RequireJS {
 	}
 
 	protected function generatePathLibraryString() {
-		$extensionPath = array();
+		$extensionPath = array('Compressor: "../typo3temp/compressor/"');
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'])) {
 
 

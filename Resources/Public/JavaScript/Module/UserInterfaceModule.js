@@ -51,7 +51,9 @@ TYPO3.Vidi.Application.on(
 	'TYPO3.Vidi.Application.run',
 	function() {
 		Ext.ns('TYPO3.Vidi');
+		console.log('start');
 		TYPO3.Vidi.Module = Ext.create('TYPO3.Vidi.Module.UserInterface.BaseModule');
+		console.log('soweit komm ich');
 		Ext.data.StoreManager.each(function(item) {
 			if(item.proxy.type = 'direct') {
 				item.load();

@@ -34,24 +34,13 @@ if (strpos($GLOBALS['_GET']['M'],'_Vidi') !== false) {
 	$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Xclass/class.ux_t3lib_pagerenderer.php';
 }
 
+$extDirectPath = 'EXT:vidi/Classes/Service/ExtDirect/';
+
 	// Register ExtDirect Endpoint for the Grid
-t3lib_extMgm::registerExtDirectComponent(
-	'TYPO3.Vidi.Service.ExtDirect.GridData',
-	'EXT:vidi/Classes/Service/ExtDirect/GridData.php:Tx_Vidi_Service_ExtDirect_GridData'
-);
-
-	// Register ExtDirect Endpoint for the Trees
-t3lib_extMgm::registerExtDirectComponent(
-	'TYPO3.Vidi.Service.ExtDirect.TreeData',
-	'EXT:vidi/Classes/Service/ExtDirect/TreeData.php:Tx_Vidi_Service_ExtDirect_TreeData'
-);
-
-
-	// Register ExtDirect Endpoint for the Fitlers
-t3lib_extMgm::registerExtDirectComponent(
-	'TYPO3.Vidi.Service.ExtDirect.Filter',
-	'EXT:vidi/Classes/Service/ExtDirect/TreeData.php:Tx_Vidi_Service_ExtDirect_Filter'
-);
+t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.GridData',$extDirectPath . 'GridData.php:Tx_Vidi_Service_ExtDirect_GridData');
+t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.TreeData', $extDirectPath . 'TreeData.php:Tx_Vidi_Service_ExtDirect_TreeData');
+t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.Filter', $extDirectPath . 'Filter.php:Tx_Vidi_Service_ExtDirect_Filter');
+t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.FilterBar', $extDirectPath . 'Filter.php:Tx_Vidi_Service_ExtDirect_FilterBar');
 
 
 // @todo: registration should be Object Oriented via t3lib_extMgm, for instance
@@ -76,6 +65,36 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['Vidi'] = Array(
 		'Application.initialize();',
 		'Application.processModuleAdaption(Ext.emptyFn);',
 		'Application.run();'
+	)
+);
+
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi'] = array();
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar'] = array(
+	'availableFilterElements' => array(
+		'field' => array(
+			'widgetName'	=> 'filterBar-Item-Field',
+			'title'			=> 'property based filter',
+			'processorClass'=> '-',
+			'unique'		=> false,
+		),
+		'operator' => array(
+			'widgetName'	=> 'filterBar-Item-Operator',
+			'title'			=> 'binary boolean operator',
+			'processorClass'=> '-',
+			'unique'		=> false,
+		),
+		'fulltext' => array(
+			'widgetName'	=> 'filterBar-Item-Fulltext',
+			'title'			=> 'fulltext search',
+			'processorClass'=> '-',
+			'unique'		=> true,
+		),
+		'collection' => array(
+			'widgetName'	=> 'filterBar-Item-Collection',
+			'title'			=> 'search within collections',
+			'processorClass'=> '-',
+			'unique'		=> false,
+		)
 	)
 );
 

@@ -31,7 +31,7 @@ Ext.define('TYPO3.Vidi.View.Filter.List', {
 			storeId: 'TYPO3.Vidi.Stores.Filters',
 			groupField: 'public',
 			groupDir: 'ASC',
-			autoLoad:true,
+			autoLoad:false,
 			listeners: {
 				beforeLoad: function()  {
 					this.proxy.extraParams.moduleCode = TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode');

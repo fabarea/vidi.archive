@@ -43,7 +43,7 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 					xtype: 'toolbar',
 					// @todo: put that into class
 					style: {
-						backgroundColor: '#585858',
+						backgroundColor: '#585858'
 					},
 					dock: 'top',
 					items: this._getItems('top')
@@ -51,7 +51,7 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 
 					// @todo: put that into class
 					style: {
-						backgroundColor: '#DADADA',
+						backgroundColor: '#DADADA'
 					},
 					xtype: 'toolbar',
 					dock: 'bottom',

@@ -41,71 +41,27 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 	protected $table = '';
 
 	/**
+	 * the handler for accessing the data
+	 *
+	 * @var Tx_Vidi_Service_GridData_AbstractProcessingService
+	 */
+	protected $dataRepository = null;
+
+	/**
 	 * @param object $parameters
 	 * @return array
 	 */
 	public function getRecords($parameters) {
-		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
-
-		$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			implode(', ', $this->filterColumnsViaAccess($this->getFields())),
-			$this->table,
-			$this->generateWhereClauseFromQuery($parameters->query),
-			'',
-			$this->generateSortingClause((array)$parameters->sort),
-			t3lib_utility_Math::convertToPositiveInteger($parameters->start) . ',' . t3lib_utility_Math::convertToPositiveInteger($parameters->limit)
-
-		);
+		$this->initialize($parameters->moduleCode, $parameters->table);
 		
-		return array(
-			'data' => $data,
-			'total' => $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $this->table, ''),
-			'debug' => $this->generateWhereClauseFromQuery($parameters->query)
-		);
+		$data = $this->dataRepository->getRecords($parameters);
+		return $data;
 	}
 
 	public function getTableFields($parameters) {
-		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
-		$columns = array();
-		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $column => $configuration) {
-			if ($this->hasAccessToColumn($column) && ($type = $this->detectExtJSType($configuration['config'])) != 'relation') {
-				$field = array(
-					'title' => $GLOBALS['LANG']->sL($configuration['label']),
-					'name' => $column,
-					'type' => $type
-				);
-				if ($type == 'relation') {
-					$field['relationTable'] = $configuration['config']['foreign_table'];
-					$field['relationTitle'] = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$configuration['config']['foreign_table']]['ctrl']['title']);
-				}
-				$columns[] = $field;
-			}
-		}
+		$this->initialize($parameters->moduleCode, $parameters->table);
 
-		foreach ($this->moduleConfiguration['trees'] AS $tree) {
-			if (isset($tree['relationConfiguration'])) {
-				if (isset($tree['relationConfiguration']['*']) && !in_array($tree['relationConfiguration']['*']['foreignField'], $columns)) {
-					$columns[] = array(
-						'title' => 'Tree (' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title']) . ')',
-						'name' => $tree['relationConfiguration']['*']['foreignField'],
-						'type' => 'relation',
-						'relationTable' => $tree['table'],
-						'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title'])
-					);
-				}
-
-				if (isset($tree['relationConfiguration'][$this->table]) && !in_array($tree['relationConfiguration'][$this->table]['foreignField'], $columns)) {
-					$columns[] = array(
-						'title' => 'Tree (' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title']) . ')',
-						'name' => $tree['relationConfiguration'][$this->table]['foreignField'],
-						'type' => 'relation',
-						'relationTable' => $tree['table'],
-						'relationTitle' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$tree['table']]['ctrl']['title'])
-					);
-				}
-			}
-		}
-
+		$columns = $this->dataRepository->getTableFields($parameters);
 		return array(
 			'data' => $columns,
 			'total' => count($columns)
@@ -114,176 +70,43 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 
 
 	public function getRelatedRecords($parameters) {
-		$this->loadConfiguration($parameters->moduleCode, $parameters->table);
-		$relatedTable = $parameters->relationTable;
-		$relationColumn = $parameters->relationColumn;
-		$typeAhead = $parameters->query;
+		$this->initialize($parameters->moduleCode, $parameters->table);
 
-		$data = array();
-
-		if (array_key_exists($relatedTable, $GLOBALS['TCA'])) {
-			$searchFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$relatedTable]['ctrl']['searchFields'], TRUE);
-			$array = array();
-			$like = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($typeAhead, $relatedTable), $relatedTable) . '%\'';
-
-			foreach ($searchFields AS $field) {
-				$array[] = $field . ' LIKE ' . $like;
-			}
-			$searchQuery = ' (' . implode(' OR ', $array) . ') ';
-
-			$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'uid,' . $GLOBALS['TCA'][$relatedTable]['ctrl']['label'] . ' AS title',
-				$GLOBALS['TYPO3_DB']->quoteStr($relatedTable, $relatedTable),
-				'0=1 OR ' . $searchQuery
-			);
-		}
-
+		$data = $this->dataRepository->getRelatedRecords($parameters);
 		return array(
 			'data' => $data,
 			'total' => count($data),
-			'debug' => $searchQuery
 		);
 	}
-
-	protected function filterColumnsViaAccess($columns) {
-		foreach($columns AS $index => $name) {
-			if (!$this->hasAccessToColumn($name)) {
-				unset($columns[$index]);
-			}
-		}
-		return array_values($columns);
-	}
-	protected function hasAccessToColumn($column) {
-		return ((!$GLOBALS['TCA'][$this->table]['columns'][$column]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $column))
-			&& $GLOBALS['TCA'][$this->table]['columns'][$column]['config']['type'] != 'passthrough') || $GLOBALS['BE_USER']->isAdmin();
-	}
-
-	protected function getFields() {
-		return array_unique(array_merge(array('uid', 'pid'), array_keys((array)$GLOBALS['TCA'][$this->table]['columns'])));
-	}
-
 
 	public function buildColumnConfiguration($moduleCode, $table = null) {
-		$this->loadConfiguration($moduleCode, $table);
+		$this->initialize($moduleCode, $table);
 
-		$columns = array(
-			array('text' => 'uid', 'dataIndex' => 'uid', 'hidden' => true, 'sortable' => true),
-			array('text' => 'pid', 'dataIndex' => 'oid', 'hidden' => true, 'sortable' => true)
-		);
-
-		foreach ($GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
-			$data = array(
-				'text' => $GLOBALS['LANG']->sL($configuration['label']),
-				'dataIndex' => $name,
-				'hidden' => !t3lib_div::inList($GLOBALS['TCA'][$this->table]['interface']['showRecordFieldList'], $name),
-				'sortable'=> true
-			);
-
-			$columns[] = $data;
-		}
-
-		return $columns;
+		return $this->dataRepository->buildColumnConfiguration();
 	}
 	
 	public function buildFieldConfiguration($moduleCode, $table = null) {
-		$this->loadConfiguration($moduleCode, $table);
-
-		$fields = array(
-			array('name' => 'uid', 'type' => 'int'),
-			array('name' => 'pid', 'type' => 'int')
-		);
-
-		foreach ($GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
-			$data = array(
-				'name' => $name
-			);
-			$type = $this->detectExtJSType($configuration['config']);
-			if ($type == 'date') {
-				$data['dateFormat'] = 'd.m.Y. H:i';
-			}
-			$data['type'] = $type;
-			$fields[] = $data;
-		}
-
-		return $fields;
+		$this->initialize($moduleCode, $table);
+		return $this->dataRepository->buildFieldConfiguration();
 	}
 
-	protected function detectExtJSType($configuration) {
-		switch($configuration['type']) {
-			case 'text':
-				$type = 'string';
-				break;
-			case 'input':
-				if(strpos($configuration['eval'], 'date') !== false) {
-					$type = 'date';
-				} elseif(strpos($configuration['eval'], 'int') !== false || strpos($configuration['eval'], 'num') !== false || strpos($configuration['eval'], 'year') !== false) {
-					$type = 'int';
-				} elseif (strpos($configuration['eval'], 'double') !== false) {
-					$type = 'float';
-				} else {
-					$type = 'string';
-				}
-				break;
-			case 'check':
-				if (count($configuration['items']) == 1) {
-					$type = 'boolean';
-				} else {
-					$type = 'int';
-				}
-				break;
-			case 'select':
-				if ($configuration['foreign_table']) {
-					$type = 'relation';
-				} else {
-					$type = 'auto';
-				}
-				break;
-			case 'group':
-				if ($configuration['internal_type'] == 'db') {
-					$type = 'relation';
-				} elseif($configuration['internal_type'] == 'file' || $configuration['internal_type'] == 'file_reference') {
-					$type = 'file';
-				} else {
-					$type = 'auto';
-				}
-				break;
-			default:
-					$type = 'auto';
-		}
-		return $type;
-	}
 
-	/**
-	 * build sorting clause out of ExtJS sorting params
-	 *
-	 * @param array $sorting
-	 * @return string
-	 */
-	protected function generateSortingClause(array $sorting) {
-		$sortParams = array();
-		foreach((array)$sorting AS $param) {
-			$sortParams[] = $GLOBALS['TYPO3_DB']->quoteStr($param->property, $this->table) . (trim($param->direction) == 'DESC' ? ' DESC' : ' ASC');
-		}
-		return implode(', ', $sortParams);
-	}
-
-	protected function generateWhereClauseFromQuery($query) {
-		$whereClause = '';
-		if ($query !== null && $query != '') {
-			$filterBarService = t3lib_div::makeInstance('Tx_Vidi_Service_FilterBar', $this->table);
-			$whereClause .= $filterBarService->generateWhereClause($query);
-		}
-		return $whereClause;
-	}
-
-	protected function loadConfiguration($moduleCode, $table) {
-		parent::loadConfiguration($moduleCode);
+	protected function initialize($moduleCode, $table) {
+		parent::initialize($moduleCode);
+		
 		if ($table === null) {
 			$this->table = $this->moduleConfiguration['allowedDataTypes'][0];
 		} else {
 			$this->table = $table;
 		}
-		t3lib_div::loadTCA($this->table);
+
+		if ($this->table == '__FILES') {
+			$this->dataRepository = t3lib_div::makeInstance('Tx_Vidi_Service_GridData_FileDataProcessingService', '__FILES');
+		} else {
+			$this->dataRepository = t3lib_div::makeInstance('Tx_Vidi_Service_GridData_TcaDataProcessingService', $this->table);
+			t3lib_div::loadTCA($this->table);
+		}
+
 	}
 
 }

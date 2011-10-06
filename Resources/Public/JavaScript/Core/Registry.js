@@ -1,5 +1,3 @@
-"use strict";
-
 Ext.ns('TYPO3.TYPO3.Core');
 
 /*                                                                        *
@@ -430,5 +428,5 @@ TYPO3.TYPO3.Core.Registry = new (Ext.extend(Ext.util.Observable, {
 		return context;
 	}
 }));
-TYPO3.TYPO3.Core.Registry.initialize();
+//TYPO3.TYPO3.Core.Registry.initialize();
 // Registry from http://git.typo3.org/FLOW3/Packages/TYPO3.git?a=blob;f=Resources/Public/JavaScript/Core/Registry.js;h=7a9eb8b398c998672e639231befd15d1930fb245;hb=55afa72e0fe86e6654c3d1a77c9c1350fbc56f14

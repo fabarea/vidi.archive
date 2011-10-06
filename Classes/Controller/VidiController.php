@@ -35,13 +35,6 @@
 class Tx_Vidi_Controller_VidiController extends Tx_Extbase_MVC_Controller_ActionController {
 
 	/**
-	 * contentRepository
-	 *
-	 * @var Tx_Vidi_Domain_Repository_ContentRepository
-	 */
-	protected $contentRepository;
-
-	/**
 	 * module Configuration
 	 *
 	 * @var array
@@ -49,28 +42,21 @@ class Tx_Vidi_Controller_VidiController extends Tx_Extbase_MVC_Controller_Action
 	protected $configuration;
 	
 	/**
-	 * injectContentRepository
-	 *
-	 * @param Tx_Vidi_Domain_Repository_ContentRepository $contentRepository
-	 * @return void
-	 */
-	public function injectContentRepository(Tx_Vidi_Domain_Repository_ContentRepository $contentRepository) {
-		$this->contentRepository = $contentRepository;
-	}
-
-
-	/**
 	 * load the current configuration
 	 *
 	 * @return void
 	 */
 	public function initializeAction() {
+		if (!isset($GLOBALS['SOBE']->doc)) {
+			$GLOBALS['SOBE']->doc = t3lib_div::makeInstance('template');
+			$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
+		}
 		$moduleCode = t3lib_div::_GP('M');
 		$this->configuration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
-		$configurationHash = md5(serialize($this->configuration));
 
 		Tx_Vidi_Service_ModuleLoader::checkAndCreateStarterFile($moduleCode);
 
+		$configurationHash = md5(serialize($this->configuration) . $GLOBALS['TBE_MODULES_EXT']['vidi']['__tempMergeResult']);
 		$this->objectManager->create('Tx_Vidi_Service_RequireJS')->load('../typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js');
 		
 		foreach($this->configuration->allowedDataTypes AS $table) {

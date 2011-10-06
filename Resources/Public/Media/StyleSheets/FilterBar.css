@@ -100,7 +100,7 @@ div.vidi-filterBar > div.vidi-filterBar-Item:hover span:hover {
 div.vidi-filterBar > div.vidi-filterBar-Item-gray > div >  div.leftSide {
 	background-color:#808080;
 }
-div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Operator,
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.filterBar-Item-Operator,
 div.vidi-filterBar > div.vidi-filterBar-Item-gray > div >  div {
 	background-color: #808080;
 }
@@ -108,7 +108,7 @@ div.vidi-filterBar > div.vidi-filterBar-Item-gray > div >  div {
 div.vidi-filterBar > div.vidi-filterBar-Item-brown > div >  div.leftSide {
 	background-color:#a52a2a;
 }
-div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Collection,
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.filterBar-Item-Collection,
 div.vidi-filterBar > div.vidi-filterBar-Item-brown > div >  div {
 	background-color: #cccc00;
 }
@@ -118,23 +118,19 @@ div.vidi-filterBar > div.vidi-filterBar-Item-blue > div >  div.leftSide {
 }
 
 div.vidi-filterBar > div.vidi-filterBar-Item-blue > div >  div,
-div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Fulltext {
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.filterBar-Item-Fulltext {
 	background-color: #add8e6;
 }
 
 div.vidi-filterBar > div.vidi-filterBar-Item-green >div> div.leftSide {
 	background-color:green;
 }
-div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Relation,
-div.vidi-filterBar > div.vidi-filterBar-Item-green > div >  div {
-	background-color: #90ee90;
-}
 
 div.vidi-filterBar > div.vidi-filterBar-Item-orange div.leftSide {
 	background-color:orange;
 }
 
-div.vidi-filterBar > div.vidi-filterBar-Item > ul li.Field,
+div.vidi-filterBar > div.vidi-filterBar-Item > ul li.filterBar-Item-Field,
 div.vidi-filterBar > div.vidi-filterBar-Item-orange > div >  div {
 	background-color: #ffb6c1;
 }

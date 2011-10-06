@@ -78,14 +78,14 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	 * Initializer
 	 */
 	initComponent: function() {
-
-		// Initialize the store
+		console.log('start ContentBrowserGridVIew');
+				// Initialize the store
 		this._initStore();
 
 		// Default configuration
 		var config = {
 			store: this.store,
-			columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')['tt_content'],
+			columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')[TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')],
 			height: 200,
 			width: '100%'
 		};
@@ -118,11 +118,10 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	_initStore: function() {
 		this.store = Ext.create('Ext.data.Store', {
 			storeId: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',
-			//directFn: eval(TYPO3.TYPO3.Core.Registry.get('vidi/DataProviderRegistry/GridData')),
 			buffered: true,
 			pageSize: 20,
 			idProperty: 'uid',
-			autoLoad: true,
+			autoLoad: false,
 			proxy: {
 				type: 'direct',
 				api: {
@@ -141,7 +140,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 			},
 			remoteFilter: true,
 			remoteSort: true,
-			fields: TYPO3.TYPO3.Core.Registry.get('vidi/fieldConfiguration')['tt_content']
+			fields: TYPO3.TYPO3.Core.Registry.get('vidi/fieldConfiguration')[TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')]
 		});
 	}
 });

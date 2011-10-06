@@ -4,7 +4,7 @@ class Tx_Vidi_Service_ExtDirect_TreeData extends Tx_Vidi_Service_ExtDirect_Abstr
 
 
 	public function getTreeData($parameters){
-		$this->loadConfiguration($parameters->moduleCode);
+		$this->initialize($parameters->moduleCode);
 		$treeId = $parameters->tree;
 
 		/** @var t3lib_tree_Renderer_ExtJsJson $renderer */

@@ -44,7 +44,7 @@ TYPO3.Vidi.Module.UserInterface.BaseModule = Ext.extend(Ext.Viewport, {
 		};
 
 		Ext.apply(this, config);
-		TYPO3.Vidi.Module.UserInterface.BaseModule.superclass.initComponent.call(this);
+		this.callParent();
 	},
 
 	/**

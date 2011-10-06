@@ -49,23 +49,23 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {
 	 * Initializer
 	 */
 	initComponent: function() {
-
 		var config = {
 			layout: 'border',
 			region: 'center',
 			items: [{
 					xtype: 'TYPO3-Vidi-View-Filter-ListPanel',
-					//collapsible: true,
-					//collapsed: true,
-					region:'east',
-					//split: true
+					collapsible: true,
+					collapsed: true,
+					region: 'east',
+					split: true
 				},
 				{xtype:'panel',region:'center', layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'}},
 				{xtype: 'TYPO3-Vidi-Module-ContentBrowser-TreeRegion'}
+
 			]
 		};
 
 		Ext.apply(this, config);
-		TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView.superclass.initComponent.call(this);
+		this.callParent();
 	}
 });

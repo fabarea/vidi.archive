@@ -230,42 +230,65 @@ class Tx_Vidi_Service_ModuleLoader {
 	}
 
 	public static function checkAndCreateStarterFile($moduleCode) {
-		$jsFiles = array(
+		$jsFilesMerging = array(
+				'Vidi/Utils',
 				'Vidi/Core/Registry',
 				'Vidi/Core/Application',
+				'Vidi/Components/FilterBar/Item',
+				'Vidi/Stores/AvailableFields',
+				'Vidi/Stores/FilterBar/CollectionOperators',
+				'Vidi/Stores/FilterBar/FieldOperators',
+				'Vidi/Stores/FilterBar/Operators',
+
 				'Vidi/Module/UserInterfaceModule',
-				'Vidi/Utils',
 				'Vidi/Module/ContentBrowser/ContentBrowserGrid',
 				'Vidi/Module/ContentBrowser/ContentBrowserView',
 				'Vidi/Module/ContentBrowser/TreeRegion',
 				'Vidi/Module/UserInterface/BaseModule',
 				'Vidi/Module/UserInterface/DocHeader',
 				'Vidi/Module/UserInterface/Tree',
+
 				'Vidi/Model/Filter',
+
 				'Vidi/View/Filter/List',
 				'Vidi/View/Filter/Form',
 				'Vidi/View/Filter/ListPanel',
 				'Vidi/View/Content/GridToolbar',
-				'Vidi/Components/FilterBar',
+
 				'Vidi/Components/Button',
+				'Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout',
+				'Vidi/Components/FilterBar/Item/Layout/InnerLayout',
 				'Vidi/Components/FilterBar/Item',
 				'Vidi/Components/FilterBar/Item/Collection',
 				'Vidi/Components/FilterBar/Item/Field',
 				'Vidi/Components/FilterBar/Item/Fulltext',
 				'Vidi/Components/FilterBar/Item/Operator',
-			//	'Vidi/Components/FilterBar/Item/Relation',
 				'Vidi/Components/FilterBar/Item/SelectBox',
-				'Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout',
-				'Vidi/Components/FilterBar/Item/Layout/InnerLayout',
-				'Vidi/Stores/AvailableFields',
-			//	'Vidi/Stores/AvailableRelations',
-				'Vidi/Stores/FilterBar/CollectionOperators',
-				'Vidi/Stores/FilterBar/FieldOperators',
-			//	'Vidi/Stores/FilterBar/RelationOperators',
-				'Vidi/Stores/FilterBar/Operators',
+
+				'Vidi/Components/FilterBar',
 		);
+		$jsFilesRequireJS = array(
+		);
+
+		/**
+		 * @var t3lib_Compressor $compressor
+		 */
+		$compressor = t3lib_div::makeInstance('t3lib_Compressor');
+		$compressorArray = array();
+		foreach ($jsFilesMerging AS $file) {
+			$file = t3lib_extMgm::extRelPath('vidi') . 'Resources/Public/JavaScript/' . str_replace('Vidi/', '', $file . '.js');
+			$compressorArray[$file] = array(
+				'section' => 'footer',
+				'file' => $file
+			);
+		}
+		$result = array_keys($compressor->concatenateJsFiles($compressorArray));
+		$GLOBALS['TBE_MODULES_EXT']['vidi']['__tempMergeResult'] = $result[0];
+		
 		$configuration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode];
-		$configurationHash = md5(serialize($configuration));
+		$configurationHash = md5(serialize($configuration) . $GLOBALS['TBE_MODULES_EXT']['vidi']['__tempMergeResult']);
+
+		array_unshift($jsFilesRequireJS, $GLOBALS['TBE_MODULES_EXT']['vidi']['__tempMergeResult']);
 
 		if (!file_exists(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js') || t3lib_extMgm::getExtensionCacheBehaviour() == 0) {
 				// remove files from old configurations
@@ -282,7 +305,14 @@ class Tx_Vidi_Service_ModuleLoader {
 				$files[] = $configuration['extKey'] . '/' . str_replace('.js', '', $value);
 			}
 
-			$starterCode = 'require(["' . implode('","', $jsFiles) . '"], function() {' . LF . "\nTYPO3.Vidi.Application.initialize();\n\n";
+			$starterCode = "if (top.TYPO3 != undefined && top.TYPO3.Backend != undefined) {
+				top.TYPO3.Backend.NavigationContainer.hide();
+				top.TYPO3.Backend.NavigationDummy.show();
+				top.TYPO3.Backend.doLayout();
+			}
+			";
+
+			$starterCode .= 'require(["' . implode('", "', $jsFilesRequireJS) . '"], function() {' . LF . "\nTYPO3.Vidi.Application.initialize();\n\n";
 
 			if (count($files)) {
 				$files = '["' . implode('","', $files) . '"]';
@@ -296,6 +326,7 @@ class Tx_Vidi_Service_ModuleLoader {
 			$gridDataService = t3lib_div::makeInstance('Tx_Vidi_Service_ExtDirect_GridData');
 			$fieldConfigurationData = array();
 			$columnConfigurationData = array();
+
 			foreach ($configuration['allowedDataTypes'] AS $table) {
 				$fieldConfigurationData[$table] = $gridDataService->buildFieldConfiguration($moduleCode, $table);
 				$columnConfigurationData[$table] = $gridDataService->buildColumnConfiguration($moduleCode, $table);
@@ -305,7 +336,7 @@ class Tx_Vidi_Service_ModuleLoader {
 
 			$starterCode .= self::createRegistryCode('vidi/moduleCode', $moduleCode);
 			$starterCode .= self::createRegistryCode('vidi/currentTable', $configuration['allowedDataTypes'][0]);
-			
+
 			$starterCode .= "\n\nTYPO3.Vidi.Application.run();\n});";
 
 			t3lib_div::writeFileToTypo3tempDir(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js', $starterCode);
