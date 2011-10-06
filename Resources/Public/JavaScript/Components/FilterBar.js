@@ -107,10 +107,16 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 			store.load();
 		}
 	},
-	add: function(object) {
+	add: function() {
 		var me = this;
+		var newObject;
+		if (arguments.length == 2) {
+			newObject = arguments[1];
+		} else {
+			newObject = arguments[0];
+		}
 		Ext.each(this.items.items, function(item) {
-			if(item.getClassName == object.getClassName && me.store.findRecord('xtype', object.alias.replace('widget.', '')).data.unique == true) {
+			if(item.getClassName == newObject.getClassName && me.store.findRecord('xtype', newObject.alias.replace('widget.', '')).data.unique == true) {
 				me.remove(item);
 			} 
 		});
