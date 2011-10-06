@@ -72,7 +72,7 @@ class Tx_Vidi_Service_FilterBar {
 
 	protected function buildClauseSingle(stdClass $filterParam) {
 		$result ='';
-		switch($filterParam->type) {
+		switch ($filterParam->type) {
 			case 'or':
 				$result = $this->buildClauseSingle_or($filterParam);
 				break;
@@ -82,9 +82,12 @@ class Tx_Vidi_Service_FilterBar {
 			case 'field':
 				$result = $this->buildClauseSingle_field($filterParam);
 				break;
-			case 'relation':
-					// ask taxonomy
-				$result = '';
+			default:
+				if ($processor = $this->getProcessorClass($filterParam->type)  !== null) {
+					$result = $processor->generateSQLRepresentation($filterParam);
+				} else {
+					$result = ' 1=1 ';
+				}
 				break;
 		}
 		return $result;
@@ -152,6 +155,19 @@ class Tx_Vidi_Service_FilterBar {
 			return ' uid NOT IN (' . implode(',', $uids) . ') ';
 		}
 
+	}
+
+	protected function getProcessorClass($type) {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar']['availableFilterElements'][$type])) {
+			$object = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar']['availableFilterElements'][$type]['processorClass'];
+			if (!$object instanceof Tx_Vidi_Service_FilterBar_FilterElementInterface) {
+				$object = null;
+			}
+		} else {
+			$object = null;
+		}
+
+		return $object;
 	}
 
 	public static function registerFilterLabel($xtype, $serialisationId, $title, $processingClass, $unique = FALSE) {
