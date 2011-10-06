@@ -25,7 +25,7 @@ class Tx_Vidi_Service_ModuleLoader {
 			'title' => 'FileTree',
 			'dataProvider' => 'TYPO3.Components.FileTree.DataProvider.getTreeData',
 			'relationConfiguration' => array(
-				'*' => array('foreignField' => 'collection')
+				'*' => array('foreignField' => '_collection')
 			)
 		),
 	);

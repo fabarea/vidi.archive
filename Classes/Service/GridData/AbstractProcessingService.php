@@ -95,7 +95,8 @@ abstract class Tx_Vidi_Service_GridData_AbstractProcessingService {
 		$whereClause = '';
 		if ($query !== null && $query != '') {
 			$filterBarService = t3lib_div::makeInstance('Tx_Vidi_Service_FilterBar', $this->table);
-			$whereClause .= $filterBarService->generateWhereClause($query);
+			$filterBarService->initializeQuery($query);
+			$whereClause .= $filterBarService->generateWhereClause();
 		}
 		return $whereClause;
 	}

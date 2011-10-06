@@ -39,24 +39,66 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 	protected $table = '__FILES';
 
 	public function getRecords($parameters)	{
+		$mountRepository = t3lib_div::makeInstance('t3lib_file_Domain_Repository_MountRepository');
+		$factory = t3lib_div::makeInstance('t3lib_file_Factory');
+		$filterBarService = t3lib_div::makeInstance('Tx_Vidi_Service_FilterBar', '__FILES');
+		$filterBarService->initializeQuery($parameters->query);
 
-		$mount = $this->mountRepository->findByUid($mount);
-  		$this->view->assign('mount', $mount);
+		$path = '/';
+		$mount = null;
+		$restrictions = $filterBarService->getVirtualFieldFilters();
+		if (count($restrictions) == 0) {
+			$mount = $mountRepository->findAvailableMounts();
+			$mount = $mount[0];
+		} else {
+			$restriction = $restrictions[0]->search;
+			$restriction = t3lib_div::trimExplode(':', $restriction, TRUE);
 
-  		$path = $this->request->getArgument('path');
-  		$currentCollection = $this->factory->createStorageCollectionObject($mount, $path, '');
-  		$this->view->assign('path', $path);
+			$mount = $mountRepository->findByUid($restriction[0]);
+			$path = $restriction[1];
 
-  		$this->view->assign('directories', $currentCollection->getSubcollections());
-  		$this->view->assign('files', $currentCollection->getFiles());
+		}
+		$currentCollection = $factory->createStorageCollectionObject($mount, $path, '');
+  		$files =  $currentCollection->getFiles();
+		$data = array();
+		foreach ($files as $file) {
+			$data[] = $file->toArray();
+		}
 		return array(
-			'data' => array(),
-			'total' => 0
+			'data' => $data,
+			'total' => count($data)
 		);
 	}
 
 	public function getTableFields($parameters)	{
-		// TODO: Implement getTableFields() method.
+		$data = array(
+			array(
+				'title' => 'id',
+				'name' => 'id',
+				'type' => 'string'
+			),
+			array(
+				'title' => 'Bezeichnung',
+				'name' => 'name',
+				'type' => 'string'
+			),
+			array(
+				'title' => 'Erweiterung',
+				'name' => 'extension',
+				'type' => 'string'
+			),
+			array(
+				'title' => 'Dateigroesse',
+				'name' => 'size',
+				'type' => 'number'
+			),
+			array(
+				'title' => 'Folder',
+				'name' => '_collection',
+				'type' => 'string'
+			)
+		);
+		return $data;
 	}
 
 	public function getRelatedRecords($parameters) {
@@ -64,11 +106,43 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 	}
 
 	public function buildColumnConfiguration() {
-		return array();
+		$columns = array(
+			array('text' => 'uid', 'dataIndex' => 'uid', 'hidden' => true, 'sortable' => true),
+			array('text' => 'pid', 'dataIndex' => 'oid', 'hidden' => true, 'sortable' => true)
+		);
+
+		foreach ($GLOBALS['TCA']['sys_file']['columns'] AS $name => $configuration) {
+			$data = array(
+				'text' => $GLOBALS['LANG']->sL($configuration['label']),
+				'dataIndex' => $name,
+				'hidden' => !t3lib_div::inList($GLOBALS['TCA']['sys_file']['interface']['showRecordFieldList'], $name),
+				'sortable'=> true
+			);
+
+			$columns[] = $data;
+		}
+
+		return $columns;
 	}
 
 	public function buildFieldConfiguration() {
-		return array();
+		$fields = array(
+			array('name' => 'uid', 'type' => 'int'),
+		);
+
+		foreach ($GLOBALS['TCA']['sys_file']['columns'] AS $name => $configuration) {
+			$data = array(
+				'name' => $name
+			);
+			$type = $this->detectExtJSType($configuration['config']);
+			if ($type == 'date') {
+				$data['dateFormat'] = 'd.m.Y. H:i';
+			}
+			$data['type'] = $type;
+			$fields[] = $data;
+		}
+
+		return $fields;
 	}
 
 }

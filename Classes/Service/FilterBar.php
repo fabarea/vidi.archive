@@ -16,10 +16,33 @@ class Tx_Vidi_Service_FilterBar {
 
 	}
 
-	public function generateWhereClause($query) {
+	public function initializeQuery($query) {
 		$this->query = json_decode($query);
 
 		$this->groupQueryByOperatorBinding();
+
+	}
+
+	public function getVirtualFieldFilters() {
+		$found = array();
+		foreach ($this->query AS $filter) {
+			$found = array_merge($found, $this->getVirtualFieldFilterSingle($filter));
+		}
+		return $found;
+	}
+
+	protected function getVirtualFieldFilterSingle($filter) {
+		$found = array();
+		if ($filter->type == 'field' && substr($filter->field, 0, 1) == '_') {
+				$found[] = $filter;
+		} elseif($filter->type == 'operator') {
+				$found = array_merge($found, $this->getVirtualFieldFilterSingle($filter->left));
+				$found = array_merge($found, $this->getVirtualFieldFilterSingle($filter->right));
+		}
+		return $found;
+	}
+
+	public function generateWhereClause() {
 		$array = array();
 		foreach($this->query AS $object) {
 			$array[] = $this->buildClauseSingle($object);
