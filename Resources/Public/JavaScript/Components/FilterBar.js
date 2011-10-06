@@ -53,6 +53,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 	 */
 	baseCls: 'vidi-filterBar',
 
+	store: null,
 	/**
 	 * A single item, or an array of child Components to be added to this container
 	 * All Items should be ChildClasses of FilterBar.Item
@@ -62,6 +63,30 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 	items: [],
 	constructor: function() {
 		this.callParent(arguments);
+		this.store = Ext.create('Ext.data.Store', {
+			storeId: 'TYPO3-Vidi-Stores-Filterbar-Elements',
+			extend: 'Ext.data.Store',
+			fields: [
+				'xtype', 'title', 'id', 'unique'
+			],
+			buffered: true,
+			pageSize: 20,
+			idProperty: 'id',
+			autoLoad: false,
+			proxy: {
+				type: 'direct',
+				directFn: TYPO3.Vidi.Service.ExtDirect.FilterBar.getElements,
+				extraParams: {
+				},
+				reader: {
+					type: 'json',
+					root: 'data',
+					totalProperty: 'total'
+				}
+			},
+			remoteFilter: false,
+			remoteSort: false
+		});
 		this.addEvents('VIDI_filterDataInBarChanged');
 	},
 	/**
@@ -82,7 +107,13 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 			store.load();
 		}
 	},
-	add: function() {
+	add: function(object) {
+		var me = this;
+		Ext.each(this.items.items, function(item) {
+			if(item.getClassName == object.getClassName && me.store.findRecord('xtype', object.alias.replace('widget.', '')).data.unique == true) {
+				me.remove(item);
+			} 
+		});
 		this.callParent(arguments);
 	},
 	serialize: function() {
@@ -117,7 +148,6 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 			} else if (object == '&&' || object == '||') {
 				type += 'Operator';
 			}
-			console.log(type);
 			var filterTag = eval(type + ".unserialize")(object);
 			me.add(filterTag);
 		});

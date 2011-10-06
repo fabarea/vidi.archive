@@ -27,7 +27,10 @@ class Tx_Vidi_Service_FilterBar {
 		return implode(' AND ', $array);
 	}
 
-	public function groupQueryByOperatorBinding() {
+
+
+
+	protected function groupQueryByOperatorBinding() {
 			// remove and operators as they are implicit
 		foreach($this->query AS $index => $filterLabel) {
 			if ($filterLabel == '&&') {
@@ -148,6 +151,16 @@ class Tx_Vidi_Service_FilterBar {
 		} else {
 			return ' uid NOT IN (' . implode(',', $uids) . ') ';
 		}
+
+	}
+
+	public static function registerFilterLabel($xtype, $serialisationId, $title, $processingClass, $unique = FALSE) {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar']['availableFilterElements'][$serialisationId] = array(
+			'widgetName'	=> $xtype,
+			'title'			=> $title,
+			'processorClass'=> $processingClass,
+			'unique'		=> $unique,
+		);
 
 	}
 }

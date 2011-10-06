@@ -36,16 +36,20 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Layout.ExtendedCardLayout', {
 		this.callParent(arguments);
 
 		if(!this.typeMenu) {
-			this.typeMenu = this.getRenderTarget().createChild({
+			var me = this;
+			var elementStore = Ext.StoreManager.lookup('TYPO3-Vidi-Stores-Filterbar-Elements');
+			var menu = this.typeMenu = this.getRenderTarget().createChild({
 				tag: 'ul',
-				id: this.getRenderTarget().id + "-typeswitcher",
-				children: [
-					{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Fulltext", cls: 'Fulltext', html: 'Fulltext', title: 'Fulltext'},
-					{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Field", cls: 'Field', html: 'Field', title: 'Field'},
-					{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Relation", cls: 'Relation', html: 'Relation', title: 'Relation'},
-					{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Operator", cls: 'Operator', html: 'Operator', title: 'Operator'},
-					{tag: 'li', id: this.getRenderTarget().id + "-typeswitcher-Collection", cls: 'Collection', html: 'Collection', title: 'Collection'}
-				]
+				id: this.getRenderTarget().id + "-typeswitcher"
+			});
+			elementStore.each(function(record) {
+				menu.createChild({
+					tag: 'li',
+					id: me.getRenderTarget().id + "-typeswitcher-" + record.data.id,
+					cls: record.data.xtype,
+					html: record.data.title,
+					title: record.data.title
+				});
 			});
 			this.typeMenu.select('li').addListener('click', this.owner._newType, this.owner, {stopEvent: true});
 		}

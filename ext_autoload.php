@@ -6,6 +6,9 @@ $extensionPath = t3lib_extMgm::extPath('vidi');
 $extensionClassesPath = t3lib_extMgm::extPath('vidi') . 'Classes/';
 return array(
 	'tx_vidi_controller_vidicontroller' => $extensionClassesPath . 'Controller/VidiController.php',
+	'tx_vidi_service_griddata_abstractprocessingservice' => $extensionClassesPath . 'Service/GridData/AbstractProcessingService.php',
+	'tx_vidi_service_griddata_filedataprocessingservice' => $extensionClassesPath . 'Service/GridData/FileDataProcessingService.php',
+	'tx_vidi_service_griddata_tcadataprocessingservice' => $extensionClassesPath . 'Service/GridData/TcaDataProcessingService.php',
 	'tx_vidi_service_griddata' => $extensionClassesPath . 'Service/GridData.php',
 	'tx_vidi_viewhelpers_abstractviewhelper' => $extensionClassesPath . 'ViewHelpers/AbstractViewHelper.php',
 	'tx_vidi_viewhelpers_includecssfileviewhelper' => $extensionClassesPath . 'ViewHelpers/IncludeCssFileViewHelper.php',
