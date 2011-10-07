@@ -65,6 +65,9 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 	}
 
 	public function getTableFields($parameters) {
+		
+		$moduleConfiguration = $GLOBALS['TBE_MODULES_EXT']['vidi'][$parameters->moduleCode];
+
 		$columns = array();
 		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $column => $configuration) {
 			if ($this->hasAccessToColumn($column) && ($type = $this->detectExtJSType($configuration['config'])) != 'relation') {
@@ -80,8 +83,7 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 				$columns[] = $field;
 			}
 		}
-
-		foreach ($this->moduleConfiguration['trees'] AS $tree) {
+		foreach ($moduleConfiguration['trees'] AS $tree) {
 			if (isset($tree['relationConfiguration'])) {
 				if (isset($tree['relationConfiguration']['*']) && !in_array($tree['relationConfiguration']['*']['foreignField'], $columns)) {
 					$columns[] = array(
@@ -104,7 +106,7 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 				}
 			}
 		}
-
+		
 		return $columns;
 	}
 

@@ -234,7 +234,6 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Utils',
 				'Vidi/Core/Registry',
 				'Vidi/Core/Application',
-				'Vidi/Components/FilterBar/Item',
 				'Vidi/Stores/AvailableFields',
 				'Vidi/Stores/FilterBar/CollectionOperators',
 				'Vidi/Stores/FilterBar/FieldOperators',
@@ -257,6 +256,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/View/Content/GridToolbar',
 
 				'Vidi/Components/Button',
+				'Vidi/Components/FilterBar',
 				'Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout',
 				'Vidi/Components/FilterBar/Item/Layout/InnerLayout',
 				'Vidi/Components/FilterBar/Item',
@@ -264,9 +264,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Components/FilterBar/Item/Field',
 				'Vidi/Components/FilterBar/Item/Fulltext',
 				'Vidi/Components/FilterBar/Item/Operator',
-				'Vidi/Components/FilterBar/Item/SelectBox',
-
-				'Vidi/Components/FilterBar',
+				'Vidi/Components/FilterBar/Item/SelectBox'
 		);
 		$jsFilesRequireJS = array(
 		);

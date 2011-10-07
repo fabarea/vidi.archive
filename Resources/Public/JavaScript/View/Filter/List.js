@@ -42,10 +42,13 @@ Ext.define('TYPO3.Vidi.View.Filter.List', {
 		this.callParent();
 	},
 	listeners: {
-		itemDblClick: function(view, filter, element, index, event) {
-			Ext.ComponentManager.get('TYPO3-VIDI-FilterBar').load(filter.get('criteria'));
+		itemClick: function(view, filter, element, index, event) {
+			if(event.ctrlKey == false) {
+				Ext.ComponentManager.get('TYPO3-VIDI-FilterBar').load(filter.get('criteria'));
+			}
 		},
 		selectionchange: function(selectionModel, elements, event) {
+			
 			var listInstance = selectionModel.view;
 			var parentPanel = listInstance.up('TYPO3-Vidi-View-Filter-ListPanel');
 

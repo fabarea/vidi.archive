@@ -1,5 +1,3 @@
-Ext.ns("TYPO3.Vidi.Components.FilterBar");
-
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *

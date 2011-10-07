@@ -1,5 +1,3 @@
-Ext.ns("TYPO3.Vidi.Components");
-
 /*
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -110,8 +108,8 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 		}
 	},
 	remove: function() {
-		this.callParent();
-		if (this.ownerCt != undefined) {
+		this.callParent(arguments);
+		if (this.ownerCt != undefined && !this.suspendLayout) {
 			this.ownerCt.doLayout();
 		}
 	},
@@ -131,10 +129,10 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 
 		this.callParent(arguments);
 		
-		if (!newObject.virgin && !newObject.editMode) {
+		if (!newObject.virgin && !newObject.editMode && !this.suspendLayout) {
 			this.fireEvent('VIDI_filterDataInBarChanged');
 		}
-		if (me.ownerCt != undefined) {
+		if (me.ownerCt != undefined && !this.suspendLayout) {
 			me.ownerCt.doLayout();
 		}
 	},
@@ -148,7 +146,10 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 	load: function(json) {
 		var me = this;
 
+		me.suspendLayout = true;
+				
 		me.removeAll();
+
 		var objects = Ext.JSON.decode(json);
 		Ext.Array.each(objects, function(object) {
 			var type = "TYPO3.Vidi.Components.FilterBar.Item.";
@@ -169,12 +170,16 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 					case 'operator':
 						type += 'Operator';
 				}
-				console.log(type + ".unserialize");
 				var filterTag = eval(type + ".unserialize")(object);
 				filterTag.virgin = false;
 				me.add(filterTag);
 			}
 		});
+
+		me.suspendLayout = false;
+		if (me.ownerCt != undefined) {
+			me.ownerCt.doLayout();
+		}
 
 		this.fireEvent('VIDI_filterDataInBarChanged');
 	}

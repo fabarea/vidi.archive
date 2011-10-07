@@ -1,5 +1,3 @@
-Ext.ns('TYPO3.Vidi.Components.FilterBar.Item');
-
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -239,6 +237,13 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Field', {
 			inputField.clearInvalid();
 			inputField.validate();
 		}
-
+	},
+	statics: {
+		unserialize: function(data) {
+			var tag = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Field',{
+				editMode: false
+			});
+			return tag;
+		}
 	}
 });
