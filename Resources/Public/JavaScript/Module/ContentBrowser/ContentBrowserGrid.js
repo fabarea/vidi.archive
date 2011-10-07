@@ -65,11 +65,6 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 
 	dockedItems: [
 		{
-			xtype: 'filterBar',
-			id: 'TYPO3-VIDI-FilterBar',
-			dock:'top'
-	  	},
-		{
 			xtype: 'Vidi-GridToolbar',
 			store: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',   // same store GridPanel is using
 			dock: 'bottom'

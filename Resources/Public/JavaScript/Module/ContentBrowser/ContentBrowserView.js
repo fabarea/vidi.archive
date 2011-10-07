@@ -59,9 +59,24 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {
 					region: 'east',
 					split: true
 				},
-				{xtype:'panel',region:'center', layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'}},
-				{xtype: 'TYPO3-Vidi-Module-ContentBrowser-TreeRegion'}
-
+				{
+					xtype: 'container',
+					region :'center',
+					layout : 'autoFitLayout',
+					items: [
+						{
+							xtype: 'filterBar',
+							id: 'TYPO3-VIDI-FilterBar',
+							region:'north',
+							anchor: '100%'
+						},
+						{
+							xtype:'panel',region: 'center', layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid'},
+							anchor: '100% auto'
+						}
+					]
+				},
+				{xtype: 'TYPO3-Vidi-Module-ContentBrowser-TreeRegion', region:'west'}
 			]
 		};
 

@@ -103,8 +103,16 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 		},
 		VIDI_filterDataInBarChanged: function() {
 			var store = Ext.StoreManager.lookup('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore');
-			store.getProxy().extraParams.query = this.serialize();
-			store.load();
+			if (store != undefined) {
+				store.getProxy().extraParams.query = this.serialize();
+				store.load();
+			}
+		}
+	},
+	remove: function() {
+		this.callParent();
+		if (this.ownerCt != undefined) {
+			this.ownerCt.doLayout();
 		}
 	},
 	add: function() {
@@ -120,7 +128,15 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 				me.remove(item);
 			} 
 		});
+
 		this.callParent(arguments);
+		
+		if (!newObject.virgin && !newObject.editMode) {
+			this.fireEvent('VIDI_filterDataInBarChanged');
+		}
+		if (me.ownerCt != undefined) {
+			me.ownerCt.doLayout();
+		}
 	},
 	serialize: function() {
 		var items = [];
@@ -150,12 +166,14 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 					case 'collection':
 						type += 'Collection';
 						break;
+					case 'operator':
+						type += 'Operator';
 				}
-			} else if (object == '&&' || object == '||') {
-				type += 'Operator';
+				console.log(type + ".unserialize");
+				var filterTag = eval(type + ".unserialize")(object);
+				filterTag.virgin = false;
+				me.add(filterTag);
 			}
-			var filterTag = eval(type + ".unserialize")(object);
-			me.add(filterTag);
 		});
 
 		this.fireEvent('VIDI_filterDataInBarChanged');

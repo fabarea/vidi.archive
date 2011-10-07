@@ -240,6 +240,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Stores/FilterBar/FieldOperators',
 				'Vidi/Stores/FilterBar/Operators',
 
+				'Vidi/Components/Layout/AutoFitLayout',
 				'Vidi/Module/UserInterfaceModule',
 				'Vidi/Module/ContentBrowser/ContentBrowserGrid',
 				'Vidi/Module/ContentBrowser/ContentBrowserView',

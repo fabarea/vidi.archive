@@ -87,7 +87,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar'] = array(
 			'widgetName'	=> 'filterBar-Item-Fulltext',
 			'title'			=> 'fulltext search',
 			'processorClass'=> '-',
-			'unique'		=> true,
+			'unique'		=> false,
 		),
 		'collection' => array(
 			'widgetName'	=> 'filterBar-Item-Collection',
