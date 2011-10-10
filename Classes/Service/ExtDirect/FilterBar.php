@@ -13,17 +13,17 @@ class Tx_Vidi_Service_ExtDirect_FilterBar {
 	public function getElements($params) {
 		$elements = array();
 		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar']['availableFilterElements'] AS $id => $element) {
-			if ($id == 'field' && !$element['unique']) {
+			if ($id == 'field' && $element['unique'] == false) {
 				$uniques = array();
 				foreach ($GLOBALS['TBE_MODULES_EXT']['vidi'][$params->moduleCode]['trees'] AS $tree) {
 					foreach ($tree['relationConfiguration'] AS $table => $config) {
 						if ($config['unique']) {
-							$uniques['table'] = $config['foreignField'];
+							$uniques[$table] = $config['foreignField'];
 						}
 					}
 				}
 			} else {
-				$uniques = true;
+				$uniques = $element['unique'];
 			}
 			$elements[] = array(
 				'id'	=> $id,

@@ -208,8 +208,13 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item', {
 	 */
 	_newType: function(event, element, config) {
 		var type = element.className;
-		this.ownerCt.insert(this.ownerCt.items.indexOf(this) + 1, Ext.ComponentManager.create({xtype: type, editMode: true}));
-		this.ownerCt.remove(this);
+		var owner = this.ownerCt;
+		var pos = this.ownerCt.items.indexOf(this);
+
+		owner.suspendLayout = true;
+		owner.remove(this);
+		owner.suspendLayout = false;
+		owner.insert(pos, Ext.ComponentManager.create({xtype: type, editMode: true}));
 	},
 
 	/**

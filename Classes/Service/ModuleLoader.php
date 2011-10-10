@@ -17,7 +17,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				'rootUid' => 0
 			),
 			'relationConfiguration' => array(
-				'*' => array('foreignField' => 'pid')
+				'*' => array('foreignField' => 'pid', 'unique' => true)
 			)
 		),
 		1 => array(

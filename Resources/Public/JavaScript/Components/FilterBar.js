@@ -83,8 +83,11 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 					totalProperty: 'total'
 				}
 			},
-			beforeLoad: function() {
-				this.proxy.extraParams.moduleCode = TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode');
+			listeners: {
+				beforeLoad: function() {
+					console.log('test');
+					this.proxy.extraParams.moduleCode = TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode');
+				}
 			},
 			remoteFilter: false,
 			remoteSort: false
@@ -126,7 +129,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 			newObject = arguments[0];
 		}
 		Ext.each(this.items.items, function(item) {
-			if(me._matchesUnique(item, newObject)) {
+			if (me._matchesUnique(item, newObject)) {
 				me.remove(item);
 			} 
 		});
@@ -188,13 +191,25 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 		this.fireEvent('VIDI_filterDataInBarChanged');
 	},
 	_matchesUnique: function(oldObject, newObject) {
-		if (item.getClassName == newObject.getClassName) {
-			var elementInfo = this.store.findRecord('xtype', newObject.alias.replace('widget.', '')).data;
-		//	if (elementInfo.unique !== undefined && ) {
-
-		//	}
-		} else {
-			return false;
+		if (oldObject == undefined) return false;
+		if (oldObject.getClassName == newObject.getClassName) {
+			var elementInfo = this.store.findRecord('xtype', newObject.alias.replace('widget.', ''));
+			if (elementInfo.data !== undefined && elementInfo.data.unique !== undefined) {
+				console.log(elementInfo.data);
+				if (Ext.isBoolean(elementInfo.data.unique)) {
+					return elementInfo.data.unique == true;
+				} else if (Ext.isObject(elementInfo.data.unique) &&
+						oldObject.data.field !== undefined && oldObject.data.field.id !== undefined &&
+						newObject.data.field !== undefined && newObject.data.field.id !== undefined &&
+						oldObject.data.field.id == newObject.data.field.id &&
+						(		oldObject.data.field.id == elementInfo.data.unique['*']
+								|| oldObject.data.field.id ==  elementInfo.data.unique[TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')]
+						)
+				) {
+					return true;
+				}
+			}
 		}
+		return false;
 	}
 });
