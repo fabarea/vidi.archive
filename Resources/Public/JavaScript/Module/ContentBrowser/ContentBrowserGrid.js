@@ -51,6 +51,8 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	 */
 	store: null,
 
+	border: 0,
+	
 	/**
 	 * The selection type
 	 *

@@ -41,7 +41,6 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 			height: 54,
 			dockedItems: [{
 					xtype: 'toolbar',
-					// @todo: put that into class
 					style: {
 						backgroundColor: '#585858'
 					},
@@ -49,7 +48,6 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 					items: this._getItems('top')
 				} , {
 
-					// @todo: put that into class
 					style: {
 						backgroundColor: '#DADADA'
 					},
@@ -62,7 +60,7 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 
 
 		Ext.apply(this, config);
-		TYPO3.Vidi.Module.UserInterface.DocHeader.superclass.initComponent.call(this);
+		this.callParent(arguments);
 	},
 
 	/**
@@ -77,7 +75,6 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 		Ext.each(config, function(item) {
 			if (item == '->') {
 				items.push('->');
-
 			}
 			else {
 				items.push(this._getComponent(item));
