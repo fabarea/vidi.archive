@@ -257,6 +257,7 @@ class Tx_Vidi_Service_ModuleLoader {
 
 				'Vidi/Components/Grid/Columns/IconColumn',
 				'Vidi/Components/Grid/Columns/ThumbnailColumn',
+				'Vidi/Components/Grid/ThumbnailResizer',
 
 				'Vidi/Components/Button',
 				'Vidi/Components/FilterBar',

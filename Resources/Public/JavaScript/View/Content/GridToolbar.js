@@ -42,6 +42,7 @@ Ext.define('TYPO3.Vidi.View.Content.GridToolbar', {
 				{text: 'CSV'}, {text: 'XML'}, {text: 'SQL'}
 			]
 		},
-		'->'
+		'->',
+		{xtype: 'thumbnailColumnResizer'}
 	]
 });
