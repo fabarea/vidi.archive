@@ -45,13 +45,24 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Fulltext', {
 					xtype: 'textfield',
 					name: 'searchstring',
 					allowBlank: false,
-					fieldLabel: 'Fulltext'
+					fieldLabel: 'Fulltext',
+					listeners: {
+						specialkey: function(field, e){
+							if (e.getKey() == e.ENTER) {
+								field.up('filterBar-Item-Fulltext').toggleEditingMode();
+							}
+						}
+					}
 				}],
 	applyData: function() {
 		var input = this.items.getAt(1).items.getAt(0);
 		this.data = {
 			string : input.getValue()
 		}
+	},
+	_startEditing: function() {
+		this.callParent(arguments);
+		this.items.getAt(1).items.getAt(0).focus();
 	},
 	serialize: function() {
 		return {type: 'fulltext', string: this.data.string};

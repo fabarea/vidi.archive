@@ -195,7 +195,6 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 		if (oldObject.getClassName == newObject.getClassName) {
 			var elementInfo = this.store.findRecord('xtype', newObject.alias.replace('widget.', ''));
 			if (elementInfo.data !== undefined && elementInfo.data.unique !== undefined) {
-				console.log(elementInfo.data);
 				if (Ext.isBoolean(elementInfo.data.unique)) {
 					return elementInfo.data.unique == true;
 				} else if (Ext.isObject(elementInfo.data.unique) &&
