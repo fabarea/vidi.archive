@@ -75,12 +75,16 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 				type: 'direct',
 				directFn: TYPO3.Vidi.Service.ExtDirect.FilterBar.getElements,
 				extraParams: {
+					moduleCode: ''
 				},
 				reader: {
 					type: 'json',
 					root: 'data',
 					totalProperty: 'total'
 				}
+			},
+			beforeLoad: function() {
+				this.proxy.extraParams.moduleCode = TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode');
 			},
 			remoteFilter: false,
 			remoteSort: false
@@ -122,7 +126,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 			newObject = arguments[0];
 		}
 		Ext.each(this.items.items, function(item) {
-			if(item.getClassName == newObject.getClassName && me.store.findRecord('xtype', newObject.alias.replace('widget.', '')).data.unique == true) {
+			if(me._matchesUnique(item, newObject)) {
 				me.remove(item);
 			} 
 		});
@@ -182,5 +186,15 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 		}
 
 		this.fireEvent('VIDI_filterDataInBarChanged');
+	},
+	_matchesUnique: function(oldObject, newObject) {
+		if (item.getClassName == newObject.getClassName) {
+			var elementInfo = this.store.findRecord('xtype', newObject.alias.replace('widget.', '')).data;
+		//	if (elementInfo.unique !== undefined && ) {
+
+		//	}
+		} else {
+			return false;
+		}
 	}
 });
