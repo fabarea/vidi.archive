@@ -36,7 +36,7 @@ TYPO3.Vidi.Module.UserInterface.BaseModule = Ext.extend(Ext.Viewport, {
 		var config = {
 			renderTo: 'typo3-mod-php',
 			layout:'border',
-			cls: 'typo3-fullDoc',
+			cls: 'typo3-fullDoc typo3-vidi',
 			items: [
 				this._docHeader,
 				TYPO3.TYPO3.Core.Registry.get('vidi/mainModule')

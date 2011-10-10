@@ -160,3 +160,7 @@ div.t3-vidi-filterManager ul li {
 	list-style: outside disc;
 	line-height: 1.5em;
 }
+
+body.typo3-vidi div#typo3-inner-docbody {
+	padding: 0px;
+}
