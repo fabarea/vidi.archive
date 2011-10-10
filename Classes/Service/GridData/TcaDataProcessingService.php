@@ -57,7 +57,17 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 			t3lib_utility_Math::convertToPositiveInteger($parameters->start) . ',' . t3lib_utility_Math::convertToPositiveInteger($parameters->limit)
 
 		);
-		
+
+		foreach ($data AS $key => $value) {
+			$data[$key]['icon'] = t3lib_iconWorks::getSpriteIconForRecord($this->table, $value);
+
+			foreach ($value AS $field => $content) {
+				if ($this->detectExtJSType($GLOBALS['TCA'][$this->table]['columns'][$field]['config']) == 'image') {
+					$data[$key][$field] = $this->preprocessFileColumn($field, $content);
+				}
+			}
+		}
+
 		return array(
 			'data' => $data,
 			'total' => $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $this->table, ''),
@@ -148,7 +158,8 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 
 		$columns = array(
 			array('text' => 'uid', 'dataIndex' => 'uid', 'hidden' => true, 'sortable' => true),
-			array('text' => 'pid', 'dataIndex' => 'oid', 'hidden' => true, 'sortable' => true)
+			array('text' => 'pid', 'dataIndex' => 'oid', 'hidden' => true, 'sortable' => true),
+			array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn', 'width' => 24)
 		);
 
 		foreach ($GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
@@ -158,6 +169,9 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 				'hidden' => !t3lib_div::inList($GLOBALS['TCA'][$this->table]['interface']['showRecordFieldList'], $name),
 				'sortable'=> true
 			);
+			if ($this->detectExtJSType($configuration['config']) == 'image') {
+				$data['xtype'] = 'thumbnailColumn';
+			}
 
 			$columns[] = $data;
 		}
@@ -169,7 +183,8 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 
 		$fields = array(
 			array('name' => 'uid', 'type' => 'int'),
-			array('name' => 'pid', 'type' => 'int')
+			array('name' => 'pid', 'type' => 'int'),
+			array('name' => 'icon', 'type' => 'string')
 		);
 
 		foreach ($GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
@@ -201,6 +216,20 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 		return implode(', ', $sortParams);
 	}
 
+
+	protected function preprocessFileColumn($column, $data) {
+		$images = t3lib_div::trimExplode(',', $data, TRUE);
+		if (count($images) >= 1) {
+			$result = array();
+			$path = t3lib_div::resolveBackPath('../' . $GLOBALS['TCA'][$this->table]['columns'][$column]['config']['uploadfolder'] . '/');
+			foreach ($images AS $image) {
+				$result[] = $path . $image;
+			}
+		} else {
+			$result = '';
+		}
+		return $result;
+	}
 
 }
 

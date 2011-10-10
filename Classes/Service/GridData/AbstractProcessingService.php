@@ -66,7 +66,11 @@ abstract class Tx_Vidi_Service_GridData_AbstractProcessingService {
 				if ($configuration['internal_type'] == 'db') {
 					$type = 'relation';
 				} elseif($configuration['internal_type'] == 'file' || $configuration['internal_type'] == 'file_reference') {
-					$type = 'file';
+					if (strpos($configuration['uploadfolder'], '/media') !== false || strpos($configuration['uploadfolder'], '/pics') !== false || strpos($configuration['allowed'], 'jpg') !== false) {
+						$type = 'image';
+					} else {
+						$type = 'file';
+					}
 				} else {
 					$type = 'auto';
 				}

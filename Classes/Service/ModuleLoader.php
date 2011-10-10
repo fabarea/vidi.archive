@@ -255,6 +255,9 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/View/Filter/ListPanel',
 				'Vidi/View/Content/GridToolbar',
 
+				'Vidi/Components/Grid/Columns/IconColumn',
+				'Vidi/Components/Grid/Columns/ThumbnailColumn',
+
 				'Vidi/Components/Button',
 				'Vidi/Components/FilterBar',
 				'Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout',
