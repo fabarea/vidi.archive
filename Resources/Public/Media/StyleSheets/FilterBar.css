@@ -3,9 +3,10 @@ div.vidi-filterBar {
 	margin: 10px;
 	padding: 10px;
 	padding-bottom:0px;
+	padding-right:0px;
 	border: 1px solid black;
 	cursor:text;
-	min-height:40px;
+	min-height:64px;
 	overflow: hidden;
 }
 
