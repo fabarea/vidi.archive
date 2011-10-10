@@ -40,7 +40,8 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 	},
 	addFilterToQuery: function(treeIndex, record) {
 		var relationFilter = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Field',{
-			editMode: false
+			editMode: false,
+			virgin: false
 		});
 		var treeConfig = TYPO3.TYPO3.Core.Registry.get('vidi/treeConfig');
 		var currentTable = TYPO3.TYPO3.Core.Registry.get('vidi/currentTable');
