@@ -71,27 +71,27 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['Vidi'] = Array(
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi'] = array();
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar'] = array(
 	'availableFilterElements' => array(
+		'fulltext' => array(
+					'widgetName'	=> 'filterBar-Item-Fulltext',
+					'title'			=> 'fulltext search',
+					'processorClass'=> '-',
+					'unique'		=> false,
+				),
 		'field' => array(
 			'widgetName'	=> 'filterBar-Item-Field',
 			'title'			=> 'property based filter',
 			'processorClass'=> '-',
 			'unique'		=> false,
 		),
-		'operator' => array(
-			'widgetName'	=> 'filterBar-Item-Operator',
-			'title'			=> 'binary boolean operator',
-			'processorClass'=> '-',
-			'unique'		=> false,
-		),
-		'fulltext' => array(
-			'widgetName'	=> 'filterBar-Item-Fulltext',
-			'title'			=> 'fulltext search',
-			'processorClass'=> '-',
-			'unique'		=> false,
-		),
 		'collection' => array(
 			'widgetName'	=> 'filterBar-Item-Collection',
 			'title'			=> 'search within collections',
+			'processorClass'=> '-',
+			'unique'		=> false,
+		),
+		'operator' => array(
+			'widgetName'	=> 'filterBar-Item-Operator',
+			'title'			=> 'binary boolean operator',
 			'processorClass'=> '-',
 			'unique'		=> false,
 		)
