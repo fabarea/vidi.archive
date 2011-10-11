@@ -31,7 +31,7 @@
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Vidi_Service_ExtDirect_Filter extends Tx_Vidi_Service_ExtDirect_AbstractDataProvider {
+class Tx_Vidi_Service_ExtDirect_FilterManagement extends Tx_Vidi_Service_ExtDirect_AbstractDataProvider {
 
 	public function read($params) {
 		$this->initialize($params->moduleCode);
