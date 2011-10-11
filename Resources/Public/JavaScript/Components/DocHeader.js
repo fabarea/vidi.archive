@@ -1,5 +1,3 @@
-Ext.ns("TYPO3.Vidi.Module.UserInterface");
-	
 /*                                                                        *
  * This script is part of the TYPO3 project.                              *
  *                                                                        *
@@ -28,7 +26,7 @@ Ext.ns("TYPO3.Vidi.Module.UserInterface");
  * @extends Ext.Panel
  */
 Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
-	extend: 'Ext.Panel',
+	extend: 'Ext.panel.Panel',
 	alias: 'widget.TYPO3.Vidi.Module.UserInterface.DocHeader',
 
 	initComponent: function() {
@@ -45,6 +43,7 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 						backgroundColor: '#585858'
 					},
 					dock: 'top',
+					frame: false,
 					items: this._getItems('top')
 				} , {
 
@@ -53,6 +52,7 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 					},
 					xtype: 'toolbar',
 					dock: 'bottom',
+					frame: false,
 					items: this._getItems('bottom')
 
 				}]
@@ -90,23 +90,32 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 	 * @return {Object}
 	 */
 	_getComponent: function(item) {
-		var configuration;
+		var config = item;
 
-		configuration = {
-//				text: 'Action menu',
-//				menu: [action] // Add the action directly to a menu
-		};
-
-		configuration = Ext.create('Ext.Action', {
-			text: item,
-			iconCls: 'icon-add',
-			handler: function(){
-				//Ext.example.msg('Click', 'You clicked on "Action 1".');
-				console.log(item)
-			}
+		config = Ext.merge(config, {
+			scale: 'small',
+			frame: false,
+			border: 0,
+			renderTpl:
+					'<em id="{id}-btnWrap" class="{splitCls}">' +
+						'<tpl if="href">' +
+							'<a id="{id}-btnEl" href="{href}" target="{target}"<tpl if="tabIndex"> tabIndex="{tabIndex}"</tpl> role="link">' +
+								'<span id="{id}-btnInnerEl" class="{baseCls}-inner">&#160</span>' +
+									'<span id="{id}-btnIconEl" class="{baseCls}-icon">&#160;</span>' +
+							'</a>' +
+						'</tpl>' +
+						'<tpl if="!href">' +
+							'<button id="{id}-btnEl" type="{type}" hidefocus="true"' +
+								// the autocomplete="off" is required to prevent Firefox from remembering
+								// the button's disabled state between page reloads.
+								'<tpl if="tabIndex"> tabIndex="{tabIndex}"</tpl> role="button" autocomplete="off">' +
+								'<span id="{id}-btnIconEl" class="{baseCls}-icon {iconCls}">&#160;</span>' +
+								'<span id="{id}-btnInnerEl" class="{baseCls}-inner" style="{innerSpanStyle}">&#160</span>' +
+							'</button>' +
+						'</tpl>' +
+					'</em>'
 		});
-
-		return configuration;
+		return Ext.create('Ext.button.Button', config);
 	}
 
 });

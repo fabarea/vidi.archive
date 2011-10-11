@@ -245,7 +245,6 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Module/ContentBrowser/ContentBrowserView',
 				'Vidi/Module/ContentBrowser/TreeRegion',
 				'Vidi/Module/UserInterface/BaseModule',
-				'Vidi/Module/UserInterface/DocHeader',
 				'Vidi/Module/UserInterface/Tree',
 
 				'Vidi/Model/Filter',
@@ -259,6 +258,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Components/Grid/Columns/ThumbnailColumn',
 				'Vidi/Components/Grid/ThumbnailResizer',
 
+				'Vidi/Components/DocHeader',
 				'Vidi/Components/Button',
 				'Vidi/Components/FilterBar',
 				'Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout',
