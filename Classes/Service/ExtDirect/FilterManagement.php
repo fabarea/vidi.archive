@@ -33,15 +33,27 @@
  */
 class Tx_Vidi_Service_ExtDirect_FilterManagement extends Tx_Vidi_Service_ExtDirect_AbstractDataProvider {
 
+	/**
+	 * @var t3lib_collection_RecordCollectionRepository
+	 */
+	protected $collectionRepository;
+
+	public function __construct() {
+		/** @var t3lib_collection_RecordCollectionRepository $collectionRepository */
+		$this->collectionRepository = t3lib_div::makeInstance('t3lib_collection_RecordCollectionRepository');
+	}
+
 	public function read($params) {
 		$this->initialize($params->moduleCode);
 		$table = $params->currentTable;
 
-		$filters = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'uid,name,table_name,description,criteria,public',
-			'tx_vidi_filter',
-			'deleted = 0 AND table_name = \''. $table . '\' AND ( public = 1 OR ( public = 0 AND cruser_id = ' . $GLOBALS['BE_USER']->user['uid'] . ' ))'
-		);
+		$collectionObjects = $this->collectionRepository->findByTypeAndRecord('filter', $table);
+
+		$filters = array();
+		/** @var t3lib_collection_FilteredRecordCollection $collection */
+		foreach ($collectionObjects AS $collection) {
+			$filters[] = $collection->toArray();
+		}
 
 		return array(
 			'data' => $filters,
@@ -51,51 +63,37 @@ class Tx_Vidi_Service_ExtDirect_FilterManagement extends Tx_Vidi_Service_ExtDire
 	}
 
 	public function create($newFilter) {
+		/** @var t3lib_collection_FilteredRecordCollection $filter */
+		$filter = t3lib_div::makeInstance('t3lib_collection_FilteredRecordCollection');
+
 		$dataArray = array(
+			'uid'			=> 0,
 			'table_name'	=> $newFilter->tableName,
 			'description'	=> $newFilter->description,
 			'name'			=> $newFilter->name,
 			'criteria'		=> $newFilter->criteria,
-			'public'		=> (boolean)$newFilter->public,
-			'cruser_id'		=> $GLOBALS['BE_USER']->user['uid'],
-			'crdate'		=> time(),
-			'tstamp'		=> time()
 		);
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_vidi_filter', $dataArray);
 
-		if ($GLOBALS['TYPO3_DB']->sql_error() == '') {
-			return true;
-		} else {
-			return false;
-		}
+		$filter->fromArray($dataArray);
+		$filter->persist();
 	}
 
-	public function update($filter) {
-		$dataArray = array(
-			'table_name'	=> $filter->tableName ,
-			'description'	=> $filter->description,
-			'name'			=> $filter->name,
-			'criteria'		=> $filter->criteria,
-			'public'		=> (boolean)$filter->public,
-			'tstamp'		=> time()
-		);
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_vidi_filter', 'uid = ' . intval($filter->uid), $dataArray);
+	public function update($filterToUpdate) {
+		/** @var t3lib_collection_FilteredRecordCollection $filter */
+		$filter = t3lib_div::makeInstance('t3lib_collection_FilteredRecordCollection');
+		$filter->fromArray(array(
+			'uid'			=> $filterToUpdate->uid,
+			'table_name'	=> $filterToUpdate->tableName ,
+			'description'	=> $filterToUpdate->description,
+			'name'			=> $filterToUpdate->name,
+			'criteria'		=> $filterToUpdate->criteria,
+		));
 
-		if ($GLOBALS['TYPO3_DB']->sql_error() == '') {
-			return true;
-		} else {
-			return false;
-		}
+		$filter->persist();
 	}
 
 	public function destroy($filter) {
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_vidi_filter', 'uid = ' . intval($filter->uid), array('deleted' => 1, 'tstamp' => time()));
-		if ($GLOBALS['TYPO3_DB']->sql_error() == '') {
-			return true;
-		} else {
-			return false;
-		}
-
+		$this->collectionRepository->deleteByUid($filter->uid);
 	}
 }
 
