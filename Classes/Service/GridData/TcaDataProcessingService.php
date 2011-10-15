@@ -34,6 +34,9 @@
 class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_GridData_AbstractProcessingService {
 
 
+	public function __construct($table) {
+		parent::__construct($table);
+	}
 
 	/**
 	 * the tableName we will act on
@@ -162,7 +165,7 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 			array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn', 'width' => 24)
 		);
 
-		foreach ($GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
+		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
 			$data = array(
 				'text' => $GLOBALS['LANG']->sL($configuration['label']),
 				'dataIndex' => $name,
@@ -187,7 +190,7 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 			array('name' => 'icon', 'type' => 'string')
 		);
 
-		foreach ($GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
+		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
 			$data = array(
 				'name' => $name
 			);
@@ -222,7 +225,7 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 		if (count($images) >= 1) {
 			$result = array();
 			$path = t3lib_div::resolveBackPath('../' . $GLOBALS['TCA'][$this->table]['columns'][$column]['config']['uploadfolder'] . '/');
-			foreach ($images AS $image) {
+			foreach ((array)$images AS $image) {
 				$result[] = $path . $image;
 			}
 		} else {

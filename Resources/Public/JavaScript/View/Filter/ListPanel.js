@@ -50,6 +50,7 @@ Ext.define('TYPO3.Vidi.View.Filter.ListPanel', {
 				var list = this.up('TYPO3-Vidi-View-Filter-ListPanel').items.getAt(0);
 				var selected = list.getSelectionModel().getSelection();
 				Ext.each(selected, function(item) {
+					list.store.remove(item);
 					item.destroy();
 				});
 				list.refresh();

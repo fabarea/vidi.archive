@@ -4,11 +4,10 @@ Ext.define('TYPO3.Vidi.Model.Filter', {
 	idProperty: 'uid',
 	fields: [
 		{name: 'uid',			type: 'int'},
-		{name: 'name',			type: 'string'},
+		{name: 'title',			type: 'string'},
 		{name: 'description',	type: 'string'},
 		{name: 'tableName', 	type: 'string', mapping: 'table_name'},
-		{name: 'criteria',		type: 'string'},
-		{name: 'public',		type: 'boolean', defaultValue: false}
+		{name: 'criteria',		type: 'string'}
 	],
 	validations: [
 		{type: 'length',	field: 'name',	min:1}

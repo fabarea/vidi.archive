@@ -38,6 +38,12 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 	 */
 	protected $table = '__FILES';
 
+	public function __construct($table) {
+		parent::__construct('sys_file');
+	}
+
+
+
 	public function getRecords($parameters)	{
 		$mountRepository = t3lib_div::makeInstance('t3lib_file_Domain_Repository_MountRepository');
 		$factory = t3lib_div::makeInstance('t3lib_file_Factory');
@@ -59,9 +65,9 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 
 		}
 		$currentCollection = $factory->createStorageCollectionObject($mount, $path, '');
-  		$files =  $currentCollection->getFiles();
+  		$files = $currentCollection->getFiles();
 		$data = array();
-		foreach ($files as $file) {
+		foreach ((array)$files as $file) {
 			$data[] = $file->toArray();
 		}
 		return array(
@@ -111,7 +117,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 			array('text' => 'pid', 'dataIndex' => 'oid', 'hidden' => true, 'sortable' => true)
 		);
 
-		foreach ($GLOBALS['TCA']['sys_file']['columns'] AS $name => $configuration) {
+		foreach ((array)$GLOBALS['TCA']['sys_file']['columns'] AS $name => $configuration) {
 			$data = array(
 				'text' => $GLOBALS['LANG']->sL($configuration['label']),
 				'dataIndex' => $name,
@@ -130,7 +136,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 			array('name' => 'uid', 'type' => 'int'),
 		);
 
-		foreach ($GLOBALS['TCA']['sys_file']['columns'] AS $name => $configuration) {
+		foreach ((array)$GLOBALS['TCA']['sys_file']['columns'] AS $name => $configuration) {
 			$data = array(
 				'name' => $name
 			);

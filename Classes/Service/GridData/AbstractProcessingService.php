@@ -18,6 +18,7 @@ abstract class Tx_Vidi_Service_GridData_AbstractProcessingService {
 
 	public function __construct($table) {
 		$this->table = $table;
+		t3lib_div::loadTCA($table);
 	}
 
 	abstract public function getRecords($parameters);
@@ -82,7 +83,7 @@ abstract class Tx_Vidi_Service_GridData_AbstractProcessingService {
 	}
 
 	protected function filterColumnsViaAccess($columns) {
-		foreach($columns AS $index => $name) {
+		foreach((array)$columns AS $index => $name) {
 			if (!$this->hasAccessToColumn($name)) {
 				unset($columns[$index]);
 			}
@@ -98,7 +99,7 @@ abstract class Tx_Vidi_Service_GridData_AbstractProcessingService {
 	protected function generateWhereClauseFromQuery($query) {
 		$whereClause = '';
 		if ($query !== null && $query != '') {
-			$filterBarService = t3lib_div::makeInstance('Tx_Vidi_Service_FilterBar', $this->table);
+			$filterBarService = t3lib_div::makeInstance('t3lib_collection_FilteredRecords_Service', $this->table);
 			$filterBarService->initializeQuery($query);
 			$whereClause .= $filterBarService->generateWhereClause();
 		}

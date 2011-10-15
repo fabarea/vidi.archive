@@ -53,6 +53,7 @@ class Tx_Vidi_Service_ExtDirect_FilterManagement extends Tx_Vidi_Service_ExtDire
 		/** @var t3lib_collection_FilteredRecordCollection $collection */
 		foreach ($collectionObjects AS $collection) {
 			$filters[] = $collection->toArray();
+
 		}
 
 		return array(
@@ -70,7 +71,7 @@ class Tx_Vidi_Service_ExtDirect_FilterManagement extends Tx_Vidi_Service_ExtDire
 			'uid'			=> 0,
 			'table_name'	=> $newFilter->tableName,
 			'description'	=> $newFilter->description,
-			'name'			=> $newFilter->name,
+			'title'			=> $newFilter->title,
 			'criteria'		=> $newFilter->criteria,
 		);
 
@@ -85,8 +86,8 @@ class Tx_Vidi_Service_ExtDirect_FilterManagement extends Tx_Vidi_Service_ExtDire
 			'uid'			=> $filterToUpdate->uid,
 			'table_name'	=> $filterToUpdate->tableName ,
 			'description'	=> $filterToUpdate->description,
-			'name'			=> $filterToUpdate->name,
-			'criteria'		=> $filterToUpdate->criteria,
+			'title'			=> $filterToUpdate->title,
+			'criteria'		=> $filterToUpdate->criteria
 		));
 
 		$filter->persist();

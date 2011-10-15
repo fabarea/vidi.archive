@@ -1,18 +1,10 @@
 
 var rowTemplate = new Ext.XTemplate(
-	'<tpl for=".">',
-		'<div style="height:50%;" class="t3-vidi-filterManager">',
-			'<tpl if="name == true"><h3>Public filters</h3></tpl>',
-			'<tpl if="name == false"><h3>Private filters</h3></tpl>',
-			'<ul>',
-				'<tpl for="children">',
-					'<li><strong>{name}</strong>',
-						'<tpl if="description !== \'\'><br />{description}</tpl>',
-					'</li>',
-				'</tpl>',
-			'</ul>',
-		'</div>',
-	'</tpl>'
+	'<div class="t3-vidi-filterManager"><ul><tpl for=".">',
+		'<li><strong>{title}</strong>',
+			'<tpl if="description !== \'\'><br />{description}</tpl>',
+		'</li>',
+	'</tpl></ul></div>'
 );
 
 Ext.define('TYPO3.Vidi.View.Filter.List', {
@@ -66,28 +58,6 @@ Ext.define('TYPO3.Vidi.View.Filter.List', {
 
 			
 		}
-	},
-	collectData : function(records, startIndex){
-		var store = this.store;
-		var groups =  store.getGroups();
-		var r = [],
-		i = 0,
-		len = groups.length,
-		record, group;
-
-		for(; i < len; i++){
-			group = groups[i];
-			r[i] = {
-				name: group.name,
-				children: []
-			};
-			for (var j = 0; j < group.children.length; j++ ) {
-				record = group.children[j];
-				r[i].children[j] = this.prepareData(record[record.persistenceProperty], startIndex + i, record);
-			}
-
-		}
-		return r;
 	}
 });
 

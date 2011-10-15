@@ -1,46 +1,39 @@
 Ext.define('TYPO3.Vidi.View.Filter.Form', {
-    extend: 'Ext.window.Window',
-    alias : 'widget.filterEdit',
+	extend: 'Ext.window.Window',
+	alias : 'widget.filterEdit',
 
-    title : 'Filter',
-    layout: 'fit',
+	title : 'Filter',
+	layout: 'fit',
 	modal: true,
-    autoShow: true,
+	autoShow: true,
 
-    initComponent: function() {
-        this.items = [
-            {
-                xtype: 'form',
+	initComponent: function() {
+		this.items = [
+			{
+				xtype: 'form',
 				pollForChanges: true,
 				items: [
-                    {
-                        xtype: 'textfield',
-                        name : 'name',
+					{
+						xtype: 'textfield',
+						name : 'title',
 						allowBlank: false,
 						minLength: 4,
-                        fieldLabel: 'Title'
-				    },
-                    {
-                        xtype: 'textarea',
-						grow      : false,
-                        name: 'description',
-                        fieldLabel: 'Beschreibung'
-                    },
+						fieldLabel: 'Title'
+					},
 					{
-						xtype : 'checkbox',
-						fieldLabel: 'Status:',
-						boxLabel  : 'public/shared',
-						name      : 'public',
-						inputValue: 'true'
+						xtype: 'textarea',
+						grow      : false,
+						name: 'description',
+						fieldLabel: 'Beschreibung'
 					}
-                ]
-            }
-        ];
+				]
+			}
+		];
 
-        this.buttons = [
-            {
-                text: 'Save',
-                handler: function() {
+		this.buttons = [
+			{
+				text: 'Save',
+				handler: function() {
 					var window = this.up('window');
 					var form = window.down('form');
 
@@ -53,20 +46,25 @@ Ext.define('TYPO3.Vidi.View.Filter.Form', {
 					if (!invalid) {
 						form.getRecord().set(form.getValues());
 						form.getRecord().save();
+
+						var ftCmp = Ext.ComponentManager.get('TYPO3-Vidi-View-Filter-List');
+						if (ftCmp.store.indexOf(form.getRecord()) == -1) {
+							Ext.ComponentManager.get('TYPO3-Vidi-View-Filter-List').store.add(form.getRecord());
+						}
 						Ext.ComponentManager.get('TYPO3-Vidi-View-Filter-List').refresh();
 						window.close();
 						window.destroy();
 
 					}
 				}
-            },
-            {
-                text: 'Cancel',
-                scope: this,
-                handler: this.close
-            }
-        ];
+			},
+			{
+				text: 'Cancel',
+				scope: this,
+				handler: this.close
+			}
+		];
 
-        this.callParent(arguments);
-    }
+		this.callParent(arguments);
+	}
 });
