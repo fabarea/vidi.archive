@@ -59,7 +59,7 @@ class Tx_Vidi_Controller_VidiController extends Tx_Extbase_MVC_Controller_Action
 		$configurationHash = md5(serialize($this->configuration) . $GLOBALS['TBE_MODULES_EXT']['vidi']['__tempMergeResult']);
 		$this->objectManager->create('Tx_Vidi_Service_RequireJS')->load('../typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js');
 		
-		foreach($this->configuration->allowedDataTypes AS $table) {
+		foreach((array)$this->configuration['allowedDataTypes'] AS $table) {
 			if (isset($GLOBALS['TCA'][$table])) {
 				t3lib_div::loadTCA($table);
 			}
