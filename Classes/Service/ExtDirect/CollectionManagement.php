@@ -54,10 +54,14 @@ class Tx_Vidi_Service_ExtDirect_CollectionManagement extends Tx_Vidi_Service_Ext
 			'uid'			=> 0,
 			'table_name'	=> $newFilter->tableName,
 			'description'	=> $newFilter->description,
-			'title'			=> $newFilter->title,
+			'title'			=> $newFilter->title
 		);
 
 		$filter->fromArray($dataArray);
+		var_dump($newFilter->items);
+		foreach ($newFilter->items AS $uid) {
+			$filter->add(array('uid' => $uid));
+		}
 		$filter->persist();
 	}
 

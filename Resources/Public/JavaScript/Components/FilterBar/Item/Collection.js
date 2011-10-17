@@ -89,6 +89,12 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Collection', {
 		this.editItems[1].store = this.relationStore;
 		this.callParent(arguments);
 	},
+	updateInputs: function() {
+		var input   = this.items.getAt(1).items.getAt(1);
+		var comboOp = this.items.getAt(1).items.getAt(0);
+		comboOp.select(this.data.operator.id);
+		input.setValue(this.data.value.uid, true);
+	},
 	applyData: function() {
 		var input   = this.items.getAt(1).items.getAt(1);
 		var comboOp = this.items.getAt(1).items.getAt(0);

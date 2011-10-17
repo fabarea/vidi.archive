@@ -37,12 +37,17 @@ Ext.define('TYPO3.Vidi.View.Collection.ListPanel', {
 			text: 'create',
 			iconCls: 't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-add',
 			handler: function() {
-				if (this.up('TYPO3-Vidi-View-Collection-ListPanel').getActiveTab() == 0) {
+				if (this.up('TYPO3-Vidi-View-Collection-ListPanel').getActiveTab().id == 'TYPO3-Vidi-View-Filter-List') {
 					var newCollection = TYPO3.Vidi.Model.FilterCollection.create();
-					// TODO add filter criteria to model
+					newCollection.set('criteria', Ext.ComponentManager.get('TYPO3-VIDI-FilterBar').serialize());
 				} else {
 					var newCollection = TYPO3.Vidi.Model.StaticCollection.create();
-					// TODO add items to Model
+					var selectedRecords = Ext.ComponentManager.get('TYPO3-Vidi-Module-Grid').getSelectionModel().getSelection();
+					var selectedIds = [];
+					Ext.each(selectedRecords, function(record) {
+						selectedIds.push(record.get('uid'));
+					});
+					newCollection.set('items', selectedIds);
 				}
 
 				newCollection.set('tableName', TYPO3.TYPO3.Core.Registry.get('vidi/currentTable'));

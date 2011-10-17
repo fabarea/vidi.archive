@@ -36,7 +36,17 @@ Ext.define('TYPO3.Vidi.View.Collection.List', {
 	listeners: {
 		itemClick: function(view, filter, element, index, event) {
 			if(event.ctrlKey == false) {
-				//Ext.ComponentManager.get('TYPO3-VIDI-FilterBar').add()
+				var tag = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Collection', {
+					editMode: false,
+					virgin: false
+				});
+				tag.data = {
+					operator: { display: "in", id: '=' },
+					value : filter.data
+				};
+				tag.updateInputs();
+				tag.refresh();
+				Ext.ComponentManager.get('TYPO3-VIDI-FilterBar').add(tag);
 			}
 		},
 		selectionchange: function(selectionModel, elements, event) {
