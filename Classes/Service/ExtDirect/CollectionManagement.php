@@ -7,24 +7,6 @@ class Tx_Vidi_Service_ExtDirect_CollectionManagement extends Tx_Vidi_Service_Ext
 	 */
 	protected $table;
 
-	public function findAll($parameters) {
-		$this->initialize($parameters->moduleCode, $parameters->table);
-
-		/** @var t3lib_collection_RecordCollectionRepository $collectionRepository */
-		$collectionRepository = t3lib_div::makeInstance('t3lib_collection_RecordCollectionRepository');
-		$collectionObjects = $collectionRepository->findByTypeAndRecord('static', $this->table);
-
-		$collections = array();
-		foreach ($collectionObjects AS $collection) {
-			$collections[] = $collection->toArray();
-		}
-		
-		return array(
-			'data' => $collections,
-			'total' => count($collections)
-		);
-	}
-
 	protected function initialize($moduleCode, $table) {
 		parent::initialize($moduleCode);
 
@@ -33,5 +15,66 @@ class Tx_Vidi_Service_ExtDirect_CollectionManagement extends Tx_Vidi_Service_Ext
 		} else {
 			$this->table = $table;
 		}
+	}
+		/**
+	 * @var t3lib_collection_RecordCollectionRepository
+	 */
+	protected $collectionRepository;
+
+	public function __construct() {
+		/** @var t3lib_collection_RecordCollectionRepository $collectionRepository */
+		$this->collectionRepository = t3lib_div::makeInstance('t3lib_collection_RecordCollectionRepository');
+	}
+
+	public function read($params) {
+		$this->initialize($params->moduleCode, $params->table);
+		$table = $params->currentTable;
+
+		$collectionObjects = $this->collectionRepository->findByTypeAndRecord('static', $table);
+
+		$filters = array();
+		/** @var t3lib_collection_StaticRecordCollection $collection */
+		foreach ($collectionObjects AS $collection) {
+			$filters[] = $collection->toArray();
+
+		}
+
+		return array(
+			'data' => $filters,
+			'total'=> count($filters),
+			'debug'=> mysql_error()
+		);
+	}
+
+	public function create($newFilter) {
+		/** @var t3lib_collection_StaticRecordCollection $filter */
+		$filter = t3lib_div::makeInstance('t3lib_collection_StaticRecordCollection');
+
+		$dataArray = array(
+			'uid'			=> 0,
+			'table_name'	=> $newFilter->tableName,
+			'description'	=> $newFilter->description,
+			'title'			=> $newFilter->title,
+		);
+
+		$filter->fromArray($dataArray);
+		$filter->persist();
+	}
+
+	public function update($filterToUpdate) {
+		/** @var t3lib_collection_StaticRecordCollection $filter */
+		$filter = t3lib_div::makeInstance('t3lib_collection_StaticRecordCollection');
+		$filter->fromArray(array(
+			'uid'			=> $filterToUpdate->uid,
+			'table_name'	=> $filterToUpdate->tableName ,
+			'description'	=> $filterToUpdate->description,
+			'title'			=> $filterToUpdate->title,
+		));
+
+		$filter->persist();
+	}
+
+	public function destroy($filter) {
+		$this->collectionRepository->deleteByUid($filter->uid);
 	}
 }

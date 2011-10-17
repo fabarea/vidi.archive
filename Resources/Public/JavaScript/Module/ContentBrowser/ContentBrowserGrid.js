@@ -58,11 +58,16 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	 *
 	 * @cfg {String}
 	 */
-	selType: 'cellmodel',
+	selType: 'checkboxmodel',
+	selModel: {
+		checkOnly: true,
+		mode: 'MULTI'
+		//mode: 'SIMPLE'
+	},
 
-	win:null,
+	win: null,
 	loadMask: true,
-	disableSelection: true,
+	disableSelection: false,
 	invalidateScrollerOnRefresh: false,
 
 	dockedItems: [

@@ -3,6 +3,7 @@ Ext.create('Ext.data.Store', {
 	storeId: 'TYPO3.Vidi.Stores.FilterBar.CollectionOperators',
 	fields: ['display', 'id'],
 	data : [
-		{ display: "is", id: 'is' }
+		{ display: "in", id: '=' },
+		{ display: "not in", id: '!=' }
 	]
 });

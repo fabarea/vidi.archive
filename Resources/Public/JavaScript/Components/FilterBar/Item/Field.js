@@ -96,7 +96,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Field', {
 			autoLoad: true,
 			proxy: {
 				type: 'direct',
-				directFn: TYPO3.Vidi.Service.ExtDirect.GridData.getRelatedRecords,
+				directFn: TYPO3.Vidi.Service.ExtDirect.FilterBar.getRecordTypeAhead,
 				extraParams: {
 					'moduleCode': '',
 					'relationTable': '',

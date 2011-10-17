@@ -1,17 +1,6 @@
 
 Ext.define('TYPO3.Vidi.Model.Filter', {
-	extend: 'Ext.data.Model',
-	idProperty: 'uid',
-	fields: [
-		{name: 'uid',			type: 'int'},
-		{name: 'title',			type: 'string'},
-		{name: 'description',	type: 'string'},
-		{name: 'tableName', 	type: 'string', mapping: 'table_name'},
-		{name: 'criteria',		type: 'string'}
-	],
-	validations: [
-		{type: 'length',	field: 'name',	min:1}
-	],
+	extend: 'TYPO3.Vidi.Model.Collection',
 	proxy: {
 		type: 'direct',
 		api: {

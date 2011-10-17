@@ -1,8 +1,8 @@
-Ext.define('TYPO3.Vidi.View.Filter.Form', {
+Ext.define('TYPO3.Vidi.View.Collection.Form', {
 	extend: 'Ext.window.Window',
-	alias : 'widget.filterEdit',
+	alias : 'widget.collectionEdit',
 
-	title : 'Filter',
+	title : 'Collection',
 	layout: 'fit',
 	modal: true,
 	autoShow: true,
@@ -47,14 +47,14 @@ Ext.define('TYPO3.Vidi.View.Filter.Form', {
 						form.getRecord().set(form.getValues());
 						form.getRecord().save();
 
-						var ftCmp = Ext.ComponentManager.get('TYPO3-Vidi-View-Filter-List');
+						/** @TODO rewrite to activeTab **/
+						var ftCmp = Ext.ComponentManager.get('TYPO3-Vidi-View-Collection-ListPanel').getActiveTab();
 						if (ftCmp.store.indexOf(form.getRecord()) == -1) {
-							Ext.ComponentManager.get('TYPO3-Vidi-View-Filter-List').store.add(form.getRecord());
+							ftCmp.store.add(form.getRecord());
 						}
-						Ext.ComponentManager.get('TYPO3-Vidi-View-Filter-List').refresh();
+						ftCmp.refresh();
 						window.close();
 						window.destroy();
-
 					}
 				}
 			},

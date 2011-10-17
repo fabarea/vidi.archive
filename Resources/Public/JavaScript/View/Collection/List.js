@@ -1,5 +1,5 @@
 
-var rowTemplate = new Ext.XTemplate(
+var TYPO3VidiViewCollectionListrowTemplate = new Ext.XTemplate(
 	'<div class="t3-vidi-filterManager"><ul><tpl for=".">',
 		'<li><strong>{title}</strong>',
 			'<tpl if="description !== \'\'><br />{description}</tpl>',
@@ -7,23 +7,23 @@ var rowTemplate = new Ext.XTemplate(
 	'</tpl></ul></div>'
 );
 
-Ext.define('TYPO3.Vidi.View.Filter.List', {
+Ext.define('TYPO3.Vidi.View.Collection.List', {
 	extend: 'Ext.view.View',
-	alias: 'widget.TYPO3-Vidi-View-Filter-List',
-	id: 'TYPO3-Vidi-View-Filter-List',
-	tpl: rowTemplate,
+	alias: 'widget.TYPO3-Vidi-View-Collection-List',
+	id: 'TYPO3-Vidi-View-Collection-List',
+	tpl: TYPO3VidiViewCollectionListrowTemplate,
 	itemSelector: 'li',
 	disableSelection: false,
 	multiSelect: true,
 	singleSelect: true,
-	emptyText: 'no filters available',
+	emptyText: 'no Collection available',
 	constructor: function() {
 		this.store = Ext.create('Ext.data.Store', {
-			model: 'TYPO3.Vidi.Model.Filter',
-			storeId: 'TYPO3.Vidi.Stores.Filters',
+			model: 'TYPO3.Vidi.Model.Collection',
+			storeId: 'TYPO3.Vidi.Stores.Collection',
 			groupField: 'public',
 			groupDir: 'ASC',
-			autoLoad:false,
+			autoLoad: false,
 			listeners: {
 				beforeLoad: function()  {
 					this.proxy.extraParams.moduleCode = TYPO3.TYPO3.Core.Registry.get('vidi/moduleCode');
@@ -36,11 +36,10 @@ Ext.define('TYPO3.Vidi.View.Filter.List', {
 	listeners: {
 		itemClick: function(view, filter, element, index, event) {
 			if(event.ctrlKey == false) {
-				Ext.ComponentManager.get('TYPO3-VIDI-FilterBar').load(filter.get('criteria'));
+				//Ext.ComponentManager.get('TYPO3-VIDI-FilterBar').add()
 			}
 		},
 		selectionchange: function(selectionModel, elements, event) {
-			
 			var listInstance = selectionModel.view;
 			var parentPanel = listInstance.up('TYPO3-Vidi-View-Collection-ListPanel');
 
@@ -55,8 +54,6 @@ Ext.define('TYPO3.Vidi.View.Filter.List', {
 			} else {
 				parentPanel.down('button[action=delete]').setDisabled(true);
 			}
-
-			
 		}
 	}
 });

@@ -18,7 +18,6 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-
 /**
  * @class TYPO3.Vidi.Components.FilterBar.Item.Collection
  *
@@ -31,49 +30,85 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Collection', {
 	extend: 'TYPO3.Vidi.Components.FilterBar.Item',
 	alias: 'widget.filterBar-Item-Collection',
 	componentCls: 'vidi-filterBar-Item-brown',
-	data: {field: {}, string: '', operator: {}},
+	data: {value: '', operator: {}},
 	displayItems: [
 		{
 			col: 'left',
 			xtype: 'component',
 			data: {field: {}, operator: {}},
-			tpl: '<strong>Collection {operator.display}</strong>'
+			tpl: '<strong>{operator.display}</strong>'
 		},
 		{
 		col: 'right',
 		xtype: 'component',
-		data: { string: ''},
-		tpl: '<strong>{string}</strong>'
+		data: { value: ''},
+		tpl: '<strong>{value.title}</strong>'
 	}],
 	editItems: [
 		{
 			xtype: 'select',
 			store: 'TYPO3.Vidi.Stores.FilterBar.CollectionOperators',
-			fieldLabel: 'Selection'
+			fieldLabel: 'Collection'
 		},
 		{
-			xtype: 'textfield',
-			name: 'searchstring',
-			allowBlank: false
+				xtype: 'combobox',
+				name: 'searchstring',
+				allowBlank: false,
+				forceSelection: true,
+				queryMode: 'remote',
+				typeAhead: true,
+				hideTrigger:true,
+				queryDelay:50,
+				minChars:1,
+				displayField: 'title',
+				valueField: 'uid',
+				triggerCls: "",
+				hidden: false
 	}],
+	constructor: function() {
+		this.relationStore = Ext.create('Ext.data.Store', {
+			fields: [{name: 'title', type: 'string'}, {name: 'uid', type: 'int'}],
+			autoLoad: true,
+			proxy: {
+				type: 'direct',
+				directFn: TYPO3.Vidi.Service.ExtDirect.FilterBar.getRecordTypeAhead,
+				extraParams: {
+					'relationTable': 'sys_collection',
+					'query': '',
+					matching: {
+						'table_name': TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')
+					}
+				},
+				reader: {
+					type: 'json',
+					root: 'data',
+					totalProperty: 'total'
+				}
+			}
+		});
+		this.editItems[1].store = this.relationStore;
+		this.callParent(arguments);
+	},
 	applyData: function() {
 		var input   = this.items.getAt(1).items.getAt(1);
 		var comboOp = this.items.getAt(1).items.getAt(0);
 
 		this.data = {
-			string : input.getValue(),
+			value : input.store.findRecord('uid', input.getValue()).data,
 			operator: comboOp.store.findRecord('id', comboOp.getValue()).data
 		}
 	},
 	serialize: function() {
-		return {type: 'collection', operator: this.data.operator.id, collection: '5'};
+		return {type: 'collection', operator: this.data.operator.id, value: this.data.value.uid};
 	},
 	statics: {
 		unserialize: function(data) {
-			var tag = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Field',{
+			var element = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Collection', {
 				editMode: false
 			});
-			return tag;
+			element.refresh();
+			element.updateInputs();
+			return element;
 		}
 	}
 });

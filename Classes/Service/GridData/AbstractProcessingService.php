@@ -27,8 +27,6 @@ abstract class Tx_Vidi_Service_GridData_AbstractProcessingService {
 	abstract public function getTableFields($parameters);
 
 
-	abstract public function getRelatedRecords($parameters);
-
 	abstract public function buildColumnConfiguration();
 
 	abstract public function buildFieldConfiguration();

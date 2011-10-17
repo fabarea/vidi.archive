@@ -12,6 +12,7 @@ Ext.define('TYPO3.Vidi.View.Content.GridToolbar', {
 			iconCls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open',
 			text: 'edit',
 			handler: function() {
+				console.log(this.up('gridpanel').getSelectionModel().getSelection());
 			}
 		},
 		{
@@ -20,6 +21,7 @@ Ext.define('TYPO3.Vidi.View.Content.GridToolbar', {
 			iconCls: 't3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-delete',
 			text: 'delete selected records',
 			handler: function() {
+				this.up('gridpanel').getSelectionModel().selectAll();
 			}
 		},
 		{

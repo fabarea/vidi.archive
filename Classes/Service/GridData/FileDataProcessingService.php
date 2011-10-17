@@ -107,10 +107,6 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 		return $data;
 	}
 
-	public function getRelatedRecords($parameters) {
-		// TODO: Implement getRelatedRecords() method.
-	}
-
 	public function buildColumnConfiguration() {
 		$columns = array(
 			array('text' => 'uid', 'dataIndex' => 'uid', 'hidden' => true, 'sortable' => true),

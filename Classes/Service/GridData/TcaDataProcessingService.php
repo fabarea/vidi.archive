@@ -123,35 +123,6 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 		return $columns;
 	}
 
-
-	public function getRelatedRecords($parameters) {
-		$relatedTable = $parameters->relationTable;
-		$typeAhead = $parameters->query;
-
-		$data = array();
-
-		if (array_key_exists($relatedTable, $GLOBALS['TCA'])) {
-			$searchFields = t3lib_div::trimExplode(',', $GLOBALS['TCA'][$relatedTable]['ctrl']['searchFields'], TRUE);
-			$array = array();
-			$like = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($typeAhead, $relatedTable), $relatedTable) . '%\'';
-
-			foreach ($searchFields AS $field) {
-				$array[] = $field . ' LIKE ' . $like;
-			}
-			$searchQuery = ' (' . implode(' OR ', $array) . ') ';
-
-			$data = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-				'uid,' . $GLOBALS['TCA'][$relatedTable]['ctrl']['label'] . ' AS title',
-				$GLOBALS['TYPO3_DB']->quoteStr($relatedTable, $relatedTable),
-				'0=1 OR ' . $searchQuery
-			);
-		}
-
-		return $data;
-	}
-
-
-
 	protected function getFields() {
 		return array_unique(array_merge(array('uid', 'pid'), array_keys((array)$GLOBALS['TCA'][$this->table]['columns'])));
 	}
@@ -162,7 +133,7 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 		$columns = array(
 			array('text' => 'uid', 'dataIndex' => 'uid', 'hidden' => true, 'sortable' => true),
 			array('text' => 'pid', 'dataIndex' => 'oid', 'hidden' => true, 'sortable' => true),
-			array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn', 'width' => 24)
+			array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn')
 		);
 
 		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {

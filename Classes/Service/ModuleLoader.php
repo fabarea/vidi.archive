@@ -247,11 +247,16 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Module/UserInterface/BaseModule',
 				'Vidi/Module/UserInterface/Tree',
 
-				'Vidi/Model/Filter',
+				'Vidi/Model/Collection',
+				'Vidi/Model/FilterCollection',
+				'Vidi/Model/StaticCollection',
 
 				'Vidi/View/Filter/List',
 				'Vidi/View/Filter/Form',
 				'Vidi/View/Filter/ListPanel',
+				'Vidi/View/Collection/List',
+				'Vidi/View/Collection/Form',
+				'Vidi/View/Collection/ListPanel',
 				'Vidi/View/Content/GridToolbar',
 
 				'Vidi/Components/Grid/Columns/IconColumn',
