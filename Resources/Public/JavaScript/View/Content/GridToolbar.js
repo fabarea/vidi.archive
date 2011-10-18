@@ -12,7 +12,17 @@ Ext.define('TYPO3.Vidi.View.Content.GridToolbar', {
 			iconCls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open',
 			text: 'edit',
 			handler: function() {
-				console.log(this.up('gridpanel').getSelectionModel().getSelection());
+				var selected = this.up('gridpanel').getSelectionModel().getSelection();
+				var linkConfig  ={edit: {}};
+				linkConfig.edit[TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')] = {};
+				Ext.each(selected, function(record) {
+					linkConfig.edit[TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')][record.get('uid')] = 'edit';
+				});
+				Ext.create(
+						'TYPO3.Vidi.Components.Overlay',
+						'alt_doc.php?' + Ext.Object.toQueryString(linkConfig, true),
+						'editContentRecord'
+					);
 			}
 		},
 		{

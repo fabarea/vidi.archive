@@ -70,7 +70,18 @@ Ext.define('TYPO3.Vidi.View.Collection.ListPanel', {
 					var view = Ext.widget('collectionEdit');
         			view.down('form').loadRecord(selected);
 				} else {
-					alert('to be implemented'); // TODO build the inVidi editing
+					var linkConfig ={
+								edit: {
+									sys_collection: {
+									}
+								}
+						};
+					linkConfig.edit.sys_collection[selected.get('uid')] = 'edit';
+					Ext.create(
+						'TYPO3.Vidi.Components.Overlay',
+						'alt_doc.php?' + Ext.Object.toQueryString(linkConfig, true),
+						'collectionEdit' + selected.get('uid')
+					);
 				}
 
 			}

@@ -165,3 +165,9 @@ body.typo3-vidi div#typo3-inner-docbody {
 	padding: 0px;
 }
 
+.x-window-noborder {
+	border-radius: 0 0 0 0;
+	border-width: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
