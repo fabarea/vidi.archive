@@ -24,11 +24,13 @@ Ext.define('TYPO3.Vidi.Components.Overlay', {
 		frame: 0,
 		bodyBorder: 0
 	}],
-	constructor: function(url, name) {
+	constructor: function(url, name, callback) {
 		this.items[0].autoEl.src = url;
 		this.items[0].autoEl.name = this.name = name;
 
 		this.callParent();
+		
+		this.on('close', callback || Ext.emptyFn());
 	},
 	afterRender : function() {
 		this.callParent(arguments);
