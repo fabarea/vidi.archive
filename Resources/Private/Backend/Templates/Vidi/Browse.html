@@ -11,8 +11,8 @@ imagine the record picker to be shown here.. \o/
 <script type="text/javascript"><![CDATA[
 	function callback(table, uid, label) {
 	]]>
-	if ('{callbackMethod}' && '{objectId}' && parent.{callbackMethod})
-		parent.{callbackMethod}('{objectId}', table, uid, label);
+	if ('{callbackMethod}' && '{objectId}' && {callbackMethod})
+		{callbackMethod}('{objectId}', table, uid, label);
 	<![CDATA[
 	}
 	]]>

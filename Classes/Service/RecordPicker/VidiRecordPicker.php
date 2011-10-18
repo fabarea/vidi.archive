@@ -26,7 +26,7 @@ class Tx_Vidi_Service_RecordPicker_VidiRecordPicker {
 		$this->includeJavaScript();
 		$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
 
-		$aOnClick = 'TYPO3.Vidi.RecordPicker.show("' . $type . '", "' . $mode . '", "' . $allowed . '", "' . $objectId . '"); return false;';
+		$aOnClick = 'top.TYPO3.Vidi.RecordPicker.show("' . $type . '", "' . $mode . '", "' . $allowed . '", "' . $objectId . '"); return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) .
 				($iconOnly ? '' : $createNewRelationText) .

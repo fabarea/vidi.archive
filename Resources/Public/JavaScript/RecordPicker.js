@@ -1,7 +1,8 @@
 
-Ext.namespace('TYPO3.Vidi');
+// register in outer frame "top"
+top.Ext.namespace('TYPO3.Vidi');
 
-TYPO3.Vidi.RecordPicker = {
+top.TYPO3.Vidi.RecordPicker = {
 	show: function(type, mode, allowed, objectId) {
 		this.openContainerWindow(
 				'recordpicker',
@@ -13,7 +14,7 @@ TYPO3.Vidi.RecordPicker = {
 				'mod.php?M=user_VidiVidiM1' +
 					'&tx_vidi_user_vidividim1%5Baction%5D=browse' +
 					'&tx_vidi_user_vidividim1%5Ballowed%5D=' + allowed +
-					'&tx_vidi_user_vidividim1%5BcallbackMethod%5D=TYPO3.Vidi.RecordPicker.' + (type === 'inline' ? 'callbackTypeInline' : 'callbackTypeGroup') +
+					'&tx_vidi_user_vidividim1%5BcallbackMethod%5D=top.TYPO3.Vidi.RecordPicker.' + (type === 'inline' ? 'callbackTypeInline' : 'callbackTypeGroup') +
 					'&tx_vidi_user_vidividim1%5BobjectId%5D=' + objectId
 		)
 	},
@@ -38,7 +39,7 @@ TYPO3.Vidi.RecordPicker = {
 	 * @ return	void
 	 */
 	openContainerWindow: function (buttonId, title, dimensions, url) {
-		var dialog = new Ext.Window({
+		var dialog = new top.Ext.Window({
 			id: 'tx_vidi_recordpicker_' + buttonId,
 			title: /*this.localize(title) || */title,
 			cls: 'htmlarea-window',
