@@ -1,6 +1,6 @@
 <?php
 
-class Tx_Vidi_RecordPicker_VidiRecordPicker {
+class Tx_Vidi_Service_RecordPicker_VidiRecordPicker {
 
 	/**
 	 * @param string $mode

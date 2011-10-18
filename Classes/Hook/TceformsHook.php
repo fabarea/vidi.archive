@@ -33,7 +33,7 @@ class Tx_Vidi_Hook_TceformsHook implements t3lib_TCEforms_dbFileIconsHook {
 	 * @return
 	 */
 	protected function getVidiRecordPickerLink($type, $mode, $allowed, $objectId, $iconOnly = TRUE) {
-		$recordPicker = t3lib_div::makeInstance('Tx_Vidi_RecordPicker_VidiRecordPicker');
+		$recordPicker = t3lib_div::makeInstance('Tx_Vidi_Service_RecordPicker_VidiRecordPicker');
 		if ($recordPicker->canHandle($mode, $allowed)) {
 			return $recordPicker->renderLink($type, $mode, $allowed, $objectId, $iconOnly);
 		}
