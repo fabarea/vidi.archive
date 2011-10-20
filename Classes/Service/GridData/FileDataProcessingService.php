@@ -45,16 +45,16 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 
 
 	public function getRecords($parameters)	{
-		$mountRepository = t3lib_div::makeInstance('t3lib_file_Domain_Repository_MountRepository');
+		$mountRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
 		$factory = t3lib_div::makeInstance('t3lib_file_Factory');
-		$filterBarService = t3lib_div::makeInstance('Tx_Vidi_Service_FilterBar', '__FILES');
+		$filterBarService = t3lib_div::makeInstance('t3lib_collection_FilteredRecords_Service', '__FILES');
 		$filterBarService->initializeQuery($parameters->query);
 
 		$path = '/';
 		$mount = null;
 		$restrictions = $filterBarService->getVirtualFieldFilters();
 		if (count($restrictions) == 0) {
-			$mount = $mountRepository->findAvailableMounts();
+			$mount = $mountRepository->findAll();
 			$mount = $mount[0];
 		} else {
 			$restriction = $restrictions[0]->search;
@@ -64,7 +64,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 			$path = $restriction[1];
 
 		}
-		$currentCollection = $factory->createStorageCollectionObject($mount, $path, '');
+		$currentCollection = $factory->createFolderObject($mount, $path, '');
   		$files = $currentCollection->getFiles();
 		$data = array();
 		foreach ((array)$files as $file) {
