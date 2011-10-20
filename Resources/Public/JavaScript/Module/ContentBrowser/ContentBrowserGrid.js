@@ -72,7 +72,6 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 
 	dockedItems: [
 		{
-			xtype: 'Vidi-GridToolbar',
 			store: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',   // same store GridPanel is using
 			dock: 'bottom'
 	}],
@@ -80,6 +79,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	 * Initializer
 	 */
 	initComponent: function() {
+		this.dockedItems[0].xtype = TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/gridToolbar');
 		console.log('start ContentBrowserGridVIew');
 				// Initialize the store
 		this._initStore();

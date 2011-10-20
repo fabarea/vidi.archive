@@ -51,6 +51,8 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 	 */
 	baseCls: 'vidi-filterBar',
 
+	presentable: true,
+	
 	store: null,
 	/**
 	 * A single item, or an array of child Components to be added to this container
@@ -60,6 +62,9 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 	 */
 	items: [],
 	constructor: function() {
+		if (TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/filterBar/hidden') == true) {
+			this.presentable = false;
+		}
 		this.callParent(arguments);
 		this.store = Ext.create('Ext.data.Store', {
 			storeId: 'TYPO3-Vidi-Stores-Filterbar-Elements',

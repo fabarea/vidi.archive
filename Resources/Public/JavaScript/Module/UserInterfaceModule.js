@@ -71,6 +71,12 @@ TYPO3.Vidi.Application.registerModule({
 				region: 'center',
 				id: 'typo3-inner-docbody'
 			});
+
+
+		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/filterBar/hidden', false);
+		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/gridToolbar', 'Vidi-GridToolbar');
+		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/collectionManagement/enabled', true);
+		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/collectionManagement/xtype', 'TYPO3-Vidi-View-Collection-ListPanel');
 	}
 });
 

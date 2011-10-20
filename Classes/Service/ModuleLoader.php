@@ -226,7 +226,7 @@ class Tx_Vidi_Service_ModuleLoader {
 	public function addJavaScriptFiles(array $files, $path = 'Resources/Public/JavaScript/') {
 		$this->javaScriptBasePath = $path;
 		$this->additionalJavaScriptFiles = $files;
-		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'][$this->extensionKey] = $path;
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'][$this->extensionKey]['Path'] = $path;
 	}
 
 	public static function checkAndCreateStarterFile($moduleCode) {
@@ -315,17 +315,17 @@ class Tx_Vidi_Service_ModuleLoader {
 			}
 
 			$starterCode = "if (top.TYPO3 != undefined && top.TYPO3.Backend != undefined) {
-				top.TYPO3.Backend.NavigationContainer.hide();
-				top.TYPO3.Backend.NavigationDummy.show();
-				top.TYPO3.Backend.doLayout();
-			}
-			";
+	top.TYPO3.Backend.NavigationContainer.hide();
+	top.TYPO3.Backend.NavigationDummy.show();
+	top.TYPO3.Backend.doLayout();
+}
+";
 
-			$starterCode .= 'require(["' . implode('", "', $jsFilesRequireJS) . '"], function() {' . LF . "\nTYPO3.Vidi.Application.initialize();\n\n";
+			$starterCode .= 'require(["' . implode('", "', $jsFilesRequireJS) . '"], function() {' . LF . "\n\tTYPO3.Vidi.Application.initialize();\n\n";
 
 			if (count($files)) {
 				$files = '["' . implode('","', $files) . '"]';
-				$starterCode .= "\n\trequire(" . $files . ", function() {\n\t\tif(console.log) console.log('Module Adaptions loaded');\n\t});\n";
+				$starterCode .= "\n\trequire(" . $files . ", function() {\n\t\tif(console.log) console.log('Module Adaptions loaded');\n";
 			}
 
 			if (count($configuration['trees'])) {
@@ -346,13 +346,20 @@ class Tx_Vidi_Service_ModuleLoader {
 			$starterCode .= self::createRegistryCode('vidi/moduleCode', $moduleCode);
 			$starterCode .= self::createRegistryCode('vidi/currentTable', $configuration['allowedDataTypes'][0]);
 
-			$starterCode .= "\n\nTYPO3.Vidi.Application.run();\n});";
+			$starterCode .= "\n\n\t\tTYPO3.Vidi.Application.run();";
 
+
+			if (count($files)) {
+				$starterCode .= "\n\t});\n";
+			}
+
+
+			$starterCode .= "\n});";
 			t3lib_div::writeFileToTypo3tempDir(PATH_site . 'typo3temp/vidi/' . $moduleCode . '_' . $configurationHash . '.js', $starterCode);
 		}
 	}
 
 	protected static function createRegistryCode($path, $data) {
-		return "	TYPO3.TYPO3.Core.Registry.set('" . $path ."', ". json_encode($data) . ", 99);\n";
+		return "		TYPO3.TYPO3.Core.Registry.set('" . $path ."', ". json_encode($data) . ", 99);\n";
 	}
 }

@@ -52,28 +52,30 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {
 		var config = {
 			layout: 'border',
 			region: 'center',
-			items: [
-				{xtype: 'TYPO3-Vidi-View-Collection-ListPanel', region: 'east'},
-				{
-					xtype: 'container',
-					region :'center',
-					layout : 'autoFitLayout',
-					items: [
-						{
-							xtype: 'filterBar',
-							id: 'TYPO3-VIDI-FilterBar',
-							region:'north',
-							anchor: '100%'
-						},
-						{
-							xtype:'panel',region: 'center',border:0, layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', id: 'TYPO3-Vidi-Module-Grid'},
-							anchor: '100% auto'
-						}
-					]
-				},
-				{xtype: 'TYPO3-Vidi-Module-ContentBrowser-TreeRegion', region:'west'}
-			]
+			items: []
 		};
+		if (TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/collectionManagement/enabled')) {
+			config.items.push({xtype: TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/collectionManagement/xtype'), region: 'east'});
+		}
+		config.items.push(
+		{
+			xtype: 'container',
+			region :'center',
+			layout : 'autoFitLayout',
+			items: [
+				{
+					xtype: 'filterBar',
+					id: 'TYPO3-VIDI-FilterBar',
+					region:'north',
+					anchor: '100%'
+				},
+				{
+					xtype:'panel',region: 'center',border:0, layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', id: 'TYPO3-Vidi-Module-Grid'},
+					anchor: '100% auto'
+				}
+			]
+		});
+		config.items.push({xtype: 'TYPO3-Vidi-Module-ContentBrowser-TreeRegion', region:'west'});
 
 		Ext.apply(this, config);
 		this.callParent();

@@ -56,7 +56,7 @@ Ext.define('TYPO3.Vidi.Components.Layout.AutoFitLayout', {
 		}
 
 		delete me.adjustmentPass;
-		},
+	},
 
 	configureItem: function(item) {
 		var me = this,
@@ -64,6 +64,7 @@ Ext.define('TYPO3.Vidi.Components.Layout.AutoFitLayout', {
 		if (item.alias == 'widget.filterBar') {
 			item.layoutManagedWidth = 1;
 			item.layoutManagedHeight = 2;
+
 		} else {
 			item.layoutManagedWidth = 1;
 			item.layoutManagedHeight = 1;
