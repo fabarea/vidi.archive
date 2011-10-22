@@ -44,8 +44,12 @@ Ext.define('TYPO3.Vidi.Components.Layout.AutoFitLayout', {
 			cleaner();
 		}
 
-		me.setItemSize(components[0], me.getLayoutTargetSize().width - 20, undefined);
-		me.setItemSize(components[1], me.getLayoutTargetSize().width, me.getLayoutTargetSize().height - components[0].getHeight() - 20);
+		if (components.length == 2) {
+			me.setItemSize(components[0], me.getLayoutTargetSize().width - 20, undefined);
+			me.setItemSize(components[1], me.getLayoutTargetSize().width, me.getLayoutTargetSize().height - components[0].getHeight() - 20);
+		} else {
+			me.setItemSize(components[0], me.getLayoutTargetSize().width, me.getLayoutTargetSize().height);
+		}
 
 		if (overflow && overflow != 'hidden' && !me.adjustmentPass) {
 			newTargetSize = me.getLayoutTargetSize();

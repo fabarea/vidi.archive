@@ -63,7 +63,7 @@ Ext.define('TYPO3.Vidi.Components.FilterBar', {
 	items: [],
 	constructor: function() {
 		if (TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/filterBar/hidden') == true) {
-			this.presentable = false;
+			this.hidden = true;
 		}
 		this.callParent(arguments);
 		this.store = Ext.create('Ext.data.Store', {
