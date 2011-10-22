@@ -54,7 +54,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		if (relationColumn != null) {
 			relationFilter.data = {
 				'field': Ext.StoreManager.get('TYPO3.Vidi.Stores.AvailableFieldsOfCurrentTable').findRecord('id', relationColumn).data,
-				'operator': Ext.StoreManager.get('TYPO3.Vidi.Stores.FilterBar.FieldOperators').findRecord('id', 'rel').data,
+				'operator': {id: 'rel', display: 'is'},
 				'search': {uid: record.data.id, title: record.data.text}
 			};
 			relationFilter.updateInputs();
