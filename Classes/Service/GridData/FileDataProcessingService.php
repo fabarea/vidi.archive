@@ -44,7 +44,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 
 
 
-	public function getRecords($parameters)	{
+	public function getRecords($parameters) {
 		$mountRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
 		$factory = t3lib_div::makeInstance('t3lib_file_Factory');
 		$filterBarService = t3lib_div::makeInstance('t3lib_collection_FilteredRecords_Service', '__FILES');
@@ -68,7 +68,9 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
   		$files = $currentCollection->getFiles();
 		$data = array();
 		foreach ((array)$files as $file) {
-			$data[] = $file->toArray();
+			$fileData = $file->toArray();
+			$fileData['icon'] = t3lib_iconWorks::getSpriteIconForFile($fileData['extension']);
+			$data[] = $fileData;
 		}
 		return array(
 			'data' => $data,
@@ -76,7 +78,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 		);
 	}
 
-	public function getTableFields($parameters)	{
+	public function getTableFields($parameters) {
 		$data = array(
 			array(
 				'title' => 'id',
@@ -109,41 +111,26 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 
 	public function buildColumnConfiguration() {
 		$columns = array(
-			array('text' => 'uid', 'dataIndex' => 'uid', 'hidden' => true, 'sortable' => true),
-			array('text' => 'pid', 'dataIndex' => 'oid', 'hidden' => true, 'sortable' => true)
+			array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn'),
+			array('text' => 'Name', 'dataIndex' => 'name', 'hidable' => false),
+			array('text' => 'Grösse', 'dataIndex' => 'size', 'xtype' => 'byteColumn'),
+			array('text' => 'Extension', 'dataIndex' => 'extension'),
+			array('text' => 'Mimetype', 'dataIndex' => 'type'),
+			array('text' => 'Erstellt am', 'dataIndex' => 'creationDate', 'xtype' => 'datecolumn', 'format' => 'd.m.Y H:i')
 		);
-
-		foreach ((array)$GLOBALS['TCA']['sys_file']['columns'] AS $name => $configuration) {
-			$data = array(
-				'text' => $GLOBALS['LANG']->sL($configuration['label']),
-				'dataIndex' => $name,
-				'hidden' => !t3lib_div::inList($GLOBALS['TCA']['sys_file']['interface']['showRecordFieldList'], $name),
-				'sortable'=> true
-			);
-
-			$columns[] = $data;
-		}
-
 		return $columns;
 	}
 
 	public function buildFieldConfiguration() {
 		$fields = array(
 			array('name' => 'uid', 'type' => 'int'),
+			array('name' => 'icon', 'type' => 'string'),
+			array('name' => 'name', 'type' => 'string'),
+			array('name' => 'size', 'type' => 'int'),
+			array('name' => 'extension', 'type' => 'string'),
+			array('name' => 'type', 'type' => 'string'),
+			array('name' => 'creationDate', 'type' => 'date', 'dateFormat' => 'timestamp')
 		);
-
-		foreach ((array)$GLOBALS['TCA']['sys_file']['columns'] AS $name => $configuration) {
-			$data = array(
-				'name' => $name
-			);
-			$type = $this->detectExtJSType($configuration['config']);
-			if ($type == 'date') {
-				$data['dateFormat'] = 'd.m.Y. H:i';
-			}
-			$data['type'] = $type;
-			$fields[] = $data;
-		}
-
 		return $fields;
 	}
 

@@ -260,6 +260,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/View/Content/GridToolbar',
 
 				'Vidi/Components/Grid/Columns/IconColumn',
+				'Vidi/Components/Grid/Columns/BytesColumn',
 				'Vidi/Components/Grid/Columns/ThumbnailColumn',
 				'Vidi/Components/Grid/ThumbnailResizer',
 
