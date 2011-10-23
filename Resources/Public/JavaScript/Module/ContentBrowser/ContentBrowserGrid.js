@@ -69,12 +69,21 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	loadMask: true,
 	disableSelection: false,
 	invalidateScrollerOnRefresh: false,
-
+	enableDragDrop   : true,
+	stripeRows       : true,
+	
 	dockedItems: [
 		{
 			store: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore',   // same store GridPanel is using
 			dock: 'bottom'
 	}],
+	viewConfig: {
+		plugins: {
+			ddGroup: 'GridData',
+			ptype: 'gridviewdragdrop',
+			enableDrop: false
+		}
+	},
 	/**
 	 * Initializer
 	 */

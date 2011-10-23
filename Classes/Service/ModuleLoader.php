@@ -65,6 +65,13 @@ class Tx_Vidi_Service_ModuleLoader {
 	protected $trees = array();
 
 	/**
+	 * the name of the class which implements the DD interface
+	 *
+	 * @var string
+	 */
+	protected $ddInterface;
+
+	/**
 	 * @var string
 	 */
 	protected $moduleKey;
@@ -136,6 +143,7 @@ class Tx_Vidi_Service_ModuleLoader {
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['allowedDataTypes'] = $this->allowedDataTypes;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['trees'] = $this->trees;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['additionalJavaScriptFiles'] = $this->additionalJavaScriptFiles;
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['ddInterface'] = $this->ddInterface;
 
 		Tx_Extbase_Utility_Extension::registerModule(
 			'vidi',
@@ -231,6 +239,8 @@ class Tx_Vidi_Service_ModuleLoader {
 
 	public static function checkAndCreateStarterFile($moduleCode) {
 		$jsFilesMerging = array(
+				'Vidi/View/Tree/GridDataDropZone',
+
 				'Vidi/Utils',
 				'Vidi/Core/Registry',
 				'Vidi/Core/Application',
@@ -259,7 +269,9 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/View/Collection/ListPanel',
 				'Vidi/View/Content/GridToolbar',
 
+
 				'Vidi/Components/Grid/Columns/IconColumn',
+				'Vidi/Components/Grid/Columns/FileActionColumn',
 				'Vidi/Components/Grid/Columns/BytesColumn',
 				'Vidi/Components/Grid/Columns/ThumbnailColumn',
 				'Vidi/Components/Grid/ThumbnailResizer',
@@ -362,5 +374,19 @@ class Tx_Vidi_Service_ModuleLoader {
 
 	protected static function createRegistryCode($path, $data) {
 		return "		TYPO3.TYPO3.Core.Registry.set('" . $path ."', ". json_encode($data) . ", 99);\n";
+	}
+
+	/**
+	 * @param string $ddInterface
+	 */
+	public function setDdInterface($ddInterface) {
+		$this->ddInterface = $ddInterface;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDdInterface() {
+		return $this->ddInterface;
 	}
 }

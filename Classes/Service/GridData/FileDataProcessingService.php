@@ -113,6 +113,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 		$columns = array(
 			array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn'),
 			array('text' => 'Name', 'dataIndex' => 'name', 'hidable' => false),
+			array('text' => '', 'xtype' => 'fileActionColumn'),
 			array('text' => 'Grösse', 'dataIndex' => 'size', 'xtype' => 'byteColumn'),
 			array('text' => 'Extension', 'dataIndex' => 'extension'),
 			array('text' => 'Mimetype', 'dataIndex' => 'type'),
@@ -123,7 +124,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 
 	public function buildFieldConfiguration() {
 		$fields = array(
-			array('name' => 'uid', 'type' => 'int'),
+			array('name' => 'id', 'type' => 'string'),
 			array('name' => 'icon', 'type' => 'string'),
 			array('name' => 'name', 'type' => 'string'),
 			array('name' => 'size', 'type' => 'int'),

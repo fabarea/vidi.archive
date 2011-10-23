@@ -27,6 +27,12 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.Tree', {
 	listeners: {
 		itemclick: function(tree, record) {
 			tree.up('TYPO3-Vidi-Module-ContentBrowser-TreeRegion').addFilterToQuery(tree.ownerCt.treeIndex, record);
+		},
+		viewready: function() {
+			var
+				me = this,
+				treeView = me.view;
+			Ext.create('TYPO3.Vidi.View.Tree.GridDataDropZone', {view: treeView, ddGroup: 'GridData'});
 		}
 	}
 });

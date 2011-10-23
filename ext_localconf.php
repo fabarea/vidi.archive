@@ -42,32 +42,9 @@ t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.TreeData'
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.Filter', $extDirectPath . 'FilterManagement.php:Tx_Vidi_Service_ExtDirect_FilterManagement');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.CollectionManagement', $extDirectPath . 'CollectionManagement.php:Tx_Vidi_Service_ExtDirect_CollectionManagement');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.FilterBar', $extDirectPath . 'FilterBar.php:Tx_Vidi_Service_ExtDirect_FilterBar');
+t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.DragAndDrop', $extDirectPath . 'DragAndDrop.php:Tx_Vidi_Service_ExtDirect_DragAndDrop');
 
 
-// @todo: registration should be Object Oriented via t3lib_extMgm, for instance
-// Register JavaScript Dynamic File Loading through RequireJS
-// Note: key "Vidi" is the name of the extension in a camel case syntax
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS']['Vidi'] = Array(
-	
-	// Files to be loaded
-	// Note: files must be prefixed by their Camel Upper Case Extension Key
-	//       the path will be resolved by RequireJS
-	'Files' => Array (
-		'Vidi/Core/Application', 
-		'Vidi/Module/UserInterfaceModule',
-		'Vidi/Utils',
-	),
-
-	// Default Path relative to the extension
-	'Path' => 'Resources/Public/JavaScript/',
-	
-	// Code to launch the Application
-	'JavaScriptCode' => Array(
-		'Application.initialize();',
-		'Application.processModuleAdaption(Ext.emptyFn);',
-		'Application.run();'
-	)
-);
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi'] = array();
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar'] = array(
