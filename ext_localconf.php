@@ -43,6 +43,7 @@ t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.Filter', 
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.CollectionManagement', $extDirectPath . 'CollectionManagement.php:Tx_Vidi_Service_ExtDirect_CollectionManagement');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.FilterBar', $extDirectPath . 'FilterBar.php:Tx_Vidi_Service_ExtDirect_FilterBar');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.DragAndDrop', $extDirectPath . 'DragAndDrop.php:Tx_Vidi_Service_ExtDirect_DragAndDrop');
+t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.FileActions', $extDirectPath . 'File/Actions.php:Tx_Vidi_Service_ExtDirect_File_Actions');
 
 
 
