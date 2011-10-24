@@ -277,7 +277,6 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Components/Grid/ThumbnailResizer',
 
 				'Vidi/Components/DocHeader',
-				'Vidi/Components/Button',
 				'Vidi/Components/Overlay',
 				'Vidi/Components/FilterBar',
 				'Vidi/Components/FilterBar/Item/Layout/ExtendedCardLayout',
