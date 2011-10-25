@@ -3,9 +3,9 @@
 class Tx_Vidi_Service_ExtDirect_File_Actions {
 
 	/**
-	 * @var t3lib_file_Factory $fileFactory
+	 * @var t3lib_file_Factory
 	 */
-	protected $fileFactory = null;
+	protected $fileFactory;
 
 	public function __construct() {
 		$this->fileFactory = t3lib_div::makeInstance('t3lib_file_Factory');
@@ -18,7 +18,7 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	 */
 	public function renameFile($fileIdentifier, $newFileName) {
 		$file = $this->fileFactory->getFileObjectFromCombinedIdentifier($fileIdentifier);
-		$file->getStorage()->renameFile($file, $newFileName);
+		$file->rename($newFileName);
 	}
 
 	/**
@@ -27,7 +27,7 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	 */
 	public function deleteFile($fileIdentifier) {
 		$file = $this->fileFactory->getFileObjectFromCombinedIdentifier($fileIdentifier);
-		$file->getStorage()->deleteFile($file);
+		$file->delete();
 	}
 
 	/**
@@ -37,7 +37,7 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	 */
 	public function createEmptyFile($folderIdentifier, $newFileName) {
 		$folder = $this->fileFactory->getFolderObjectFromCombinedIdentifier($folderIdentifier);
-		// @TODO missing function to create Empty File
+		$folder->createFile($newFileName);
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	 */
 	public function renameFolder($folderIdentifier, $newName) {
 		$folder = $this->fileFactory->getFolderObjectFromCombinedIdentifier($folderIdentifier);
-		$folder->getStorage()->renameFolder($folder, $newName);
+		$folder->rename($newName);
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	 */
 	public function deleteFolder($folderIdentifier, $recursive = false) {
 		$folder = $this->fileFactory->getFolderObjectFromCombinedIdentifier($folderIdentifier);
-		$folder->getStorage()->deleteFolder($folder); // @TODO make deleteFolder aware of non empty folders
+		$folder->delete(); // @TODO make deleteFolder aware of non empty folders
 	}
 
 	/**
