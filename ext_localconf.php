@@ -44,7 +44,7 @@ t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.Collectio
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.FilterBar', $extDirectPath . 'FilterBar.php:Tx_Vidi_Service_ExtDirect_FilterBar');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.DragAndDrop', $extDirectPath . 'DragAndDrop.php:Tx_Vidi_Service_ExtDirect_DragAndDrop');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.FileActions', $extDirectPath . 'File/Actions.php:Tx_Vidi_Service_ExtDirect_File_Actions');
-
+t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.ContextMenu', $extDirectPath . 'ContextMenu.php:Tx_Vidi_Service_ExtDirect_ContextMenu');
 
 
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi'] = array();
@@ -76,5 +76,35 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar'] = array(
 		)
 	)
 );
+
+t3lib_extMgm::addUserTSConfig('
+	options.contextMenu.table.__FOLDER.items {
+		100 = ITEM
+		100 {
+			name = rename
+			label = LLL:EXT:lang/locallang_core.xml:cm.rename
+			spriteIcon = actions-edit-rename
+			callbackAction = TYPO3.Vidi.Actions.File.renameFolder
+		}
+
+		200 = ITEM
+		200 {
+			name = new
+			label = create sub-folder
+			spriteIcon = apps-filetree-folder-add
+			callbackAction = TYPO3.Vidi.Actions.File.createFolder
+		}
+
+		500 = DIVIDER
+
+		300 = ITEM
+		300 {
+			name = history
+			label = LLL:EXT:lang/locallang_misc.xml:CM_history
+			spriteIcon = actions-document-history-open
+			callbackAction = openHistoryPopUp
+		}
+	}
+');
 
 ?>

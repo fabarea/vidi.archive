@@ -68,7 +68,6 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		var treeConfig = TYPO3.TYPO3.Core.Registry.get('vidi/treeConfig');
 		var items = [];
 		Ext.Object.each(treeConfig, function(index, entry) {
-			console.log(entry.dataProvider);
 			var directFn = (entry.dataProvider != undefined && eval(entry.dataProvider) != undefined) ? entry.dataProvider : 'TYPO3.Vidi.Service.ExtDirect.TreeData.getTreeData';
 			var type = Ext.ClassManager.getNameByAlias('widget.' + entry.xtype) != "" ? entry.xtype : 'TYPO3.Vidi.Module.UserInterface.Tree';
 			var rootUid = (entry.tcaTreeConfig != undefined && entry.tcaTreeConfig.rootUid != undefined)? entry.tcaTreeConfig.rootUid : 0;

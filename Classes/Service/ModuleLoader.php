@@ -21,7 +21,7 @@ class Tx_Vidi_Service_ModuleLoader {
 			)
 		),
 		1 => array(
-			'table' => '__FILES',
+			'table' => '__FOLDER',
 			'title' => 'FileTree',
 			'dataProvider' => 'TYPO3.Components.FileTree.DataProvider.getTreeData',
 			'relationConfiguration' => array(
@@ -240,6 +240,9 @@ class Tx_Vidi_Service_ModuleLoader {
 	public static function checkAndCreateStarterFile($moduleCode) {
 		$jsFilesMerging = array(
 				'Vidi/View/Tree/GridDataDropZone',
+				'Vidi/Actions/File',
+
+				'Vidi/Components/ContextMenu',
 
 				'Vidi/Utils',
 				'Vidi/Core/Registry',

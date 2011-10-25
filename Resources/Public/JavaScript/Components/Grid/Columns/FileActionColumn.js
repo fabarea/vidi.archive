@@ -23,7 +23,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 			tooltip: 'Delete',
 			handler: function(grid, rowIndex, colIndex) {
 				var rec = grid.getStore().getAt(rowIndex);
-				alert("Delete " + rec.get('name'));
+				TYPO3.Vidi.Actions.File.deleteFile(rec);
 			},
 			active: function(record) {
 				return true;
@@ -34,7 +34,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 			tooltip: 'Rename',
 			handler: function(grid, rowIndex, colIndex) {
 				var rec = grid.getStore().getAt(rowIndex);
-				alert("Rename " + rec.get('name'));
+				TYPO3.Vidi.Actions.File.renameFile(rec);
 			},
 			active: function(record) {
 				return true;

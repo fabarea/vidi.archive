@@ -14,6 +14,7 @@ return array(
 	'tx_vidi_viewhelpers_includecssfileviewhelper' => $extensionClassesPath . 'ViewHelpers/IncludeCssFileViewHelper.php',
 	'tx_vidi_viewhelpers_extdirectproviderviewhelper' => $extensionClassesPath . 'ViewHelpers/Be/ExtDirectProviderViewHelper.php',
 	'tx_vidi_viewhelpers_be_modulecontainerviewhelper' => $extensionClassesPath . 'ViewHelpers/Be/ModuleContainerViewHelper.php',
-	'tx_vidi_service_moduleloader' => $extensionClassesPath . 'Service/ModuleLoader.php'
+	'tx_vidi_service_moduleloader' => $extensionClassesPath . 'Service/ModuleLoader.php',
+	'tx_vidi_service_contextMenu_datadrovider' => $extensionClassesPath . 'Service/ContextMenu/DataProvider.php'
 );
 ?>
