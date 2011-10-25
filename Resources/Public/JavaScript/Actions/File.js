@@ -42,7 +42,19 @@ TYPO3.Vidi.Actions.File = {
 			}
 		);
 	},
-
+	editTextFile: function(record) {
+		Ext.create(
+			'TYPO3.Vidi.Components.Overlay',
+			'file_edit.php?' + Ext.Object.toQueryString({target: record.get('id')}, true),
+			'editContentRecord',
+			function() {}
+		);
+	},
+	showFileInfo: function(record) {
+		if (top.launchView !== undefined) {
+			top.launchView(record.get('id'), '');
+		}
+	},
 	createEmptyFile: function() {
 		var currentFolder = this._getCurrentFolder();
 		Ext.Msg.prompt(

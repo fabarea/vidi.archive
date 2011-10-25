@@ -8,7 +8,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 			tooltip: 'Edit',
 			handler: function(grid, rowIndex, colIndex) {
 				var rec = grid.getStore().getAt(rowIndex);
-				alert("Edit " + rec.get('name'));
+				TYPO3.Vidi.Actions.File.editTextFile(rec)
 			},
 			active: function(record) {
 				if (record.get('type').substring(0, 5) == 'text/') {
@@ -46,7 +46,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 			tooltip: 'Info',
 			handler: function(grid, rowIndex, colIndex) {
 				var rec = grid.getStore().getAt(rowIndex);
-				alert("Info " + rec.get('name'));
+				TYPO3.Vidi.Actions.File.showFileInfo(rec);
 			},
 			active: function(record) {
 				return true;
