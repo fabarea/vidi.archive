@@ -51,6 +51,17 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 			active: function(record) {
 				return true;
 			}
+		},
+		{
+			iconCls: 't3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-sys_action',
+			tooltip: '(re)index',
+			handler: function(grid, rowIndex, colIndex) {
+				var rec = grid.getStore().getAt(rowIndex);
+				TYPO3.Vidi.Actions.File.showFileInfo(rec);
+			},
+			active: function(record) {
+				return true;
+			}
 		}
 	],
 
