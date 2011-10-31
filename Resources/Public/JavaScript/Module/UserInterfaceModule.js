@@ -76,6 +76,8 @@ TYPO3.Vidi.Application.registerModule({
 		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/filterBar/hidden', false);
 		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/gridToolbar', 'Vidi-GridToolbar');
 		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/collectionManagement/enabled', true);
+		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/collectionManagement/ExtDirectEndPoints/Static', true);
+		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/collectionManagement/ExtDirectEndPoints/Filter', 'TYPO3.Vidi.Service.ExtDirect.Filter');
 		TYPO3.TYPO3.Core.Registry.set('vidi/mainModule/collectionManagement/xtype', 'TYPO3-Vidi-View-Collection-ListPanel');
 	}
 });

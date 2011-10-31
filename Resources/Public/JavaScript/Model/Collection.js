@@ -15,12 +15,6 @@ Ext.define('TYPO3.Vidi.Model.Collection', {
 	],
 	proxy: {
 		type: 'direct',
-		api: {
-			create: TYPO3.Vidi.Service.ExtDirect.CollectionManagement.create,
-			read: TYPO3.Vidi.Service.ExtDirect.CollectionManagement.read,
-			update: TYPO3.Vidi.Service.ExtDirect.CollectionManagement.update,
-			destroy: TYPO3.Vidi.Service.ExtDirect.CollectionManagement.destroy
-		},
 		directFn: Ext.emptyFn,
 		extraParams: {
 			currentTable: '',

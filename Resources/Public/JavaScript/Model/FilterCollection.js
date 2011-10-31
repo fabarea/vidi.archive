@@ -3,12 +3,6 @@ Ext.define('TYPO3.Vidi.Model.Filter', {
 	extend: 'TYPO3.Vidi.Model.Collection',
 	proxy: {
 		type: 'direct',
-		api: {
-			create: TYPO3.Vidi.Service.ExtDirect.Filter.create,
-			read: TYPO3.Vidi.Service.ExtDirect.Filter.read,
-			update: TYPO3.Vidi.Service.ExtDirect.Filter.update,
-			destroy: TYPO3.Vidi.Service.ExtDirect.Filter.destroy
-		},
 		directFn: Ext.emptyFn,
 		extraParams: {
 			currentTable: '',
@@ -18,6 +12,17 @@ Ext.define('TYPO3.Vidi.Model.Filter', {
 			type: 'json',
 			root: 'data',
 			totalProperty: 'total'
+		}
+	},
+	statics :{
+		getProxy: function() {
+			this.proxy.api = {
+				create: eval(TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/collectionManagement/ExtDirectEndPoints/Filter') + '.create'),
+				read: eval(TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/collectionManagement/ExtDirectEndPoints/Filter') + '.read'),
+				update: eval(TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/collectionManagement/ExtDirectEndPoints/Filter') + '.update'),
+				destroy: eval(TYPO3.TYPO3.Core.Registry.get('vidi/mainModule/collectionManagement/ExtDirectEndPoints/Filter') + '.destroy')
+			};
+			return this.proxy;
 		}
 	}
 });
