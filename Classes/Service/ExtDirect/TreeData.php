@@ -13,13 +13,22 @@ class Tx_Vidi_Service_ExtDirect_TreeData extends Tx_Vidi_Service_ExtDirect_Abstr
 		/** @var t3lib_tree_Tca_DatabaseTreeDataProvider $dataProvider */
 		$dataProvider = t3lib_div::makeInstance('t3lib_tree_Tca_DatabaseTreeDataProvider');
 
-		$dataProvider->setLookupField('pid');
 		$dataProvider->setRootUid(0);
 		$dataProvider->setNonSelectableLevelList('*');
-		$dataProvider->setLookupMode(t3lib_tree_Tca_DatabaseTreeDataProvider::MODE_PARENT);
+		if ($this->moduleConfiguration['trees'][$treeId]['treeConfig']['parentField']) {
+			$dataProvider->setLookupMode(t3lib_tree_Tca_DatabaseTreeDataProvider::MODE_PARENT);
+			$dataProvider->setLookupField($this->moduleConfiguration['trees'][$treeId]['treeConfig']['parentField']);
+		} else if ($this->moduleConfiguration['trees'][$treeId]['treeConfig']['childrenField']) {
+			$dataProvider->setLookupMode(t3lib_tree_Tca_DatabaseTreeDataProvider::MODE_CHILDREN);
+			$dataProvider->setLookupField($this->moduleConfiguration['trees'][$treeId]['treeConfig']['childrenField']);
+		} else {
+			$dataProvider->setLookupMode(t3lib_tree_Tca_DatabaseTreeDataProvider::MODE_PARENT);
+			$dataProvider->setLookupField('pid');
+		}
+
 
 		$dataProvider->setTableName($this->moduleConfiguration['trees'][$treeId]['table']);
-		$dataProvider->setLabelField('title');
+		$dataProvider->setLabelField($GLOBALS['TCA'][$this->moduleConfiguration['trees'][$treeId]['table']]['ctrl']['label']);
 		$dataProvider->setExpandAll(false);
 		$dataProvider->initializeTreeData();
 
@@ -31,5 +40,15 @@ class Tx_Vidi_Service_ExtDirect_TreeData extends Tx_Vidi_Service_ExtDirect_Abstr
 		return array();
 	}
 
+	public function isLabelEditable($parameters){
+		$this->initialize($parameters->moduleCode);
+		return $this->moduleConfiguration['trees'][$parameters->tree]['treeConfig']['editable'];
+	}
 
+	public function updateLabel($parameters, $nodeId, $newLabel) {
+		$this->initialize($parameters->moduleCode);
+		if ($this->moduleConfiguration['trees'][$parameters->tree]['treeConfig']['editable']) {
+			// @TODO build tceMain-Code for updating the label
+		}
+	}
 }

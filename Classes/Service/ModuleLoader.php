@@ -12,7 +12,7 @@ class Tx_Vidi_Service_ModuleLoader {
 		0 => array(
 			'table' => 'pages',
 			'title' => 'Pagetree',
-			'tcaTreeConfig' => array(
+			'treeConfig' => array(
 				'parentField' => 'pid',
 				'rootUid' => 0
 			),
@@ -116,11 +116,11 @@ class Tx_Vidi_Service_ModuleLoader {
 	}
 
 
-	public function addTcaBasedTree($table, array $tcaTreeConfig) {
+	public function addTcaBasedTree($table, array $tcaTreeConfig, array $relationConfiguration) {
 		$this->trees[$table] = array(
 			'title'			=> $table,
 			'table'			=> $table,
-			'tcaTreeConfig'	=> $tcaTreeConfig
+			'treeConfig'	=> $tcaTreeConfig
 		);
 	}
 
@@ -243,6 +243,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Actions/File',
 
 				'Vidi/Components/ContextMenu',
+				'Vidi/Components/Tree/Editor',
 
 				'Vidi/Utils',
 				'Vidi/Core/Registry',

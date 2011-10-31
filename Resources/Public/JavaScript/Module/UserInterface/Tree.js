@@ -10,6 +10,33 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.Tree', {
 		text: '--root--',
 		expanded: true
 	},
+	viewConfig: {
+		toggleOnDblClick: false
+	},
+	columns: [{
+			xtype: 'treecolumn',
+			dataIndex: 'text',
+			flex: 1,
+			editor: {
+				xtype: 'textfield',
+				allowBlank: false
+			}
+	}],
+	hideHeaders: true,
+	preventHeader: true,
+	/**
+	 * Indicates if the label should be editable
+	 *
+	 * @cfg {Boolean}
+	 */
+	labelEdit: false,
+	/**
+	 * Number of clicks to ignore for the label edit on dblclick feature
+	 * Will be set to 2 by the tree editor
+	 *
+	 * @type {int}
+	 */
+	inhibitClicks: 0,
 	constructor: function(config) {
 		this.root.id = config.rootUid;
 		this.store = Ext.create('Ext.data.TreeStore', {
@@ -22,10 +49,34 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.Tree', {
 				}
 			}
 		});
+		this.labelEdit = config.labelEdit || this.labelEdit;
+		if (this.labelEdit ) {
+			var plugins = config.plugins || [];
+			config.plugins = plugins.concat(
+				Ext.create('TYPO3.Vidi.Components.Tree.Editor', {
+					clicksToEdit: 2
+				})
+			);
+		}
 		this.callParent([config]);
 	},
 	listeners: {
-		itemclick: function(tree, record) {
+		itemclick: function(tree, record, item, index, event) {
+				// Check if the tree editor was triggered by dblclick
+				// If so, stop the next two clicks
+			if (tree.panel.inhibitClicks) {
+				--tree.panel.inhibitClicks;
+				event.stopEvent();
+				return false;
+			}
+				// Fire the context menu on a single click on the node icon (Beware of drag&drop!)
+			var target = event.getTarget('img.t3-icon');
+			if (target) {
+				tree.fireEvent('itemcontextmenu', tree, record, item, index, event);
+				event.stopEvent();
+				return false;
+			}
+
 			tree.up('TYPO3-Vidi-Module-ContentBrowser-TreeRegion').addFilterToQuery(tree.ownerCt.treeIndex, record);
 		},
 		viewready: function() {
