@@ -39,7 +39,7 @@ $extDirectPath = 'EXT:vidi/Classes/Service/ExtDirect/';
 	// Register ExtDirect Endpoint for the Grid
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.GridData',$extDirectPath . 'GridData.php:Tx_Vidi_Service_ExtDirect_GridData');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.TreeData', $extDirectPath . 'TreeData.php:Tx_Vidi_Service_ExtDirect_TreeData');
-t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.Filter', $extDirectPath . 'FilterManagement.php:Tx_Vidi_Service_ExtDirect_FilterManagement');
+t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.FilterManagement', $extDirectPath . 'FilterManagement.php:Tx_Vidi_Service_ExtDirect_FilterManagement');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.CollectionManagement', $extDirectPath . 'CollectionManagement.php:Tx_Vidi_Service_ExtDirect_CollectionManagement');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.FilterBar', $extDirectPath . 'FilterBar.php:Tx_Vidi_Service_ExtDirect_FilterBar');
 t3lib_extMgm::registerExtDirectComponent('TYPO3.Vidi.Service.ExtDirect.DragAndDrop', $extDirectPath . 'DragAndDrop.php:Tx_Vidi_Service_ExtDirect_DragAndDrop');

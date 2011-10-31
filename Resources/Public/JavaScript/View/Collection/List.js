@@ -19,7 +19,7 @@ Ext.define('TYPO3.Vidi.View.Collection.List', {
 	emptyText: 'no Collection available',
 	constructor: function() {
 		this.store = Ext.create('Ext.data.Store', {
-			model: 'TYPO3.Vidi.Model.Collection',
+			model: 'TYPO3.Vidi.Model.StaticCollection',
 			storeId: 'TYPO3.Vidi.Stores.Collection',
 			groupField: 'public',
 			groupDir: 'ASC',
