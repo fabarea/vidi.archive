@@ -1,5 +1,5 @@
 
-Ext.define('TYPO3.Vidi.Model.Filter', {
+Ext.define('TYPO3.Vidi.Model.FilterCollection', {
 	extend: 'TYPO3.Vidi.Model.Collection',
 	proxy: {
 		type: 'direct',

@@ -19,7 +19,7 @@ Ext.define('TYPO3.Vidi.View.Filter.List', {
 	emptyText: 'no filters available',
 	constructor: function() {
 		this.store = Ext.create('Ext.data.Store', {
-			model: 'TYPO3.Vidi.Model.Filter',
+			model: 'TYPO3.Vidi.Model.FilterCollection',
 			storeId: 'TYPO3.Vidi.Stores.Filters',
 			groupField: 'public',
 			groupDir: 'ASC',

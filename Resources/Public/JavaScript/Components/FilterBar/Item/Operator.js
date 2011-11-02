@@ -66,9 +66,10 @@ Ext.define('TYPO3.Vidi.Components.FilterBar.Item.Operator', {
 	statics: {
 		unserialize: function(data) {
 			var tag = Ext.create('TYPO3.Vidi.Components.FilterBar.Item.Operator',{
-				editMode: false
+				editMode: false,
+				virgin: false
 			});
-			tag.data.operator = Ext.StoreManager.get('TYPO3.Vidi.Stores.FilterBar.Operators').findRecord('id', data).data.value;
+			tag.data.operator = Ext.StoreManager.get('TYPO3.Vidi.Stores.FilterBar.Operators').findRecord('id', data.value).data;
 			tag.refresh();
 			tag.updateInputs();
 			return tag;

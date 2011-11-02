@@ -25,6 +25,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 	extend: 'Ext.container.Container',
 	region: 'west',
 	width: 200,
+	border: false,
 	layout:  {
 		type: 'accordion',
 		align: 'stretch'
@@ -35,6 +36,9 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 		var config = {
 			items: this.getTreeComponents()
 		};
+		if (config.items.length == 1) {
+			config.layout = 'fit';
+		}
 		Ext.apply(this, config);
 		this.callParent();
 	},
@@ -73,8 +77,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.TreeRegion', {
 			var labelEdit = (entry.treeConfig != undefined && entry.treeConfig.labelEdit == true) ? true : false;
 			items.push({
 				xtype: 'panel',
-				collapsible: true,
-				title: treeConfig.length > 1 ? entry.title : undefined,
+				title: entry.title,
 				layout: 'fit',
 				items: {
 					xtype: type,

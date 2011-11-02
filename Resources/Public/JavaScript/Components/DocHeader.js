@@ -32,7 +32,7 @@ Ext.define('TYPO3.Vidi.Module.UserInterface.DocHeader', {
 	initComponent: function() {
 		var config = {
 			id: 'typo3-docheader',
-			height: 44,
+			height: 43,
 			layout: {
 				type: 'vbox',
 				align: 'stretch'
