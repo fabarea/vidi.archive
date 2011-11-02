@@ -97,8 +97,6 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 		var config = {
 			store: this.store,
 			columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')[TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')],
-			height: 200,
-			width: '100%'
 		};
 
 		Ext.apply(this, config);

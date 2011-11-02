@@ -32,16 +32,15 @@ TYPO3.Vidi.Application.registerModule({
 
 		console.log("Configuring User Interface module");
 
+		TYPO3.TYPO3.Core.Registry.set('vidi/docheader/enabled', true, 1);
 		TYPO3.TYPO3.Core.Registry.set('vidi/docheader/top', ['->',
 			{
-				text: '',
 				iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-refresh',
 				handler: function() {
 					Ext.StoreManager.lookup('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserStore').load();
 				}
 			},
 			{
-				text: '',
 				iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-shortcut-new',
 				handler: function() {
 					if (top.ShortcutManager !== undefined) {
@@ -54,7 +53,6 @@ TYPO3.Vidi.Application.registerModule({
 
 		TYPO3.TYPO3.Core.Registry.set('vidi/docheader/bottom', [
 			{
-				text: '',
 				iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-help-open',
 				handler: function() {
 					if (top.TYPO3 !== undefined && top.TYPO3.ContextHelp !== undefined) {

@@ -69,10 +69,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserView', {
 					region:'north',
 					anchor: '100%'
 				},
-				{
-					xtype:'panel',region: 'center',border:0, layout: 'fit', items: {xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', id: 'TYPO3-Vidi-Module-Grid'},
-					anchor: '100% auto'
-				}
+				{xtype: 'TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', id: 'TYPO3-Vidi-Module-Grid'}
 			]
 		});
 		config.items.push({xtype: 'TYPO3-Vidi-Module-ContentBrowser-TreeRegion', region:'west'});

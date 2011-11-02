@@ -6,14 +6,15 @@ Ext.define('TYPO3.Vidi.View.Collection.ListPanel', {
 	autoDestroy: false,
 	deferredRender: false,
 	collapsible: true,
-	collapsed: false,
+	collapsed: true,
+	removePanelHeader: true,
 	title: 'Collection-Management',
 	width: 250,
 	items: [
 		{
 			xtype: 'TYPO3-Vidi-View-Filter-List',
 			width: 250,
-			tabConfig: {
+			tConfig: {
 				text: 'Filter',
 				iconCls: 't3-icon t3-icon-actions t3-icon-actions-system t3-icon-system-tree-search-open'
 			}
@@ -21,15 +22,20 @@ Ext.define('TYPO3.Vidi.View.Collection.ListPanel', {
 		{
 			xtype: 'TYPO3-Vidi-View-Collection-List',
 			width: 250,
-			title: 'Bar',
-			tabConfig: {
-				title: 'Bar',
-				tooltip: 'test',
-				text: 'Static',
+			tConfig: {
+				text: 'Collection',
 				iconCls: 't3-icon t3-icon-apps t3-icon-apps-clipboard t3-icon-clipboard-list'
 			}
 		}
 	],
+	listeners: {
+		render: function() {
+			Ext.each(this.items.items, function(item) {
+				item.tab.setText(item.tConfig.text);
+				item.tab.setIconCls(item.tConfig.iconCls);
+			});
+		}
+	},
 	bbar: [
 		{
 			xtype: 'button',

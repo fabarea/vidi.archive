@@ -31,7 +31,7 @@ Ext.define('TYPO3.Vidi.View.Filter.List', {
 				}
 			}
 		});
-		this.callParent();
+		this.callParent(arguments);
 	},
 	listeners: {
 		itemClick: function(view, filter, element, index, event) {

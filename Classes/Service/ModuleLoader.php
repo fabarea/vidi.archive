@@ -243,6 +243,7 @@ class Tx_Vidi_Service_ModuleLoader {
 				'Vidi/Actions/File',
 
 				'Vidi/Components/ContextMenu',
+				'Vidi/Components/ClickableIcon',
 				'Vidi/Components/Tree/Editor',
 
 				'Vidi/Utils',

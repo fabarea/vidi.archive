@@ -43,11 +43,10 @@ Ext.define('TYPO3.Vidi.Components.Layout.AutoFitLayout', {
 			target.removeCls(Ext.baseCSSPrefix + 'inline-children');
 			cleaner();
 		}
-
 		if (components.length == 2) {
 			me.setItemSize(components[0], me.getLayoutTargetSize().width - 20, undefined);
 			me.setItemSize(components[1], me.getLayoutTargetSize().width, me.getLayoutTargetSize().height - components[0].getHeight() - 20);
-		} else {
+		} else if (components.length == 1) {
 			me.setItemSize(components[0], me.getLayoutTargetSize().width, me.getLayoutTargetSize().height);
 		}
 
@@ -63,6 +62,7 @@ Ext.define('TYPO3.Vidi.Components.Layout.AutoFitLayout', {
 	},
 
 	configureItem: function(item) {
+		this.callParent(arguments);
 		var me = this,
 			owner = me.owner;
 		if (item.alias == 'widget.filterBar') {
@@ -73,7 +73,7 @@ Ext.define('TYPO3.Vidi.Components.Layout.AutoFitLayout', {
 			item.layoutManagedWidth = 1;
 			item.layoutManagedHeight = 1;
 		}
-		this.callParent(arguments);
+
 	}
 
 });

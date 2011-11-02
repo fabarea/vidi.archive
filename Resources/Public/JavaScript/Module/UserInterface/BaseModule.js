@@ -32,17 +32,18 @@ Ext.ns("TYPO3.Vidi.Module.UserInterface");
 TYPO3.Vidi.Module.UserInterface.BaseModule = Ext.extend(Ext.Viewport, {
 
 	initComponent: function() {
-
 		var config = {
 			renderTo: 'typo3-mod-php',
 			layout:'border',
 			cls: 'typo3-fullDoc typo3-vidi',
 			items: [
-				this._docHeader,
 				TYPO3.TYPO3.Core.Registry.get('vidi/mainModule')
 			]
 		};
 
+		if (TYPO3.TYPO3.Core.Registry.get('vidi/docheader/enabled') == true) {
+			config.items.push(this._docHeader);
+		}
 		Ext.apply(this, config);
 		this.callParent();
 	},
