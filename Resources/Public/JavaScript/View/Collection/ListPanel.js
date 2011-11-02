@@ -4,7 +4,6 @@ Ext.define('TYPO3.Vidi.View.Collection.ListPanel', {
 	alias: 'widget.TYPO3-Vidi-View-Collection-ListPanel',
 	id: 'TYPO3-Vidi-View-Collection-ListPanel',
 	autoDestroy: false,
-	deferredRender: false,
 	collapsible: true,
 	collapsed: true,
 	removePanelHeader: true,
@@ -50,6 +49,10 @@ Ext.define('TYPO3.Vidi.View.Collection.ListPanel', {
 					var newCollection = TYPO3.Vidi.Model.StaticCollection.create();
 					var selectedRecords = Ext.ComponentManager.get('TYPO3-Vidi-Module-Grid').getSelectionModel().getSelection();
 					var selectedIds = [];
+					if (selectedRecords.length == 0) {
+						Ext.Msg.alert('Error', 'You must at least select one item for creating a new collection.');
+						return false;
+					}
 					Ext.each(selectedRecords, function(record) {
 						selectedIds.push(record.get('uid'));
 					});
