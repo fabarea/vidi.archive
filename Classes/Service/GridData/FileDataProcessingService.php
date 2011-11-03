@@ -117,7 +117,9 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 			array('text' => 'Grösse', 'dataIndex' => 'size', 'xtype' => 'byteColumn'),
 			array('text' => 'Extension', 'dataIndex' => 'extension'),
 			array('text' => 'Mimetype', 'dataIndex' => 'type'),
-			array('text' => 'Erstellt am', 'dataIndex' => 'creationDate', 'xtype' => 'datecolumn', 'format' => 'd.m.Y H:i')
+			array('text' => 'Erstellt am', 'dataIndex' => 'creationDate', 'xtype' => 'datecolumn', 'format' => 'd.m.Y H:i'),
+			array('text' => 'Änderungsdatum', 'dataIndex' => 'creationDate', 'xtype' => 'datecolumn', 'format' => 'd.m.Y H:i'),
+			array('text' => 'Thumbnail', 'dataIndex' => 'url', 'xtype' => 'thumbnailColumn')
 		);
 		return $columns;
 	}
@@ -130,7 +132,11 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 			array('name' => 'size', 'type' => 'int'),
 			array('name' => 'extension', 'type' => 'string'),
 			array('name' => 'type', 'type' => 'string'),
-			array('name' => 'creationDate', 'type' => 'date', 'dateFormat' => 'timestamp')
+			array('name' => 'creationDate', 'type' => 'date', 'dateFormat' => 'timestamp'),
+			array('name' => 'mtime', 'type' => 'date', 'dateFormat' => 'timestamp'),
+			array('name' => 'permissions', 'type' => 'auto'),
+			array('name' => 'indexed', 'type' => 'boolean'),
+			array('name' => 'url', 'type' => 'string')
 		);
 		return $fields;
 	}

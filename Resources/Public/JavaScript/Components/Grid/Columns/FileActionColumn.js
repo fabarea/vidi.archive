@@ -2,6 +2,8 @@
 Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 	extend: 'Ext.grid.column.Action',
 	alias: ['widget.fileActionColumn'],
+	sortable: false,
+	hidable : false,
 	iconConfig : [
 		{
 			iconCls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open',
@@ -11,7 +13,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 				TYPO3.Vidi.Actions.File.editTextFile(rec)
 			},
 			active: function(record) {
-				if (record.get('type').substring(0, 5) == 'text/') {
+				if (record.get('type').substring(0, 5) == 'text/' &&  record.data.permissions.write == true) {
 					return true;
 				} else {
 					return false;
@@ -26,7 +28,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 				TYPO3.Vidi.Actions.File.deleteFile(rec);
 			},
 			active: function(record) {
-				return true;
+				return record.data.permissions.delete === true;
 			}
 		},
 		{
@@ -37,7 +39,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 				TYPO3.Vidi.Actions.File.renameFile(rec);
 			},
 			active: function(record) {
-				return true;
+				return record.data.permissions.write === true;
 			}
 
 		},
