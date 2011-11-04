@@ -115,5 +115,29 @@ TYPO3.Vidi.Actions.File = {
 
 	createFolder: function(parentFolder, newFolderName) {
 		
+	},
+	startIndexing: function(items, type) {
+		if (items && !Ext.isArray(items)) {
+			items = [ items ];
+		}
+		if (type == undefined) {
+			type = '_FOLDER';
+		}
+		var linkConfig = {
+			M: 'file_FileIndexing',
+			tx_file_file_fileindexing: {
+				path: [],
+				type: type
+			}
+		};
+		Ext.each(items, function(record) {
+			linkConfig.tx_file_file_fileindexing.path.push(record.data.id);
+		});
+		Ext.create(
+				'TYPO3.Vidi.Components.Overlay',
+				'mod.php?' + Ext.Object.toQueryString(linkConfig, true),
+				'indexers',
+				function() {this.refreshGrid();}
+			);
 	}
 };

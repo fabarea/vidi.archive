@@ -78,7 +78,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['vidi']['FilterBar'] = array(
 );
 
 t3lib_extMgm::addUserTSConfig('
-	options.contextMenu.table.__FOLDER.items {
+	options.contextMenu.table._FOLDER.items {
 		100 = ITEM
 		100 {
 			name = rename
@@ -95,14 +95,12 @@ t3lib_extMgm::addUserTSConfig('
 			callbackAction = TYPO3.Vidi.Actions.File.createFolder
 		}
 
-		500 = DIVIDER
-
 		300 = ITEM
 		300 {
-			name = history
-			label = LLL:EXT:lang/locallang_misc.xml:CM_history
-			spriteIcon = actions-document-history-open
-			callbackAction = openHistoryPopUp
+			name = index
+			label = index this folder
+			spriteIcon = status-status-reference-hard
+			callbackAction = TYPO3.Vidi.Actions.File.startIndexing
 		}
 	}
 ');

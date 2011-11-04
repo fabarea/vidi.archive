@@ -36,7 +36,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 	/**
 	 * @var string $table
 	 */
-	protected $table = '__FILES';
+	protected $table = '_FILE';
 
 	public function __construct($table) {
 		parent::__construct('sys_file');
@@ -47,7 +47,7 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 	public function getRecords($parameters) {
 		$mountRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
 		$factory = t3lib_div::makeInstance('t3lib_file_Factory');
-		$filterBarService = t3lib_div::makeInstance('t3lib_collection_FilteredRecords_Service', '__FILES');
+		$filterBarService = t3lib_div::makeInstance('t3lib_collection_FilteredRecords_Service', '_FILE');
 		$filterBarService->initializeQuery($parameters->query);
 
 		$path = '/';

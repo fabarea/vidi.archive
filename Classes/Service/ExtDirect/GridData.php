@@ -100,8 +100,8 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 			$this->table = $table;
 		}
 
-		if ($this->table == '__FILES') {
-			$this->dataRepository = t3lib_div::makeInstance('Tx_Vidi_Service_GridData_FileDataProcessingService', '__FILES');
+		if ($this->table == '_FILE') {
+			$this->dataRepository = t3lib_div::makeInstance('Tx_Vidi_Service_GridData_FileDataProcessingService', '_FILE');
 		} else {
 			$this->dataRepository = t3lib_div::makeInstance('Tx_Vidi_Service_GridData_TcaDataProcessingService', $this->table);
 			t3lib_div::loadTCA($this->table);

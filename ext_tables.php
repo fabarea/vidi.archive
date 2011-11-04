@@ -16,7 +16,7 @@ if (TYPO3_MODE === 'BE') {
 	$moduleLoader = t3lib_div::makeInstance('Tx_Vidi_Service_ModuleLoader', $_EXTKEY);
 	$moduleLoader->addStandardTree(Tx_Vidi_Service_ModuleLoader::TREE_PAGES);
 
-	$moduleLoader->setAllowedDataTypes(array('tt_content', 'pages', 'cache_extensions', 'tx_ttnews',  '__FILES'));
+	$moduleLoader->setAllowedDataTypes(array('tt_content', 'pages', 'cache_extensions', 'tx_ttnews',  '_FILE'));
 	$moduleLoader->register();
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms.php']['dbFileIcons'][$_EXTKEY] = 'EXT:vidi/Classes/Hook/TceformsHook.php:Tx_Vidi_Hook_TceformsHook';
