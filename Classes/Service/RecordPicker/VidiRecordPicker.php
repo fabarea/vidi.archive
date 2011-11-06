@@ -20,11 +20,12 @@ class Tx_Vidi_Service_RecordPicker_VidiRecordPicker {
 	 * @param string $allowed Allowed records, e.g. "sys_file"
 	 * @param string $objectId
 	 * @param bool $iconOnly
+	 * @param string $createNewRelationText
 	 * @return string
 	 */
-	public function renderLink($type, $mode, $allowed, $objectId, $iconOnly = TRUE) {
+	public function renderLink($type, $mode, $allowed, $objectId, $iconOnly = TRUE, $createNewRelationText = NULL) {
 		$this->includeJavaScript();
-		$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
+		$createNewRelationText = $createNewRelationText !== NULL ? $createNewRelationText : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
 
 		$aOnClick = 'top.TYPO3.Vidi.RecordPicker.show("' . $type . '", "' . $mode . '", "' . $allowed . '", "' . $objectId . '"); return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' .

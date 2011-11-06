@@ -9,6 +9,7 @@
 			<label index="tx_vidi_domain_model_asset">Asset</label>
 			<label index="tx_vidi_domain_model_asset.title">title</label>
 			<label index="tx_vidi_domain_model_asset.description">description</label>
+			<label index="recordpicker.createNewRelation">Add image</label>
 		</languageKey>
 	</data>
 </T3locallang>
