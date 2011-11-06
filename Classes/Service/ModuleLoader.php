@@ -120,7 +120,8 @@ class Tx_Vidi_Service_ModuleLoader {
 		$this->trees[$table] = array(
 			'title'			=> $table,
 			'table'			=> $table,
-			'treeConfig'	=> $tcaTreeConfig
+			'treeConfig'	=> $tcaTreeConfig,
+			'relationConfiguration' => $relationConfiguration
 		);
 	}
 
