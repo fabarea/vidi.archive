@@ -8,7 +8,6 @@ class Tx_Vidi_Service_RecordPicker_VidiRecordPicker {
 	 * @return bool
 	 */
 	public function canHandle($mode, $allowed) {
-		return TRUE;
 		return $mode === 'db' && $allowed === 'sys_file';
 	}
 
