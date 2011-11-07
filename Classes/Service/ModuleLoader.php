@@ -83,9 +83,21 @@ class Tx_Vidi_Service_ModuleLoader {
 	 */
 	protected $allowedDataTypes = array();
 
+	/**
+	 * array, which defines for each table a custom grid_dataService
+	 *
+	 * @var string[]
+	 */
+	protected $gridService = array();
 
+	/**
+	 * @var string[]
+	 */
 	protected $additionalJavaScriptFiles = array();
 
+	/**
+	 * @var string
+	 */
 	protected $javaScriptBasePath;
 	
 	/**
@@ -145,6 +157,7 @@ class Tx_Vidi_Service_ModuleLoader {
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['trees'] = $this->trees;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['additionalJavaScriptFiles'] = $this->additionalJavaScriptFiles;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['ddInterface'] = $this->ddInterface;
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['gridDataService'] = $this->gridService;
 
 		Tx_Extbase_Utility_Extension::registerModule(
 			'vidi',
@@ -394,4 +407,32 @@ class Tx_Vidi_Service_ModuleLoader {
 	public function getDdInterface() {
 		return $this->ddInterface;
 	}
+
+	/**
+	 * 
+	 * @param string $table
+	 * @param string $gridService
+	 */
+	public function setGridService($table, $gridService) {
+		$this->gridService[$table] = $gridService;
+	}
+
+	/**
+	 *
+	 *
+	 * @param string $table
+	 * @return string
+	 */
+	public function getGridService($table) {
+		return $this->gridService[$table];
+	}
+
+	/**
+	 * @return array|string[]
+	 */
+	public function getGridServices() {
+		return $this->gridService;
+	}
+
+
 }
