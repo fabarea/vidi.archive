@@ -97,6 +97,7 @@ abstract class Tx_Vidi_Service_GridData_AbstractProcessingService {
 	protected function generateWhereClauseFromQuery($query) {
 		$whereClause = '';
 		if ($query !== null && $query != '') {
+			/** @var t3lib_collection_FilteredRecords_Service $filterBarService */
 			$filterBarService = t3lib_div::makeInstance('t3lib_collection_FilteredRecords_Service', $this->table);
 			$filterBarService->initializeQuery($query);
 			$whereClause .= $filterBarService->generateWhereClause();

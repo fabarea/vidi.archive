@@ -52,7 +52,7 @@ TYPO3.Vidi.Actions.File = {
 	},
 	showFileInfo: function(record) {
 		if (top.launchView !== undefined) {
-			top.launchView(record.get('id'), '_FILE');
+			top.launchView('_FILE', record.get('id'));
 		}
 	},
 	createEmptyFile: function() {
