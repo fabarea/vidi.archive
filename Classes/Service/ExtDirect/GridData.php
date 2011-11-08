@@ -90,6 +90,8 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 					$newColums[] = $columnConfiguration[$i];
 				}
 			}
+		} else {
+			$newColums = $columnConfiguration;
 		}
 
 		return $newColums;
