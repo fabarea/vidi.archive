@@ -1,24 +1,4 @@
 {namespace ext=Tx_Vidi_ViewHelpers}
-
-imagine the record picker to be shown here.. \o/
-
-
-<ul>
-	<li><a href="#" onclick="callback('sys_file', 2, 'Testfile1'); return false;">Testfile1</a></li>
-	<li><a href="#" onclick="callback('sys_file', 1, 'Testfile2'); return false;">Testfile2</a></li>
-</ul>
-
-<script type="text/javascript"><![CDATA[
-	function callback(table, uid, label) {
-	]]>
-	if ('{callbackMethod}' && '{objectId}' && {callbackMethod})
-		{callbackMethod}('{objectId}', table, uid, label);
-	<![CDATA[
-	}
-	]]>
-</script>
-
-<![CDATA[
 <ext:Be.moduleContainer
 	pageTitle="Sample Module" >
 	
@@ -26,4 +6,3 @@ imagine the record picker to be shown here.. \o/
 	<ext:includeCssFile name="FilterBar.css" />
 
 </ext:Be.moduleContainer>
-]]>

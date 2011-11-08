@@ -45,7 +45,7 @@ TYPO3.Vidi.Actions.File = {
 	editTextFile: function(record) {
 		Ext.create(
 			'TYPO3.Vidi.Components.Overlay',
-			'file_edit.php?' + Ext.Object.toQueryString({target: record.get('id'), type: '_FILE'}, true),
+			'file_edit.php?' + Ext.Object.toQueryString({returnUrl: 'typo3/dummy.php',fileReference: record.get('id'), type: '_FILE'}, true),
 			'editContentRecord',
 			function() {}
 		);

@@ -149,8 +149,11 @@ class Tx_Vidi_Service_ModuleLoader {
 
 
 
-	public function register() {
-		$moduleCode = $this->mainModule . '_Vidi' . ucfirst($this->extensionKey) .  ucfirst($this->moduleKey);
+	public function register($omitModule = false, $moduleCode = '') {
+		if ($moduleCode === '') {
+			$moduleCode = $this->mainModule . '_Vidi' . ucfirst($this->extensionKey) .  ucfirst($this->moduleKey);
+		}
+
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode] = array();
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['extKey'] = $this->extensionKey;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['allowedDataTypes'] = $this->allowedDataTypes;
@@ -159,20 +162,23 @@ class Tx_Vidi_Service_ModuleLoader {
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['ddInterface'] = $this->ddInterface;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['gridDataService'] = $this->gridService;
 
-		Tx_Extbase_Utility_Extension::registerModule(
-			'vidi',
-			$this->mainModule,
-			$this->extensionKey . '_' . $this->moduleKey,
-			$this->position,
-			array(
-				'Vidi' => 'module, browse',
-			),
-			array(
-				'access' => 'user,group',
-				'icon'   => $this->icon,
-				'labels' => $this->moduleLanguageFile,
-			)
-		);
+		if ($omitModule === FALSE) {
+			Tx_Extbase_Utility_Extension::registerModule(
+				'vidi',
+				$this->mainModule,
+				$this->extensionKey . '_' . $this->moduleKey,
+				$this->position,
+				array(
+					'Vidi' => 'module, browse',
+				),
+				array(
+					'access' => 'user,group',
+					'icon'   => $this->icon,
+					'labels' => $this->moduleLanguageFile,
+				)
+			);
+		}
+
 	}
 
 	/**

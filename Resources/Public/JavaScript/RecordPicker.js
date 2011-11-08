@@ -11,11 +11,10 @@ top.TYPO3.Vidi.RecordPicker = {
 					width: 600,
 					height: 400
 				},
-				'mod.php?M=user_VidiVidiM1' +
-					'&tx_vidi_user_vidividim1%5Baction%5D=browse' +
-					'&tx_vidi_user_vidividim1%5Ballowed%5D=' + allowed +
-					'&tx_vidi_user_vidividim1%5BcallbackMethod%5D=top.TYPO3.Vidi.RecordPicker.' + (type === 'inline' ? 'callbackTypeInline' : 'callbackTypeGroup') +
-					'&tx_vidi_user_vidividim1%5BobjectId%5D=' + objectId
+				'mod.php?M=recordPicker' +
+					'&tx_vidi_recordPicker%5Ballowed%5D=' + allowed +
+					'&tx_vidi_recordPicker%5BcallbackMethod%5D=top.TYPO3.Vidi.RecordPicker.' + (type === 'inline' ? 'callbackTypeInline' : 'callbackTypeGroup') +
+					'&tx_vidi_recordPicker%5BobjectId%5D=' + objectId
 		)
 	},
 
