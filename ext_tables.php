@@ -15,6 +15,7 @@ if (TYPO3_MODE === 'BE') {
 	$moduleLoader = t3lib_div::makeInstance('Tx_Vidi_Service_ModuleLoader', 'vidi');
 	$moduleLoader->addStandardTree(Tx_Vidi_Service_ModuleLoader::TREE_FILES);
 	$moduleLoader->setAllowedDataTypes(array('_FILE'));
+	$moduleLoader->setColumnsToShow('_FILE', array('icon', 'name', 'size', 'url'));
 	$moduleLoader->addJavaScriptFiles(array(
 			'Module/RecordPicker/ModuleConfiguration.js',
 			'Module/RecordPicker/GridToolBar.js'

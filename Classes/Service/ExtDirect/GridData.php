@@ -79,10 +79,20 @@ class Tx_Vidi_Service_ExtDirect_GridData extends Tx_Vidi_Service_ExtDirect_Abstr
 		);
 	}
 
-	public function buildColumnConfiguration($moduleCode, $table = null) {
+	public function buildColumnConfiguration($moduleCode, $table = null, $restrictToColumns = array()) {
 		$this->initialize($moduleCode, $table);
+		$columnConfiguration = $this->dataRepository->buildColumnConfiguration();
 
-		return $this->dataRepository->buildColumnConfiguration();
+		$newColums = array();
+		if (count($restrictToColumns) > 0) {
+			for ($i = 0; $i < count($columnConfiguration); $i++) {
+				if (in_array($columnConfiguration[$i]['dataIndex'], $restrictToColumns)) {
+					$newColums[] = $columnConfiguration[$i];
+				}
+			}
+		}
+
+		return $newColums;
 	}
 	
 	public function buildFieldConfiguration($moduleCode, $table = null) {

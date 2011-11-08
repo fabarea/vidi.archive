@@ -12,9 +12,9 @@ top.TYPO3.Vidi.RecordPicker = {
 					height: 400
 				},
 				'mod.php?M=recordPicker' +
-					'&tx_vidi_recordPicker%5Ballowed%5D=' + allowed +
-					'&tx_vidi_recordPicker%5BcallbackMethod%5D=top.TYPO3.Vidi.RecordPicker.' + (type === 'inline' ? 'callbackTypeInline' : 'callbackTypeGroup') +
-					'&tx_vidi_recordPicker%5BobjectId%5D=' + objectId
+					'&tx_vidi_recordpicker%5Ballowed%5D=' + allowed +
+					'&tx_vidi_recordpicker%5BcallbackMethod%5D=top.TYPO3.Vidi.RecordPicker.' + (type === 'inline' ? 'callbackTypeInline' : 'callbackTypeGroup') +
+					'&tx_vidi_recordpicker%5BobjectId%5D=' + objectId
 		)
 	},
 

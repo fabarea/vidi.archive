@@ -96,6 +96,11 @@ class Tx_Vidi_Service_ModuleLoader {
 	protected $additionalJavaScriptFiles = array();
 
 	/**
+	 * @var string[]
+	 */
+	protected $columnsToShow = array();
+
+	/**
 	 * @var string
 	 */
 	protected $javaScriptBasePath;
@@ -161,6 +166,7 @@ class Tx_Vidi_Service_ModuleLoader {
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['additionalJavaScriptFiles'] = $this->additionalJavaScriptFiles;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['ddInterface'] = $this->ddInterface;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['gridDataService'] = $this->gridService;
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['columnRestriction'] = $this->columnsToShow;
 
 		if ($omitModule === FALSE) {
 			Tx_Extbase_Utility_Extension::registerModule(
@@ -375,7 +381,7 @@ class Tx_Vidi_Service_ModuleLoader {
 
 			foreach ($configuration['allowedDataTypes'] AS $table) {
 				$fieldConfigurationData[$table] = $gridDataService->buildFieldConfiguration($moduleCode, $table);
-				$columnConfigurationData[$table] = $gridDataService->buildColumnConfiguration($moduleCode, $table);
+				$columnConfigurationData[$table] = $gridDataService->buildColumnConfiguration($moduleCode, $table, (array)$configuration['columnRestriction'][$table]);
 			}
 			$starterCode .= self::createRegistryCode('vidi/fieldConfiguration', $fieldConfigurationData);
 			$starterCode .= self::createRegistryCode('vidi/columnConfiguration', $columnConfigurationData);
@@ -438,6 +444,14 @@ class Tx_Vidi_Service_ModuleLoader {
 	 */
 	public function getGridServices() {
 		return $this->gridService;
+	}
+
+	public function setColumnsToShow($table, array $columnsToShow) {
+		$this->columnsToShow[$table] = $columnsToShow;
+	}
+
+	public function getColumnsToShow($table) {
+		return $this->columnsToShow[$table];
 	}
 
 

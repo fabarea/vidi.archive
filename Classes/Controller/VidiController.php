@@ -88,6 +88,15 @@ class Tx_Vidi_Controller_VidiController extends Tx_Extbase_MVC_Controller_Action
 	 * @return void
 	 */
 	public function browseAction($callbackMethod = '', $objectId = '') {
+		/** @var t3lib_PageRenderer $renderer */
+		$renderer = $GLOBALS['SOBE']->doc->getPagerenderer();
+		$renderer->addJsInlineCode('recordPickerCallBack',
+		"
+		function callback(table, uid, label) {
+			if ('" . $callbackMethod . "' && '" . $objectId . "' && " . $callbackMethod . ")
+				" . $callbackMethod . "('" . $objectId . "', table, uid, label);
+		}
+		");
 		$this->view->assign('callbackMethod', $callbackMethod);
 		$this->view->assign('objectId', $objectId);
 		$this->view->assign('moduleConfiguration', $this->configuration);
