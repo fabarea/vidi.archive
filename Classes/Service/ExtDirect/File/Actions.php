@@ -9,9 +9,17 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 
 	public function __construct() {
 		$this->fileFactory = t3lib_div::makeInstance('t3lib_file_Factory');
+
+			// Initializing:
+		$this->fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
+		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
+		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
+		$this->fileProcessor->dontCheckForUnique = t3lib_div::_GP('overwriteExistingFiles') ? 1 : 0; // @todo change this to fits Vidi UI
 	}
 
 	/**
+	 * Rename the file
+	 *
 	 * @param string $fileIdentifier
 	 * @param string $newFileName
 	 * @return void
@@ -19,6 +27,42 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	public function renameFile($fileIdentifier, $newFileName) {
 		$file = $this->fileFactory->getFileObjectFromCombinedIdentifier($fileIdentifier);
 		$file->rename($newFileName);
+		return;
+
+		if ($this->checkReferer()) {
+
+			$fileValues = array(
+				'rename' => array(
+					'data' => $fileIdentifier,
+					'target' => $newFileName,
+				)
+			);
+
+			$this->fileProcessor->start($fileValues);
+			$this->fileProcessor->processData();
+		}
+	}
+
+	/**
+	 * Makes sure the referer is correct.
+	 *
+	 * @return boolean
+	 */
+	public function checkReferer() {
+		$result = TRUE;
+
+			// Checking referer / executing:
+		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+
+			// @todo: Decide what to do: a check has been removed from original code
+			//		  @see class TYPO3_tcefile
+			//        $this->vC != $GLOBALS['BE_USER']->veriCode()
+		if ($httpHost != $refInfo['host'] && !$GLOBALS['$TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+			$this->fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
+			throw new t3lib_exception("Referer host \"" . $refInfo['host'] . "\" and server host \"$httpHost\" did not match!", 1321247357);
+		}
+		return $result;
 	}
 
 	/**
