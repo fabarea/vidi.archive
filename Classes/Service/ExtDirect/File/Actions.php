@@ -7,6 +7,11 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	 */
 	protected $fileFactory;
 
+	/**
+	 * @var t3lib_extFileFunctions
+	 */
+	protected $fileProcessor;
+
 	public function __construct() {
 		$this->fileFactory = t3lib_div::makeInstance('t3lib_file_Factory');
 
@@ -14,7 +19,7 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 		$this->fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
-		$this->fileProcessor->dontCheckForUnique = t3lib_div::_GP('overwriteExistingFiles') ? 1 : 0; // @todo change this to fits Vidi UI
+		$this->fileProcessor->dontCheckForUnique = t3lib_div::_GP('overwriteExistingFiles') ? 1 : 0; // @todo change this to fit Vidi UI
 	}
 
 	/**
@@ -25,16 +30,14 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	 * @return void
 	 */
 	public function renameFile($fileIdentifier, $newFileName) {
-		$file = $this->fileFactory->getFileObjectFromCombinedIdentifier($fileIdentifier);
-		$file->rename($newFileName);
-		return;
-
 		if ($this->checkReferer()) {
 
 			$fileValues = array(
 				'rename' => array(
-					'data' => $fileIdentifier,
-					'target' => $newFileName,
+					array(
+						'data' => $fileIdentifier,
+						'target' => $newFileName,
+					)
 				)
 			);
 
@@ -44,34 +47,25 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 	}
 
 	/**
-	 * Makes sure the referer is correct.
+	 * Delete a file
 	 *
-	 * @return boolean
-	 */
-	public function checkReferer() {
-		$result = TRUE;
-
-			// Checking referer / executing:
-		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
-		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-
-			// @todo: Decide what to do: a check has been removed from original code
-			//		  @see class TYPO3_tcefile
-			//        $this->vC != $GLOBALS['BE_USER']->veriCode()
-		if ($httpHost != $refInfo['host'] && !$GLOBALS['$TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-			$this->fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
-			throw new t3lib_exception("Referer host \"" . $refInfo['host'] . "\" and server host \"$httpHost\" did not match!", 1321247357);
-		}
-		return $result;
-	}
-
-	/**
 	 * @param $fileIdentifier
 	 * @return void
 	 */
 	public function deleteFile($fileIdentifier) {
-		$file = $this->fileFactory->getFileObjectFromCombinedIdentifier($fileIdentifier);
-		$file->delete();
+		if ($this->checkReferer()) {
+
+			$fileValues = array(
+					array(
+					'delete' => array(
+						'data' => $fileIdentifier,
+					)
+				)
+			);
+
+			$this->fileProcessor->start($fileValues);
+			$this->fileProcessor->processData();
+		}
 	}
 
 	/**
@@ -114,4 +108,25 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 		$folder->getStorage()->createFolder($folder->getIdentifier() . '/' . $newFolderName, false); // @TODO this is quite ugly and only will work for LocalDriver
 	}
 
+	/**
+	 * Makes sure the referer is correct.
+	 *
+	 * @return boolean
+	 */
+	protected function checkReferer() {
+		$result = TRUE;
+
+			// Checking referer / executing:
+		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
+		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
+
+			// @todo: Decide what to do: a check has been removed from original code
+			//		  @see class TYPO3_tcefile
+			//        $this->vC != $GLOBALS['BE_USER']->veriCode()
+		if ($httpHost != $refInfo['host'] && !$GLOBALS['$TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+			$this->fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
+			throw new t3lib_exception("Referer host \"" . $refInfo['host'] . "\" and server host \"$httpHost\" did not match!", 1321247357);
+		}
+		return $result;
+	}
 }
