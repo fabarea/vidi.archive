@@ -60,9 +60,9 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	 */
 	selType: 'checkboxmodel',
 	selModel: {
+		allowDeselect: true,
 		checkOnly: true,
-		mode: 'MULTI'
-		//mode: 'SIMPLE'
+		mode: 'SIMPLE'
 	},
 
 	win: null,
@@ -96,7 +96,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 		// Default configuration
 		var config = {
 			store: this.store,
-			columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')[TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')],
+			columns: TYPO3.TYPO3.Core.Registry.get('vidi/columnConfiguration')[TYPO3.TYPO3.Core.Registry.get('vidi/currentTable')]
 		};
 
 		Ext.apply(this, config);
@@ -112,8 +112,7 @@ Ext.define('TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid', {
 	 * @return void
 	 */
 	onRender: function() {
-		TYPO3.Vidi.Module.ContentBrowser.ContentBrowserGrid.superclass.onRender.apply(this, arguments);
-		//this.callParent();
+		this.callParent(arguments);
 	},
 
 
