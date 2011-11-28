@@ -104,7 +104,12 @@ class Tx_Vidi_Service_ModuleLoader {
 	 * @var string
 	 */
 	protected $javaScriptBasePath;
-	
+
+	/**
+	 * @var boolean
+	 */
+	protected $isMainModule = TRUE;
+
 	/**
 	 * @param string $extensionKey
 	 * @param string $moduleKey
@@ -167,6 +172,7 @@ class Tx_Vidi_Service_ModuleLoader {
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['ddInterface'] = $this->ddInterface;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['gridDataService'] = $this->gridService;
 		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['columnRestriction'] = $this->columnsToShow;
+		$GLOBALS['TBE_MODULES_EXT']['vidi'][$moduleCode]['isMainModule'] = $this->isMainModule;
 
 		if ($omitModule === FALSE) {
 			Tx_Extbase_Utility_Extension::registerModule(
@@ -357,12 +363,16 @@ class Tx_Vidi_Service_ModuleLoader {
 				$files[] = $configuration['extKey'] . '/' . str_replace('.js', '', $value);
 			}
 
-			$starterCode = "if (top.TYPO3 != undefined && top.TYPO3.Backend != undefined) {
+			$starterCode = '';
+
+			if ($configuration['isMainModule'] && count($configuration['trees'])) {
+				$starterCode = "if (top.TYPO3 != undefined && top.TYPO3.Backend != undefined) {
 	top.TYPO3.Backend.NavigationContainer.hide();
 	top.TYPO3.Backend.NavigationDummy.show();
 	top.TYPO3.Backend.doLayout();
 }
 ";
+			}
 
 			$starterCode .= 'require(["' . implode('", "', $jsFilesRequireJS) . '"], function() {' . LF . "\n\tTYPO3.Vidi.Application.initialize();\n\n";
 
@@ -452,6 +462,20 @@ class Tx_Vidi_Service_ModuleLoader {
 
 	public function getColumnsToShow($table) {
 		return $this->columnsToShow[$table];
+	}
+
+	/**
+	 * @param boolean $isMainModule
+	 */
+	public function setIsMainModule($isMainModule) {
+		$this->isMainModule = $isMainModule;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getIsMainModule() {
+		return $this->isMainModule;
 	}
 
 
