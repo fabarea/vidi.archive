@@ -56,8 +56,8 @@ class Tx_Vidi_Service_ExtDirect_File_Actions {
 		if ($this->checkReferer()) {
 
 			$fileValues = array(
+				'delete' => array(
 					array(
-					'delete' => array(
 						'data' => $fileIdentifier,
 					)
 				)
