@@ -28,12 +28,6 @@
 
 if (!defined ("TYPO3_MODE"))    die ('Access denied.');
 
-// Hook only available for ExtJS 4 compatibility
-// @todo: remove this hook when TYPO3 v4 will be compatible with ExtJS 4
-if (strpos($GLOBALS['_GET']['M'],'_Vidi') !== false) {
-	$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_pagerenderer.php'] = t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Xclass/class.ux_t3lib_pagerenderer.php';
-}
-
 $extDirectPath = 'EXT:vidi/Classes/Service/ExtDirect/';
 
 	// Register ExtDirect Endpoint for the Grid
