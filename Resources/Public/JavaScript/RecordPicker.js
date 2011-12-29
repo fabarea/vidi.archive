@@ -1,6 +1,6 @@
 
 // register in outer frame "top"
-top.Ext.namespace('TYPO3.Vidi');
+top.Ext.ns('TYPO3.Vidi');
 
 top.TYPO3.Vidi.RecordPicker = {
 	show: function(type, mode, allowed, objectId) {
@@ -12,7 +12,7 @@ top.TYPO3.Vidi.RecordPicker = {
 					height: 400
 				},
 				'mod.php?M=recordPicker' +
-					'&tx_vidi_recordpicker%5Ballowed%5D=' + allowed +
+					'&tx_vidi_recordpicker%5Bconfig%5D=' + allowed +
 					'&tx_vidi_recordpicker%5BcallbackMethod%5D=top.TYPO3.Vidi.RecordPicker.' + (type === 'inline' ? 'callbackTypeInline' : 'callbackTypeGroup') +
 					'&tx_vidi_recordpicker%5BobjectId%5D=' + objectId
 		)
@@ -38,26 +38,15 @@ top.TYPO3.Vidi.RecordPicker = {
 	 * @ return	void
 	 */
 	openContainerWindow: function (buttonId, title, dimensions, url) {
-		var dialog = new top.Ext.Window({
+		var dialog = Ext.create('Ext.window.Window', {
 			id: 'tx_vidi_recordpicker_' + buttonId,
 			title: /*this.localize(title) || */title,
 			cls: 'htmlarea-window',
 			width: dimensions.width,
-			border: false,
-			// resizable: true,
-			// iconCls: this.getButton(buttonId).iconCls,
-			listeners: {
-				afterrender: {
-					fn: this.onContainerResize
-				},
-				resize: {
-					fn: this.onContainerResize
-				}/*,
-				close: {
-					fn: this.onClose,
-					scope: this
-				}*/
-			},
+			height: dimensions.height,
+			autoShow: true,
+			layout: 'fit',
+			//iconCls: '',
 			items: {
 					// The content iframe
 				xtype: 'box',
@@ -70,17 +59,6 @@ top.TYPO3.Vidi.RecordPicker = {
 				}
 			}
 		});
-		dialog.show();
-	},
-	/*
-	 * Handler invoked when the container window is rendered or resized in order to resize the content iframe to maximum size
-	 * code taken from EXT:rtehtmlarea htmlarea.js
-	 */
-	onContainerResize: function (panel) {
-		var iframe = panel.getComponent('content-iframe');
-		if (iframe.rendered) {
-			iframe.getEl().setSize(panel.getInnerWidth(), panel.getInnerHeight());
-		}
 	}
 };
 
