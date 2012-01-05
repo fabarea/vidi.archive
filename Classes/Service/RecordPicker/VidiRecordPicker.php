@@ -22,11 +22,13 @@ class Tx_Vidi_Service_RecordPicker_VidiRecordPicker {
 	 * @param string $createNewRelationText
 	 * @return string
 	 */
-	public function renderLink($type, $mode, $allowed, $objectId, $iconOnly = TRUE, $createNewRelationText = NULL) {
+	public function renderLink($type, $mode, $allowed, $objectId, $filter=NULL, $iconOnly = TRUE, $createNewRelationText = NULL) {
 		$this->includeJavaScript();
 		$createNewRelationText = $createNewRelationText !== NULL ? $createNewRelationText : $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
 
-		$aOnClick = 'top.TYPO3.Vidi.RecordPicker.show("' . $type . '", "' . $mode . '", "' . $allowed . '", "' . $objectId . '"); return false;';
+		$filterParams = json_encode($filter);
+
+		$aOnClick = 'top.TYPO3.Vidi.RecordPicker.show("' . $type . '", "' . $mode . '", "' . $allowed . '", "' . $objectId . '", "'.urlencode($filterParams).'"); return false;';
 		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-insert-record', array('title' => $createNewRelationText)) .
 				($iconOnly ? '' : $createNewRelationText) .

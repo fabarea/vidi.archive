@@ -3,7 +3,7 @@
 top.Ext.ns('TYPO3.Vidi');
 
 top.TYPO3.Vidi.RecordPicker = {
-	show: function(type, mode, allowed, objectId) {
+	show: function(type, mode, allowed, objectId, filterParams) {
 		this.openContainerWindow(
 				'recordpicker',
 				'RecordPicker',
@@ -12,9 +12,10 @@ top.TYPO3.Vidi.RecordPicker = {
 					height: 400
 				},
 				'mod.php?M=recordPicker' +
-					'&tx_vidi_recordpicker%5Bconfig%5D=' + allowed +
+					'&tx_vidi_recordpicker%5Ballowed%5D=' + allowed +
 					'&tx_vidi_recordpicker%5BcallbackMethod%5D=top.TYPO3.Vidi.RecordPicker.' + (type === 'inline' ? 'callbackTypeInline' : 'callbackTypeGroup') +
-					'&tx_vidi_recordpicker%5BobjectId%5D=' + objectId
+					'&tx_vidi_recordpicker%5BobjectId%5D=' + objectId +
+					'&tx_vidi_recordpicker%5Bfilter%5D=' + filterParams
 		)
 	},
 
