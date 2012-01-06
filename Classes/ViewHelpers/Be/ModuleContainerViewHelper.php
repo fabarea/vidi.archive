@@ -52,10 +52,13 @@
  * @version     SVN: $Id: ModuleContainerViewHelper.php 47944 2011-05-20 13:35:15Z deaddivinity $
  */
 
-	// @todo: - check how this ViewHelper inspired by mvc_extjs should be integrated on the Core eventually
-    //        - anaylse what are the benefit of mvc_extjs
 class Tx_Vidi_ViewHelpers_Be_ModuleContainerViewHelper extends Tx_Vidi_ViewHelpers_AbstractViewHelper {
 
+
+	/**
+	 * @var t3lib_PageRenderer
+	 */
+	protected $pageRenderer = NULL;
 	/**
 	 *
 	 * @var string The extension Key
@@ -106,22 +109,8 @@ class Tx_Vidi_ViewHelpers_Be_ModuleContainerViewHelper extends Tx_Vidi_ViewHelpe
 			';
 		}
 
-		if ($loadExtJs === TRUE) {
-				// @temp. ExtJS 4 should be part of the Core
-				// Define the patch
-			$this->extJsPath = t3lib_extMgm::extRelPath($this->extensionKey) . 'Resources/Public/Libraries/';
-			$this->pageRenderer->setExtJsPath($this->extJsPath . 'ExtJS/');
-
-			// Load the library
-			$this->pageRenderer->loadExtJS(TRUE, $loadExtJsTheme);
-			$this->pageRenderer->addExtDirectCode();
-			if ($enableExtJsDebug === TRUE) {
-				$this->pageRenderer->enableExtJsDebug();
-			}
-		}
-		if ($loadExtCore === TRUE) {
-			$this->pageRenderer->loadExtCore();
-		}
+		$this->pageRenderer->loadExtJS();
+		$this->pageRenderer->addExtDirectCode();
 		if ($enableExtJSQuickTips === TRUE) {
 			$this->pageRenderer->enableExtJSQuickTips();
 		}
