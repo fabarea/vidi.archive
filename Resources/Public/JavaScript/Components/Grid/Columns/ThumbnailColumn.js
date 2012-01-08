@@ -8,7 +8,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.ThumbnailColumn', {
 		this.callParent(arguments);
 	},
 	renderer: function(value, container, record, row, column) {
-		if (record.data.type !== undefined && record.data.type.substring(0,6) != 'image/' || value == '') {
+		if (record.data.type !== undefined && record.data.type !== 2 || value == '') {
 			return '';
 		}
 		if (this.columns[column].isVisible() == false) {
@@ -19,9 +19,9 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.ThumbnailColumn', {
 		}
 		var content = '';
 		Ext.Array.each(value, function(item) {
-			content += '<img src="/' + item + '" style="width:' + TYPO3.Vidi.Components.Grid.Columns.ThumbnailColumn.thumbnailWidth + 'px;height:auto;" alt="thumb" />';
+			content += '<img src="thumbs.php?file=' + item + '&md5sum=' + record.data.checksum + '&size=' + TYPO3.Vidi.Components.Grid.Columns.ThumbnailColumn.thumbnailWidth + '" style="width:' + TYPO3.Vidi.Components.Grid.Columns.ThumbnailColumn.thumbnailWidth + 'px;height:auto;" alt="Loading Thumbnail ..." />';
 		});
-		container.style = { padding: 0};
+		container.style = {padding: 0};
 		return content;
 	},
 	statics: {

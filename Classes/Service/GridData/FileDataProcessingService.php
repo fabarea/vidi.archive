@@ -111,15 +111,15 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 
 	public function buildColumnConfiguration() {
 		$columns = array(
-			array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn'),
+			array('text' => 'Icon', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn'),
 			array('text' => 'Name', 'dataIndex' => 'name', 'hidable' => false),
 			array('text' => '', 'xtype' => 'fileActionColumn'),
 			array('text' => 'Grösse', 'dataIndex' => 'size', 'xtype' => 'byteColumn'),
 			array('text' => 'Extension', 'dataIndex' => 'extension'),
-			array('text' => 'Mimetype', 'dataIndex' => 'type'),
+			array('text' => 'Typ', 'dataIndex' => 'type'),
 			array('text' => 'Erstellt am', 'dataIndex' => 'creationDate', 'xtype' => 'datecolumn', 'format' => 'd.m.Y H:i'),
 			array('text' => 'Änderungsdatum', 'dataIndex' => 'creationDate', 'xtype' => 'datecolumn', 'format' => 'd.m.Y H:i'),
-			array('text' => 'Thumbnail', 'dataIndex' => 'url', 'xtype' => 'thumbnailColumn')
+			array('text' => 'Thumbnail', 'dataIndex' => 'id', 'xtype' => 'thumbnailColumn')
 		);
 		return $columns;
 	}
@@ -131,12 +131,13 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 			array('name' => 'name', 'type' => 'string'),
 			array('name' => 'size', 'type' => 'int'),
 			array('name' => 'extension', 'type' => 'string'),
-			array('name' => 'type', 'type' => 'string'),
+			array('name' => 'type', 'type' => 'int'),
 			array('name' => 'creationDate', 'type' => 'date', 'dateFormat' => 'timestamp'),
 			array('name' => 'mtime', 'type' => 'date', 'dateFormat' => 'timestamp'),
 			array('name' => 'permissions', 'type' => 'auto'),
 			array('name' => 'indexed', 'type' => 'boolean'),
-			array('name' => 'url', 'type' => 'string')
+			array('name' => 'url', 'type' => 'string'),
+			array('name' => 'checksum', 'type' => 'string')
 		);
 		return $fields;
 	}
