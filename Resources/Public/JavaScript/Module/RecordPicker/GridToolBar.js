@@ -9,6 +9,7 @@ Ext.define('TYPO3.Vidi.Module.RecordPicker.SelectFilesToolbar', {
 			{
 				xtype: 'button',
 				action :'use',
+				id: 'TYPO3-Vidi-RecordPicker-useSelectionButton',
 				text: 'Auswahl übernehmen',
 				handler: this.useSelection
 			},
