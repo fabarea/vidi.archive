@@ -390,8 +390,8 @@ class Tx_Vidi_Service_ModuleLoader {
 			$columnConfigurationData = array();
 
 			foreach ($configuration['allowedDataTypes'] AS $table) {
-				$fieldConfigurationData[$table] = $gridDataService->buildFieldConfiguration($moduleCode, $table);
-				$columnConfigurationData[$table] = $gridDataService->buildColumnConfiguration($moduleCode, $table, (array)$configuration['columnRestriction'][$table]);
+				$fieldConfigurationData[$table] = array_values($gridDataService->buildFieldConfiguration($moduleCode, $table));
+				$columnConfigurationData[$table] = array_values($gridDataService->buildColumnConfiguration($moduleCode, $table, (array)$configuration['columnRestriction'][$table]));
 			}
 			$starterCode .= self::createRegistryCode('vidi/fieldConfiguration', $fieldConfigurationData);
 			$starterCode .= self::createRegistryCode('vidi/columnConfiguration', $columnConfigurationData);

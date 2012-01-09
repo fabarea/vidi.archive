@@ -93,7 +93,7 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 					$field['relationTable'] = $configuration['config']['foreign_table'];
 					$field['relationTitle'] = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$configuration['config']['foreign_table']]['ctrl']['title']);
 				}
-				$columns[] = $field;
+				$columns[$column] = $field;
 			}
 		}
 		foreach ($moduleConfiguration['trees'] AS $tree) {
@@ -131,9 +131,9 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 	public function buildColumnConfiguration() {
 
 		$columns = array(
-			array('text' => 'uid', 'dataIndex' => 'uid', 'hidden' => true, 'sortable' => true),
-			array('text' => 'pid', 'dataIndex' => 'oid', 'hidden' => true, 'sortable' => true),
-			array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn')
+			'uid' => array('text' => 'uid', 'dataIndex' => 'uid', 'hidden' => true, 'sortable' => true),
+			'pid' => array('text' => 'pid', 'dataIndex' => 'pid', 'hidden' => true, 'sortable' => true),
+			'icon' => array('text' => '', 'dataIndex' => 'icon', 'hidden' => false, 'hidable' => false, 'xtype' => 'iconColumn')
 		);
 
 		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
@@ -141,13 +141,17 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 				'text' => $GLOBALS['LANG']->sL($configuration['label']),
 				'dataIndex' => $name,
 				'hidden' => !t3lib_div::inList($GLOBALS['TCA'][$this->table]['interface']['showRecordFieldList'], $name),
-				'sortable'=> true
+				'sortable'=> true,
 			);
+			if ($GLOBALS['TCA'][$this->table]['ctrl']['label'] == $name) {
+				$data['hidable'] = false;
+			}
+			
 			if ($this->detectExtJSType($configuration['config']) == 'image') {
 				$data['xtype'] = 'thumbnailColumn';
 			}
 
-			$columns[] = $data;
+			$columns[$name] = $data;
 		}
 
 		return $columns;
@@ -158,14 +162,16 @@ class Tx_Vidi_Service_GridData_TcaDataProcessingService extends Tx_Vidi_Service_
 		$fields = array(
 			array('name' => 'uid', 'type' => 'int'),
 			array('name' => 'pid', 'type' => 'int'),
-			array('name' => 'icon', 'type' => 'string')
+			array('name' => 'icon', 'type' => 'string'),
+			array('name' => '__raw', 'type'=> 'auto')
 		);
 
 		foreach ((array)$GLOBALS['TCA'][$this->table]['columns'] AS $name => $configuration) {
 			$data = array(
 				'name' => $name
 			);
-			$type = $this->detectExtJSType($configuration['config']);
+			//$type = $this->detectExtJSType($configuration['config']);
+			$type = 'auto';
 			if ($type == 'date') {
 				$data['dateFormat'] = 'd.m.Y. H:i';
 			}

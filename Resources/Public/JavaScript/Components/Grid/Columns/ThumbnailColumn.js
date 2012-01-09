@@ -8,7 +8,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.ThumbnailColumn', {
 		this.callParent(arguments);
 	},
 	renderer: function(value, container, record, row, column) {
-		if (record.data.type !== undefined && record.data.type !== 2 || value == '') {
+		if (record.data['__raw'].type !== undefined && record.data['__raw'].type != 2 || value == '') {
 			return '';
 		}
 		if (this.columns[column].isVisible() == false) {

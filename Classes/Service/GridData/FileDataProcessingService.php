@@ -38,8 +38,14 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 	 */
 	protected $table = '_FILE';
 
+	/**
+	 * @var Tx_Vidi_Service_GridData_TcaDataProcessingService
+	 */
+	protected $tcaProcessor = NULL;
+
 	public function __construct($table) {
 		parent::__construct('sys_file');
+		$this->tcaProcessor = t3lib_div::makeInstance('Tx_Vidi_Service_GridData_TcaDataProcessingService', 'sys_file');
 	}
 
 
@@ -65,16 +71,26 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 
 		}
 		$currentCollection = $factory->createFolderObject($mount, $path, '');
-  		$files = $currentCollection->getFiles();
+  		$files = $currentCollection->getFiles('', ($parameters->page - 1) * $parameters->limit, $parameters->limit);
 		$data = array();
-		foreach ((array)$files as $file) {
+		t3lib_div::loadTCA('sys_file');
+		foreach ($files AS $file) {
 			$fileData = $file->toArray();
-			$fileData['icon'] = t3lib_iconWorks::getSpriteIconForFile($fileData['extension']);
+			$temp = $fileData;
+			$fileData['icon'] = t3lib_iconWorks::getSpriteIconForFile(strtolower($fileData['extension']));
+			foreach ($fileData AS $key => $value) {
+				if (is_array($GLOBALS['TCA']['sys_file']['columns'][$key])) {
+					$processedValue = t3lib_BEfunc::getProcessedValue('sys_file', $key, $value);
+					$fileData[$key] = $processedValue;
+				}
+			}
+			$fileData['__raw'] = $temp;
 			$data[] = $fileData;
 		}
+
 		return array(
 			'data' => $data,
-			'total' => count($data)
+			'total' => $currentCollection->getFileCount()
 		);
 	}
 
@@ -110,35 +126,28 @@ class Tx_Vidi_Service_GridData_FileDataProcessingService extends Tx_Vidi_Service
 	}
 
 	public function buildColumnConfiguration() {
-		$columns = array(
-			array('text' => 'Icon', 'dataIndex' => 'icon', 'hidden' => false, 'xtype' => 'iconColumn'),
-			array('text' => 'Name', 'dataIndex' => 'name', 'hidable' => false),
-			array('text' => '', 'xtype' => 'fileActionColumn'),
-			array('text' => 'Grösse', 'dataIndex' => 'size', 'xtype' => 'byteColumn'),
-			array('text' => 'Extension', 'dataIndex' => 'extension'),
-			array('text' => 'Typ', 'dataIndex' => 'type'),
-			array('text' => 'Erstellt am', 'dataIndex' => 'creationDate', 'xtype' => 'datecolumn', 'format' => 'd.m.Y H:i'),
-			array('text' => 'Änderungsdatum', 'dataIndex' => 'creationDate', 'xtype' => 'datecolumn', 'format' => 'd.m.Y H:i'),
-			array('text' => 'Thumbnail', 'dataIndex' => 'id', 'xtype' => 'thumbnailColumn')
-		);
+		$columns = $this->tcaProcessor->buildColumnConfiguration();
+		$columns['size']['xtype'] = 'byteColumn';
+		$columns = array_merge($columns, array(
+			'actions' =>array('text' => '', 'xtype' => 'fileActionColumn'),
+			'extension' => array('text' => 'Extension', 'dataIndex' => 'extension'),
+			'thumb' => array('text' => 'Thumbnail', 'dataIndex' => 'id', 'xtype' => 'thumbnailColumn')
+		));
+
 		return $columns;
 	}
 
 	public function buildFieldConfiguration() {
-		$fields = array(
-			array('name' => 'id', 'type' => 'string'),
-			array('name' => 'icon', 'type' => 'string'),
-			array('name' => 'name', 'type' => 'string'),
-			array('name' => 'size', 'type' => 'int'),
-			array('name' => 'extension', 'type' => 'string'),
-			array('name' => 'type', 'type' => 'int'),
-			array('name' => 'creationDate', 'type' => 'date', 'dateFormat' => 'timestamp'),
-			array('name' => 'mtime', 'type' => 'date', 'dateFormat' => 'timestamp'),
-			array('name' => 'permissions', 'type' => 'auto'),
-			array('name' => 'indexed', 'type' => 'boolean'),
-			array('name' => 'url', 'type' => 'string'),
-			array('name' => 'checksum', 'type' => 'string')
-		);
+		$fields = $this->tcaProcessor->buildFieldConfiguration();
+		$fields = array_merge($fields, array(
+			'id' => array('name' => 'id', 'type' => 'string'),
+			'extension' => array('name' => 'extension', 'type' => 'string'),
+			'permissions' => array('name' => 'permissions', 'type' => 'auto'),
+			'indexed' => array('name' => 'indexed', 'type' => 'boolean'),
+			'url' => array('name' => 'url', 'type' => 'string'),
+			'checksum' => array('name' => 'checksum', 'type' => 'string'),
+			'mtime' => array('name'=> 'mtime', 'type' => 'int')
+		));
 		return $fields;
 	}
 

@@ -13,7 +13,7 @@ Ext.define('TYPO3.Vidi.Components.Grid.Columns.FileActionColumn', {
 				TYPO3.Vidi.Actions.File.editTextFile(rec)
 			},
 			active: function(record) {
-				if (record.get('type') == 1 &&  record.data.permissions.write == true) {
+				if (record.data['__raw'].type == 1 &&  record.data.permissions.write == true) {
 					return true;
 				} else {
 					return false;
